@@ -1,9 +1,13 @@
-# Google India Scholar Collaborative Project- <Your Track> Phase 2
+# Pomodoro - A Productivity Timer App
+## Google India Scholar Collaborative Project- ABND Track Phase 2
 
-Hi,You've got this template to edit as you start with the Collaborative Projects in Phase 2 and commit your changes. Please read this (https://docs.google.com/document/d/18UC6AAfdgcLLZzuGO_unUlZwc2kBYZqBRogmjDK3Ysc/edit?usp=sharing) document very carefully to understand all the details about the Collaborative Projects.
+_The most important aspect of collaborative project is to get everyone involved, and this idea is simple enough for everyone to contribute to, tweak - and maybe even have some fun while doing it._
+
+In case you haven't already, please read this [document](https://docs.google.com/document/d/18UC6AAfdgcLLZzuGO_unUlZwc2kBYZqBRogmjDK3Ysc/edit?usp=sharing) very carefully to understand all the details about the Collaborative Projects.
 
 **Team**
-- (Add your or your teammates slack Handle here)
+- Looking for Team Members
+- [Michael Hathi](https://github.com/numerative/)
 
 ## Table of Contents
 
@@ -12,51 +16,52 @@ Hi,You've got this template to edit as you start with the Collaborative Projects
   - [Screenshots](#screenshots)
 - [Folder Structure](#folder-structure)
 - [Prerequisites](#prerequisites)
-- [How to launch the app locally](#how-to-launch-the-app-locally)
-  - [Installation](#installation)
+- [Installation](#installation)
 - [Style Guide](#style-guide)
 - [Resources](#resources)
 - [Acknowledgments](#acknowledgments)
 
 ## Getting Started
-- Add any of the Getting Started that you want to mention here!
+- [Why we're building this?](https://discussions.udacity.com/t/my-collaborative-project-idea/618377)
+- [What is Pomodoro?](https://en.wikipedia.org/wiki/Pomodoro_Technique)
+- [Issues you can work on](#)
+
 
 ## Project Title
-<Add your Project Title here.>
+**Pomodoro - Get more done faster.**
 
 ## Project Description
-<In brief please update your Project Description here! So that fellow mates in the community can understand what you project is about and contribute to the project>
+[Link to the original post](https://discussions.udacity.com/t/my-collaborative-project-idea/618377)
+_Complete feature set yet to be discussed. Join the discussion on [slack](#) and share your ideas._
+
+This project aims to build a complete and functional pomodoro timer app before phase 2 ends on 30/11/2018.
+
 
 ## Project URL
-[Visit the app](#)
-
-In case you have any!
+[Not yet](#)
 
 ### Screenshots
-![homepage](#)
+_Mockups Required_
 
 ## Folder Structure
-In case there are any files please add them here as an Hierarchy for it to be better understandable.
 ```bash
 ├── README.md - This file.
-├── 
 └── 
 ```
 
 ## Prerequisites
-* Which ever the project you choose it should be strictly following any of the rubri/instructions in the Nanodegree Program
-
-## How to launch the app locally?
-In case there is any of your Lauching styles to run your app please add it here!
+Anyone can contribute to this project, but the two most basic prerequisites are:
+- Git
+- Java
 
 ### Installation
 You can add your installation guide here!
 
 ## Project Rubric Level
-For example: FEND - Level 2 Project Rubic used.
+For example: ABND - Part 2 Project Rubic used.
 
 ## Acknowledgments
-Add an Achowledgement if you want to add any.
+*Reserved for top contributors*
 
 ## Project Moderators
 
