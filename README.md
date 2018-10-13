@@ -24,15 +24,16 @@ In case you haven't already, please read this [document](https://docs.google.com
 ## Getting Started
 - [Why we're building this?](https://discussions.udacity.com/t/my-collaborative-project-idea/618377)
 - [What is Pomodoro?](https://en.wikipedia.org/wiki/Pomodoro_Technique)
-- [Issues you can work on](#)
+- [How to Contribute?](Contributing.md)
+- [Issues you can work on](https://github.com/google-udacity-india-scholars/abnd-track-pomodoro-timer-app/issues)
 
 
 ## Project Title
 **Pomodoro - Get more done faster.**
 
 ## Project Description
-[Link to the original post](https://discussions.udacity.com/t/my-collaborative-project-idea/618377)
-_Complete feature set yet to be discussed. Join the discussion on [slack](#) and share your ideas._
+- [Orginal post](https://discussions.udacity.com/t/my-collaborative-project-idea/618377)
+- [Current Slack thread](https://googleindiascholars.slack.com/archives/GD96L4VA4/p1539274648000100)
 
 This project aims to build a complete and functional pomodoro timer app before phase 2 ends on 30/11/2018.
 
