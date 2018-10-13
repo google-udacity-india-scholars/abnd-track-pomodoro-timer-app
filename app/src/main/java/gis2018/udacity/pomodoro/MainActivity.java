@@ -8,17 +8,21 @@ import android.util.Log;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "pomodoro Issue-1 Test";
-    private static final long TIME_PERIOD = 5000;
-    private static final long TIME_INTERVAL = 1000;
+    private static final long TIME_PERIOD = 5000; // Time Period is 5 seconds
+    private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
     private static final String COUNTDOWN_FINISHED_MESSAGE = "CountDown Finished";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        countDownTimerBuilder().start();
+        countDownTimerBuilder().start(); // start method starts the CountDownTimer
     }
 
+    /**
+     *
+     * @return a CountDownTimer which ticks every 1 second for a fixed 5 seconds period.
+     */
     private CountDownTimer countDownTimerBuilder() {
         return new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
             @Override
