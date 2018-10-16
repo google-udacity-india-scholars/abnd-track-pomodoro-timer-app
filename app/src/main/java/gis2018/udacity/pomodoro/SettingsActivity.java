@@ -5,20 +5,24 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SettingsActivity extends AppCompatActivity {
 
-    private Spinner workDurationSpinner;
-    private Spinner shortBreakDurationSpinner;
-    private Spinner longBreakDurationSpinner;
+    @BindView(R.id.work_duration_spinner)
+    Spinner workDurationSpinner;
+    @BindView(R.id.short_break_duration_spinner)
+    Spinner shortBreakDurationSpinner;
+    @BindView(R.id.long_break_duration_spinner)
+    Spinner longBreakDurationSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        workDurationSpinner = findViewById(R.id.work_duration_spinner);
-        shortBreakDurationSpinner = findViewById(R.id.short_break_duration_spinner);
-        longBreakDurationSpinner = findViewById(R.id.long_break_duration_spinner);
+        ButterKnife.bind(this);
 
         initSpinner();
     }
