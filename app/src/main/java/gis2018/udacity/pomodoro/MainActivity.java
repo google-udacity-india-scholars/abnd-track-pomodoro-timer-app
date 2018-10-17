@@ -21,33 +21,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        countDownTimerBuilder().start(); // start method starts the CountDownTimer
 
         settingsButton = findViewById(R.id.settings_button_main);
         settingsButton.setOnClickListener(this);
+
+        Intent serviceIntent = new Intent(this,CountDownTimerService.class);
+        serviceIntent.putExtra("time_period",TIME_PERIOD);
+        serviceIntent.putExtra("time_interval",TIME_INTERVAL);
+        startService(serviceIntent);
     }
 
     /**
      * @return a CountDownTimer which ticks every 1 second for a fixed 5 seconds period.
      */
-    private CountDownTimer countDownTimerBuilder() {
-        return new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
-            @Override
-            public void onTick(long timeInMilliSeconds) {
-                long timeInSeconds = timeInMilliSeconds / 1000;
-                if (timeInSeconds != 1) {
-                    Log.v(LOG_TAG, String.valueOf(timeInMilliSeconds / 1000) + " seconds remaining");
-                } else {
-                    Log.v(LOG_TAG, String.valueOf(timeInMilliSeconds / 1000) + " second remaining");
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                Log.v(LOG_TAG, COUNTDOWN_FINISHED_MESSAGE);
-            }
-        };
-    }
 
     @Override
     public void onClick(View v) {
