@@ -1,9 +1,9 @@
 package gis2018.udacity.pomodoro;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.settings_button_main)
     Button settingsButton;
+    @BindView(R.id.task_change_button_main)
+    Button changeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ButterKnife.bind(this);
         settingsButton.setOnClickListener(this);
+        changeButton.setOnClickListener(this);
     }
 
     /**
@@ -62,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // launch SettingsActivity
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.task_change_button_main:
+                // Todo: Define on task change
                 break;
             default:
 
