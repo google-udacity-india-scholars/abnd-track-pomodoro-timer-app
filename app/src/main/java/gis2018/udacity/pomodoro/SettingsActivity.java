@@ -60,9 +60,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         longBreakDurationSpinner.setAdapter(longBreakDurationAdapter);
 
         // Set the default selection
-        workDurationSpinner.setSelection(1);
-        shortBreakDurationSpinner.setSelection(1);
-        longBreakDurationSpinner.setSelection(1);
+        workDurationSpinner.setSelection(preferences.getInt(getString(R.string.work_duration_key), 1));
+        shortBreakDurationSpinner.setSelection(preferences.getInt(getString(R.string.short_break_duration_key), 1));
+        longBreakDurationSpinner.setSelection(preferences.getInt(getString(R.string.long_break_duration_key), 1));
 
         workDurationSpinner.setOnItemSelectedListener(this);
         shortBreakDurationSpinner.setOnItemSelectedListener(this);
