@@ -3,6 +3,9 @@
     <string name="work_duration">Work Duration :</string>
     <string name="short_break_duration">Short Break Duration :</string>
     <string name="long_break_duration">Long Break Duration :</string>
+    <string name="work_duration_key">WORK_DURATION</string>
+    <string name="short_break_duration_key">SHORT_BREAK_DURATION</string>
+    <string name="long_break_duration_key">LONG_BREAK_DURATION</string>
     <string-array name="work_duration_array">
         <item>20 minutes</item>
         <item>25 minutes</item>
