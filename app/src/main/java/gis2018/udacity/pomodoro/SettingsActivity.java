@@ -1,21 +1,29 @@
 package gis2018.udacity.pomodoro;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    private static final String LOG_TAG = SettingsActivity.class.getSimpleName();
     @BindView(R.id.work_duration_spinner)
     Spinner workDurationSpinner;
     @BindView(R.id.short_break_duration_spinner)
     Spinner shortBreakDurationSpinner;
     @BindView(R.id.long_break_duration_spinner)
     Spinner longBreakDurationSpinner;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +33,8 @@ public class SettingsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initSpinner();
+
+        preferences = this.getPreferences(Context.MODE_PRIVATE);
     }
 
     /**
@@ -54,5 +64,60 @@ public class SettingsActivity extends AppCompatActivity {
         workDurationSpinner.setSelection(1);
         shortBreakDurationSpinner.setSelection(1);
         longBreakDurationSpinner.setSelection(1);
+
+        workDurationSpinner.setOnItemSelectedListener(this);
+        shortBreakDurationSpinner.setOnItemSelectedListener(this);
+        longBreakDurationSpinner.setOnItemSelectedListener(this);
+    }
+
+    /**
+     * Save the latest selected item position from the spinners
+     * into SharedPreferences
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // initialize the editor
+        SharedPreferences.Editor editor = preferences.edit();
+        // switch case to handle different spinners
+        switch (parent.getId()) {
+            // item selected in work duration spinner
+            case R.id.work_duration_spinner:
+                Log.v(LOG_TAG, (String) parent.getItemAtPosition(position));
+                // save the corresponding item position
+                editor.putInt(getString(R.string.work_duration_key), position);
+                break;
+            // item selected in short break duration spinner
+            case R.id.short_break_duration_spinner:
+                Log.v(LOG_TAG, (String) parent.getItemAtPosition(position));
+                // save the corresponding item position
+                editor.putInt(getString(R.string.short_break_duration_key), position);
+                break;
+            // item selected in long break duration spinner
+            case R.id.long_break_duration_spinner:
+                Log.v(LOG_TAG, (String) parent.getItemAtPosition(position));
+                // save the corresponding item position
+                editor.putInt(getString(R.string.long_break_duration_key), position);
+        }
+        editor.apply();
+
+        // Print the saved preferences in logs
+        Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.work_duration_key), -1)));
+        Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.short_break_duration_key), -1)));
+        Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.long_break_duration_key), -1)));
+    }
+
+    /**
+     * When nothing is selected from the spinner
+     *
+     * @param parent
+     */
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
