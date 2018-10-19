@@ -3,6 +3,7 @@ package gis2018.udacity.pomodoro;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -31,9 +32,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         ButterKnife.bind(this);
 
-        initSpinner();
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        preferences = this.getPreferences(Context.MODE_PRIVATE);
+        initSpinner();
     }
 
     /**
