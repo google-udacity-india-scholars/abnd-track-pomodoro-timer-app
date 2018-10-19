@@ -1,6 +1,7 @@
 package gis2018.udacity.pomodoro;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button settingsButton;
     @BindView(R.id.task_change_button_main)
     Button changeButton;
+    @BindView(R.id.timer_button_main)
+    Button timerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         settingsButton.setOnClickListener(this);
         changeButton.setOnClickListener(this);
-
-        Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-        serviceIntent.putExtra("time_period", TIME_PERIOD);
-        serviceIntent.putExtra("time_interval", TIME_INTERVAL);
-        startService(serviceIntent);
+        timerButton.setOnClickListener(this);
     }
 
     @Override
@@ -48,6 +47,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.task_change_button_main:
                 // Todo: Define on task change
+                break;
+            case R.id.timer_button_main:
+                Intent serviceIntent = new Intent(this, CountDownTimerService.class);
+                serviceIntent.putExtra("time_period", TIME_PERIOD);
+                serviceIntent.putExtra("time_interval", TIME_INTERVAL);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    startForegroundService(serviceIntent);
+                else
+                    startService(serviceIntent);
                 break;
             default:
 
