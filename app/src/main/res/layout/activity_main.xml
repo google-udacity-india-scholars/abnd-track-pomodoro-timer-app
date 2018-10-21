@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/colorBackground">
 
     <TextView
         android:id="@+id/countdown_textview_main"
@@ -14,10 +15,32 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:textColor="@color/colorYellow"
         android:text="25:00"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@id/cardview_main"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBarCircle"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.506" />
+
+    <ProgressBar
+        android:id="@+id/progressBarCircle"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="165dp"
+        android:layout_height="165dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/drawable_circle_dark_blue"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/drawable_circle_yellow"
+        android:rotation="-90"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,10 +55,12 @@
         android:minHeight="196dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
-        app:layout_constraintBottom_toTopOf="@id/timer_button_main"
+        app:layout_constraintBottom_toTopOf="@id/imageViewStartStop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/countdown_textview_main">
+        app:layout_constraintTop_toBottomOf="@+id/progressBarCircle"
+        app:layout_constraintVertical_bias="0.403">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -117,22 +142,24 @@
         android:layout_width="117dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Complete"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/timer_button_main"
+        app:layout_constraintEnd_toStartOf="@id/imageViewStartStop"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_main"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <ToggleButton
-        android:id="@+id/timer_button_main"
-        android:layout_width="117dp"
+    <ImageView
+        android:id="@+id/imageViewStartStop"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:textOff="Start"
-        android:textOn="Cancel"
+        android:src="@drawable/icon_start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/settings_button_main"
         app:layout_constraintHorizontal_bias="0.5"
@@ -142,12 +169,15 @@
         android:id="@+id/settings_button_main"
         android:layout_width="118dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/timer_button_main" />
+        app:layout_constraintStart_toEndOf="@id/imageViewStartStop"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_main"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
