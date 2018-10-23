@@ -1,7 +1,7 @@
 /*
-*  Audio Files downloaded from soundjay.com
-*  Enhanced at http://www.mp3smaller.com/ & http://www.mp3louder.com/
-*/
+ *  Audio Files downloaded from soundjay.com
+ *  Enhanced at http://www.mp3smaller.com/ & http://www.mp3louder.com/
+ */
 
 package gis2018.udacity.pomodoro;
 
@@ -11,11 +11,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String LOG_TAG = "pomodoro Issue-1 Test";
     private static final long TIME_PERIOD = 5000; // Time Period is 5 seconds
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.task_change_button_main)
     Button changeButton;
     @BindView(R.id.timer_button_main)
-    Button timerButton;
+    ToggleButton timerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         settingsButton.setOnClickListener(this);
         changeButton.setOnClickListener(this);
-        timerButton.setOnClickListener(this);
+        timerButton.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -53,18 +55,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.task_change_button_main:
                 // Todo: Define on task change
                 break;
-            case R.id.timer_button_main:
-                Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-                serviceIntent.putExtra("time_period", TIME_PERIOD);
-                serviceIntent.putExtra("time_interval", TIME_INTERVAL);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    startForegroundService(serviceIntent);
-                else
-                    startService(serviceIntent);
-                break;
             default:
 
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            // start timer
+            Intent serviceIntent = new Intent(this, CountDownTimerService.class);
+            serviceIntent.putExtra("time_period", TIME_PERIOD);
+            serviceIntent.putExtra("time_interval", TIME_INTERVAL);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                startForegroundService(serviceIntent);
+            else
+                startService(serviceIntent);
+        } else {
+            // stop timer
+            Intent serviceIntent = new Intent(this, CountDownTimerService.class);
+            stopService(serviceIntent);
         }
     }
 }

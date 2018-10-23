@@ -8,14 +8,21 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.ToggleButton;
 
 import static gis2018.udacity.pomodoro.App.CHANNEL_ID;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
     private static final String LOG_TAG = "pomodoro Issue-5 Test";
+    private CountDownTimer countDownTimer;
 
     public CountDownTimerService() {
+    }
+
+    @Override
+    public void onDestroy() {
+        countDownTimer.cancel();
     }
 
     @Override
@@ -50,7 +57,7 @@ public class CountDownTimerService extends Service {
      */
     private CountDownTimer countDownTimerBuilder(long TIME_PERIOD, long TIME_INTERVAL,
                                                  final String END_MESSAGE) {
-        return new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
+        countDownTimer = new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
             @Override
             public void onTick(long timeInMilliSeconds) {
                 long timeInSeconds = timeInMilliSeconds / 1000;
@@ -67,5 +74,6 @@ public class CountDownTimerService extends Service {
                 stopSelf();
             }
         };
+        return countDownTimer;
     }
 }
