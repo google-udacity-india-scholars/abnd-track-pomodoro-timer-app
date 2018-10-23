@@ -1,3 +1,8 @@
+/*
+*  Audio Files downloaded from soundjay.com
+*  Enhanced at http://www.mp3smaller.com/ & http://www.mp3louder.com/
+*/
+
 package gis2018.udacity.pomodoro;
 
 import android.content.Intent;
