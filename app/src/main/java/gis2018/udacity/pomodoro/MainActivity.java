@@ -5,10 +5,15 @@
 
 package gis2018.udacity.pomodoro;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -23,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final long TIME_PERIOD = 5000; // Time Period is 5 seconds
     private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
     private static final String COUNTDOWN_FINISHED_MESSAGE = "CountDown Finished";
+    BroadcastReceiver receiver;
 
     @BindView(R.id.settings_button_main)
     Button settingsButton;
@@ -40,8 +46,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settingsButton.setOnClickListener(this);
         changeButton.setOnClickListener(this);
         timerButton.setOnCheckedChangeListener(this);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                timerButton.setChecked(false);
+            }
+        };
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
+                new IntentFilter(CountDownTimerService.STOP_ACTION_BROADCAST));
+    }
+
+    @Override
+    protected void onStop() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        super.onStop();
+    }
     @Override
     public void onClick(View v) {
         // switch case to handle different button clicks
@@ -73,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startService(serviceIntent);
         } else {
             // stop timer
+            Log.v("Triggered", String.valueOf(isChecked));
             Intent serviceIntent = new Intent(this, CountDownTimerService.class);
             stopService(serviceIntent);
         }

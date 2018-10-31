@@ -7,17 +7,24 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.ToggleButton;
 
 import static gis2018.udacity.pomodoro.App.CHANNEL_ID;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
+    public static final String STOP_ACTION_BROADCAST = "com.gis2018.stop.action";
     private static final String LOG_TAG = "pomodoro Issue-5 Test";
+    LocalBroadcastManager broadcaster;
     private CountDownTimer countDownTimer;
 
     public CountDownTimerService() {
+    }
+
+    @Override
+    public void onCreate() {
+        broadcaster = LocalBroadcastManager.getInstance(this);
     }
 
     @Override
@@ -72,8 +79,14 @@ public class CountDownTimerService extends Service {
             public void onFinish() {
                 Log.v(LOG_TAG, END_MESSAGE);
                 stopSelf();
+                stop_broadcast_intent();
             }
         };
         return countDownTimer;
+    }
+
+    protected void stop_broadcast_intent() {
+        Intent localIntent = new Intent(STOP_ACTION_BROADCAST);
+        broadcaster.sendBroadcast(localIntent);
     }
 }
