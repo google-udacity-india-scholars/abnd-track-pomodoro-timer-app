@@ -15,7 +15,7 @@ import static gis2018.udacity.pomodoro.App.CHANNEL_ID;
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
     public static final String STOP_ACTION_BROADCAST = "com.gis2018.stop.action";
-    private static final String LOG_TAG = "pomodoro Issue-5 Test";
+    private static final String LOG_TAG = "CntDwnTmrService_TAG";
     LocalBroadcastManager broadcaster;
     private CountDownTimer countDownTimer;
 
@@ -79,13 +79,14 @@ public class CountDownTimerService extends Service {
             public void onFinish() {
                 Log.v(LOG_TAG, END_MESSAGE);
                 stopSelf();
-                stop_broadcast_intent();
+                stoppedBroadcastIntent();
             }
         };
         return countDownTimer;
     }
 
-    protected void stop_broadcast_intent() {
+    //Broadcasts intent that the timer has stopped.
+    protected void stoppedBroadcastIntent() {
         Intent localIntent = new Intent(STOP_ACTION_BROADCAST);
         broadcaster.sendBroadcast(localIntent);
     }

@@ -14,22 +14,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String LOG_TAG = "pomodoro Issue-1 Test";
     private static final long TIME_PERIOD = 5000; // Time Period is 5 seconds
     private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
-    private static final String COUNTDOWN_FINISHED_MESSAGE = "CountDown Finished";
-    BroadcastReceiver receiver;
+    BroadcastReceiver stopppedIntentReceiver;
 
     @BindView(R.id.settings_button_main)
     Button settingsButton;
@@ -46,18 +42,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         settingsButton.setOnClickListener(this);
         changeButton.setOnClickListener(this);
-        timerButton.setOnCheckedChangeListener(this);
+        timerButton.setOnClickListener(this);
 
-        if(isServiceRunning(CountDownTimerService.class)){
-            // service is running
-            // enable the button
-            timerButton.setChecked(true);
-        }
-        else{
-            timerButton.setChecked(false);
-        }
+        //Set button as checked if the service is already running
+        timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
 
-        receiver = new BroadcastReceiver() {
+        //Receives broadcast that the timer has stopped
+        stopppedIntentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 timerButton.setChecked(false);
@@ -68,15 +59,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
+        LocalBroadcastManager.getInstance(this).registerReceiver((stopppedIntentReceiver),
                 new IntentFilter(CountDownTimerService.STOP_ACTION_BROADCAST));
     }
 
     @Override
     protected void onStop() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(stopppedIntentReceiver);
         super.onStop();
     }
+
     @Override
     public void onClick(View v) {
         // switch case to handle different button clicks
@@ -90,32 +82,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.task_change_button_main:
                 // Todo: Define on task change
                 break;
+            case R.id.timer_button_main:
+                if (timerButton.isChecked()) {
+                    // start timer
+                    Intent serviceIntent = new Intent(this, CountDownTimerService.class);
+                    serviceIntent.putExtra("time_period", TIME_PERIOD);
+                    serviceIntent.putExtra("time_interval", TIME_INTERVAL);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                        startForegroundService(serviceIntent);
+                    else
+                        startService(serviceIntent);
+                } else {
+                    // stop timer
+                    Intent serviceIntent = new Intent(this, CountDownTimerService.class);
+                    stopService(serviceIntent);
+                }
             default:
 
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            // start timer
-            Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-            serviceIntent.putExtra("time_period", TIME_PERIOD);
-            serviceIntent.putExtra("time_interval", TIME_INTERVAL);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                startForegroundService(serviceIntent);
-            else
-                startService(serviceIntent);
-        } else {
-            // stop timer
-            Log.v("Triggered", String.valueOf(isChecked));
-            Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-            stopService(serviceIntent);
-        }
-    }
 
     /**
      * Checks if a service is running or not.
+     *
      * @param serviceClass
      * @return
      */
