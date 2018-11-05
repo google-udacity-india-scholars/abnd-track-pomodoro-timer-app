@@ -16,6 +16,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 import butterknife.BindView;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BroadcastReceiver stopppedIntentReceiver;
 
     @BindView(R.id.settings_imageview_main)
-    Button settingsImageView;
+    ImageView settingsImageView;
     @BindView(R.id.task_change_button_main)
     Button changeButton;
     @BindView(R.id.timer_button_main)
