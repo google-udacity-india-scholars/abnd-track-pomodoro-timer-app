@@ -25,4 +25,6 @@
         <item>20 minutes</item>
         <item>25 minutes</item>
     </string-array>
+    <string name="complete_imageview_content_desc">Complete Image</string>
+    <string name="settings_imageview_content_desc">Settings Image</string>
 </resources>

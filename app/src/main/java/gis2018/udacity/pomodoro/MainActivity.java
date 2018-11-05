@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
     BroadcastReceiver stopppedIntentReceiver;
 
-    @BindView(R.id.settings_button_main)
-    Button settingsButton;
+    @BindView(R.id.settings_imageview_main)
+    Button settingsImageView;
     @BindView(R.id.task_change_button_main)
     Button changeButton;
     @BindView(R.id.timer_button_main)
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-        settingsButton.setOnClickListener(this);
+        settingsImageView.setOnClickListener(this);
         changeButton.setOnClickListener(this);
         timerButton.setOnClickListener(this);
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // switch case to handle different button clicks
         switch (v.getId()) {
             // Settings button is clicked
-            case R.id.settings_button_main:
+            case R.id.settings_imageview_main:
                 // launch SettingsActivity
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
