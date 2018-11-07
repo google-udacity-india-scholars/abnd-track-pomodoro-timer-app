@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import butterknife.BindView;
@@ -24,9 +25,10 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final long TIME_PERIOD = 5000; // Time Period is 5 seconds
+    private static final long TIME_PERIOD = 25 * 60000; // Time Period is 25 minutes
     private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
     BroadcastReceiver stopppedIntentReceiver;
+    BroadcastReceiver countDownReceiver;
 
     @BindView(R.id.settings_imageview_main)
     ImageView settingsImageView;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button changeButton;
     @BindView(R.id.timer_button_main)
     ToggleButton timerButton;
+    @BindView(R.id.countdown_textview_main)
+    TextView countDownTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 timerButton.setChecked(false);
             }
         };
+
+        countDownReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(intent.getExtras() != null)
+                    countDownTextView.setText(intent.getExtras().getString("countDown"));
+            }
+        };
     }
 
     @Override
@@ -62,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((stopppedIntentReceiver),
                 new IntentFilter(CountDownTimerService.STOP_ACTION_BROADCAST));
+        LocalBroadcastManager.getInstance(this).registerReceiver((countDownReceiver),
+                new IntentFilter(CountDownTimerService.COUNTDOWN_BROADCAST));
     }
 
     @Override
@@ -97,12 +111,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // stop timer
                     Intent serviceIntent = new Intent(this, CountDownTimerService.class);
                     stopService(serviceIntent);
+                    countDownTextView.setText(R.string.default_time_period);
                 }
             default:
 
         }
     }
-
 
     /**
      * Checks if a service is running or not.
