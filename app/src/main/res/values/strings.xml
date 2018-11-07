@@ -27,5 +27,4 @@
     </string-array>
     <string name="complete_imageview_content_desc">Complete Image</string>
     <string name="settings_imageview_content_desc">Settings Image</string>
-    <string name="default_time_period">25:00</string>
 </resources>
