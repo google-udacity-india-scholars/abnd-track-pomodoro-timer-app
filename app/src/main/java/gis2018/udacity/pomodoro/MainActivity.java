@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long workDuration; // Time Period
     private String workDurationString; // Time Period String
     private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
-    BroadcastReceiver stopppedIntentReceiver;
+    BroadcastReceiver stoppedIntentReceiver;
     BroadcastReceiver countDownReceiver;
     private SharedPreferences preferences;
+    private int workSessionCount = 0; // Number of Completed Work-Sessions
 
     @BindView(R.id.settings_imageview_main)
     ImageView settingsImageView;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ToggleButton timerButton;
     @BindView(R.id.countdown_textview_main)
     TextView countDownTextView;
+    @BindView(R.id.session_completed_value_textview_main)
+    TextView workSessionCompletedTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +59,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeButton.setOnClickListener(this);
         timerButton.setOnClickListener(this);
 
-        // Set button as checked if the service is already running
+        // Set button as checked if the service is already running.
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
 
-        // Receives broadcast that the timer has stopped
-        stopppedIntentReceiver = new BroadcastReceiver() {
+        // Receives broadcast that the timer has stopped.
+        stoppedIntentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 timerButton.setChecked(false);
+
+                // Setting new value of workSessionCount for workSessionCompletedTextView after a session is completed.
+                if (intent.getExtras() != null) {
+                    workSessionCount = intent.getExtras().getInt("workSessionCount");
+                    workSessionCompletedTextView.setText(String.valueOf(workSessionCount));
+                    countDownTextView.setText(workDurationString); // Resetting CountDown to WorkDuration Preference.
+                }
             }
         };
 
-        // Receiver broadcast for countDown at every tick
+        // Receives broadcast for countDown at every tick.
         countDownReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -85,13 +95,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TimeUnit.MILLISECONDS.toSeconds(this.workDuration) % 60);
 
         countDownTextView.setText(workDurationString);
+
+        // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
+        workSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
+        workSessionCompletedTextView.setText(String.valueOf(workSessionCount));
     }
 
     private long getCurrentWorkDurationPreference() {
-        // current value of work duration stored in shared-preference
-        int currentWorkDurationPreference = preferences.getInt(getString(R.string.work_duration_key), -1);
+        // Current value of work duration stored in shared-preference
+        int currentWorkDurationPreference = preferences.getInt(getString(R.string.work_duration_key), 1);
 
-        // switch case to return appropriate minute value of work duration according value stored in shared-preference.
+        // Switch case to return appropriate minute value of work duration according value stored in shared-preference.
         switch (currentWorkDurationPreference) {
             case 0:
                 return 20 * 60000; // 20 minutes
@@ -110,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((stopppedIntentReceiver),
+        LocalBroadcastManager.getInstance(this).registerReceiver((stoppedIntentReceiver),
                 new IntentFilter(CountDownTimerService.STOP_ACTION_BROADCAST));
         LocalBroadcastManager.getInstance(this).registerReceiver((countDownReceiver),
                 new IntentFilter(CountDownTimerService.COUNTDOWN_BROADCAST));
@@ -118,13 +132,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStop() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(stopppedIntentReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(stoppedIntentReceiver);
         super.onStop();
     }
 
     @Override
     public void onClick(View v) {
-        // switch case to handle different button clicks
+        // Switch case to handle different button clicks
         switch (v.getId()) {
             // Settings button is clicked
             case R.id.settings_imageview_main:
@@ -137,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.timer_button_main:
                 if (timerButton.isChecked()) {
-                    // start timer
+                    // Start timer
                     Intent serviceIntent = new Intent(this, CountDownTimerService.class);
                     serviceIntent.putExtra("time_period", workDuration);
                     serviceIntent.putExtra("time_interval", TIME_INTERVAL);
@@ -146,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     else
                         startService(serviceIntent);
                 } else {
-                    // stop timer
+                    // Stop timer
                     Intent serviceIntent = new Intent(this, CountDownTimerService.class);
                     stopService(serviceIntent);
                     countDownTextView.setText(workDurationString);

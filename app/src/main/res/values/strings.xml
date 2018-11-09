@@ -6,6 +6,7 @@
     <string name="work_duration_key">WORK_DURATION</string>
     <string name="short_break_duration_key">SHORT_BREAK_DURATION</string>
     <string name="long_break_duration_key">LONG_BREAK_DURATION</string>
+    <string name="work_session_count_key">WORK_SESSION_COUNT</string>
     <string-array name="work_duration_array">
         <item>20 minutes</item>
         <item>25 minutes</item>
