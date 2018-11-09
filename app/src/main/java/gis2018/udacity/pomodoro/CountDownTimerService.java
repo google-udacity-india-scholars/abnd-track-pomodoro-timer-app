@@ -10,10 +10,14 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import static gis2018.udacity.pomodoro.App.CHANNEL_ID;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
+    public static final String COUNTDOWN_BROADCAST = "com.gis2018.countdown";
     public static final String STOP_ACTION_BROADCAST = "com.gis2018.stop.action";
     private static final String LOG_TAG = "CntDwnTmrService_TAG";
     LocalBroadcastManager broadcaster;
@@ -73,6 +77,15 @@ public class CountDownTimerService extends Service {
                 } else {
                     Log.v(LOG_TAG, String.valueOf(timeInMilliSeconds / 1000) + " second remaining");
                 }
+
+                // https://stackoverflow.com/a/41589025/8411356
+                String countDown = String.format(Locale.getDefault(), "%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(timeInMilliSeconds) % 60,
+                        TimeUnit.MILLISECONDS.toSeconds(timeInMilliSeconds) % 60);
+
+                broadcaster.sendBroadcast(
+                        new Intent(COUNTDOWN_BROADCAST)
+                                .putExtra("countDown", countDown));
             }
 
             @Override
