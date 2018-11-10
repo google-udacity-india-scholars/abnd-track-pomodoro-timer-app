@@ -12,8 +12,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+import gis2018.udacity.pomodoro.utils.Utils;
+import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
 
 import static gis2018.udacity.pomodoro.App.CHANNEL_ID;
 
@@ -26,6 +26,7 @@ public class CountDownTimerService extends Service {
     private CountDownTimer countDownTimer;
     private SharedPreferences preferences;
     private int newWorkSessionCount;
+    private int currentlyRunningServiceType;
 
     public CountDownTimerService() {
     }
@@ -73,6 +74,7 @@ public class CountDownTimerService extends Service {
     private CountDownTimer countDownTimerBuilder(long TIME_PERIOD, long TIME_INTERVAL,
                                                  final String END_MESSAGE) {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, getApplicationContext());
         countDownTimer = new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
             @Override
             public void onTick(long timeInMilliSeconds) {
@@ -83,10 +85,7 @@ public class CountDownTimerService extends Service {
                     Log.v(LOG_TAG, String.valueOf(timeInMilliSeconds / 1000) + " second remaining");
                 }
 
-                // https://stackoverflow.com/a/41589025/8411356
-                String countDown = String.format(Locale.getDefault(), "%02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(timeInMilliSeconds) % 60,
-                        TimeUnit.MILLISECONDS.toSeconds(timeInMilliSeconds) % 60);
+                String countDown = Utils.getCurrentDurationPreferenceStringFor(timeInMilliSeconds);
 
                 broadcaster.sendBroadcast(
                         new Intent(COUNTDOWN_BROADCAST)
@@ -95,18 +94,10 @@ public class CountDownTimerService extends Service {
 
             @Override
             public void onFinish() {
-                // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
-                int oldWorkSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
-
-                // Updating oldWorkSessionCount by 1.
-                newWorkSessionCount = ++oldWorkSessionCount;
-
-                // Writing value of workSessionCount after a session is completed (New value of workSessionCount) in SharedPreference
-                preferences.
-                        edit().
-                        putInt(getString(R.string.work_session_count_key), newWorkSessionCount).
-                        apply();
-
+                // Updates and Retrieves new value of WorkSessionCount.
+                if(currentlyRunningServiceType == POMODORO)
+                    newWorkSessionCount = Utils.updateWorkSessionCount(preferences, getApplicationContext());
+                newWorkSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
                 Log.v(LOG_TAG, END_MESSAGE);
                 stopSelf();
                 stoppedBroadcastIntent();
@@ -117,8 +108,8 @@ public class CountDownTimerService extends Service {
 
     // Broadcasts intent that the timer has stopped.
     protected void stoppedBroadcastIntent() {
-        Intent localIntent = new Intent(STOP_ACTION_BROADCAST)
-                .putExtra("workSessionCount", newWorkSessionCount);
-        broadcaster.sendBroadcast(localIntent);
+        broadcaster.sendBroadcast(
+                new Intent(STOP_ACTION_BROADCAST)
+                        .putExtra("workSessionCount", newWorkSessionCount));
     }
 }

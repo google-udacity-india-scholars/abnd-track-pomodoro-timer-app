@@ -22,16 +22,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import gis2018.udacity.pomodoro.utils.Utils;
+
+import static gis2018.udacity.pomodoro.utils.Constants.LONG_BREAK;
+import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
+import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private long workDuration; // Time Period
-    private String workDurationString; // Time Period String
+    private int currentlyRunningServiceType; // Type of Service can be POMODORO, SHORT_BREAK or LONG_BREAK
+    private long workDuration; // Time Period for Pomodoro (Work-Session)
+    private String workDurationString; // Time Period for Pomodoro in String
+    private long shortBreakDuration; // Time Period for Short-Break
+    private String shortBreakDurationString; // Time Period for Short-Break in String
+    private long longBreakDuration; // Time Period for Long-Break
+    private String longBreakDurationString; // Time Period for Long-Break in String
+
     private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
     BroadcastReceiver stoppedIntentReceiver;
     BroadcastReceiver countDownReceiver;
@@ -48,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView countDownTextView;
     @BindView(R.id.session_completed_value_textview_main)
     TextView workSessionCompletedTextView;
+    @BindView(R.id.finish_imageview_main)
+    ImageView finishImageView; // (Complete Button)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settingsImageView.setOnClickListener(this);
         changeButton.setOnClickListener(this);
         timerButton.setOnClickListener(this);
+        finishImageView.setOnClickListener(this);
 
         // Set button as checked if the service is already running.
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
@@ -72,8 +83,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (intent.getExtras() != null) {
                     workSessionCount = intent.getExtras().getInt("workSessionCount");
                     workSessionCompletedTextView.setText(String.valueOf(workSessionCount));
-                    countDownTextView.setText(workDurationString); // Resetting CountDown to WorkDuration Preference.
                 }
+
+                // Retrieving value of currentlyRunningServiceType from SharedPreferences.
+                currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, context);
+
+                if (currentlyRunningServiceType == POMODORO) {
+                    // Getting type of break user should take, and updating type of currently running service
+                    currentlyRunningServiceType = Utils.getTypeOfBreak(preferences, getApplicationContext());
+                } else {
+                    // If last value of currentlyRunningServiceType was SHORT_BREAK or LONG_BREAK then set it back to POMODORO
+                    currentlyRunningServiceType = POMODORO;
+                }
+
+                // Updating value of currentlyRunningServiceType in SharedPreferences.
+                Utils.updateCurrentlyRunningServiceType(preferences, getApplicationContext(), currentlyRunningServiceType);
+
+                // Changing textOn & textOff according to value of currentlyRunningServiceType.
+                changeToggleButtonStateText(currentlyRunningServiceType);
             }
         };
 
@@ -87,38 +114,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        workDuration = getCurrentWorkDurationPreference();
 
-        // https://stackoverflow.com/a/41589025/8411356
-        workDurationString = String.format(Locale.getDefault(), "%02d:%02d",
-                TimeUnit.MILLISECONDS.toMinutes(this.workDuration) % 60,
-                TimeUnit.MILLISECONDS.toSeconds(this.workDuration) % 60);
+        // Retrieving current value of Duration for POMODORO, SHORT_BREAK and LONG_BREAK from SharedPreferences.
+        workDuration = Utils.getCurrentDurationPreferenceOf(preferences, this, POMODORO);
+        shortBreakDuration = Utils.getCurrentDurationPreferenceOf(preferences, this, SHORT_BREAK);
+        longBreakDuration = Utils.getCurrentDurationPreferenceOf(preferences, this, LONG_BREAK);
 
-        countDownTextView.setText(workDurationString);
+        // Retrieving duration in mm:ss format from duration value in milliSeconds.
+        workDurationString = Utils.getCurrentDurationPreferenceStringFor(workDuration);
+        shortBreakDurationString = Utils.getCurrentDurationPreferenceStringFor(shortBreakDuration);
+        longBreakDurationString = Utils.getCurrentDurationPreferenceStringFor(longBreakDuration);
+
+        // Changing textOn & textOff according to value of currentlyRunningServiceType.
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
+        changeToggleButtonStateText(currentlyRunningServiceType);
 
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
         workSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
         workSessionCompletedTextView.setText(String.valueOf(workSessionCount));
-    }
-
-    private long getCurrentWorkDurationPreference() {
-        // Current value of work duration stored in shared-preference
-        int currentWorkDurationPreference = preferences.getInt(getString(R.string.work_duration_key), 1);
-
-        // Switch case to return appropriate minute value of work duration according value stored in shared-preference.
-        switch (currentWorkDurationPreference) {
-            case 0:
-                return 20 * 60000; // 20 minutes
-            case 1:
-                return 25 * 60000; // 25 minutes
-            case 2:
-                return 30 * 60000; // 30 minutes
-            case 3:
-                return 40 * 60000; // 40 minutes
-            case 4:
-                return 55 * 60000; // 55 minutes
-        }
-        return 0;
     }
 
     @Override
@@ -138,6 +151,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        // Retrieving value of currentlyRunningServiceType from SharedPreferences.
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
+
         // Switch case to handle different button clicks
         switch (v.getId()) {
             // Settings button is clicked
@@ -146,35 +162,126 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 break;
+
             case R.id.task_change_button_main:
                 // Todo: Define on task change
                 break;
-            case R.id.timer_button_main:
-                if (timerButton.isChecked()) {
-                    // Start timer
-                    Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-                    serviceIntent.putExtra("time_period", workDuration);
-                    serviceIntent.putExtra("time_interval", TIME_INTERVAL);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        startForegroundService(serviceIntent);
-                    else
-                        startService(serviceIntent);
-                } else {
-                    // Stop timer
-                    Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-                    stopService(serviceIntent);
-                    countDownTextView.setText(workDurationString);
-                }
-            default:
 
+            case R.id.timer_button_main:
+                if (currentlyRunningServiceType == POMODORO) {
+                    if (timerButton.isChecked()) {
+                        startTimer(workDuration);
+                    } else {
+                        // When "Cancel Pomodoro" is clicked, service is stopped and toggleButton is reset to "Start Pomodoro".
+                        stopTimer(workDurationString);
+                        Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
+                        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
+                        changeToggleButtonStateText(currentlyRunningServiceType);
+                    }
+                } else if (currentlyRunningServiceType == SHORT_BREAK) {
+                    if (timerButton.isChecked()) {
+                        startTimer(shortBreakDuration);
+                    } else {
+                        // When "Skip Short Break" is clicked, service is stopped and toggleButton is reset to "Start Pomodoro".
+                        stopTimer(workDurationString);
+                        currentlyRunningServiceType = POMODORO;
+                        Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
+                        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
+                        changeToggleButtonStateText(currentlyRunningServiceType);
+                    }
+                } else if (currentlyRunningServiceType == LONG_BREAK) {
+                    if (timerButton.isChecked()) {
+                        startTimer(longBreakDuration);
+                    } else {
+                        // When "Skip Long Break" is clicked, service is stopped and toggleButton is reset to "Start Pomodoro".
+                        stopTimer(workDurationString);
+                        currentlyRunningServiceType = POMODORO;
+                        Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
+                        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
+                        changeToggleButtonStateText(currentlyRunningServiceType);
+                    }
+                }
+                break;
+
+            case R.id.finish_imageview_main:
+                if (timerButton.isChecked()) {
+                    // Finish (Complete Button) stops service and sets currentlyRunningServiceType to SHORT_BREAK or LONG_BREAK and updates number of completed WorkSessions.
+                    if (currentlyRunningServiceType == POMODORO) {
+                        int newWorkSessionCount = Utils.updateWorkSessionCount(preferences, this);
+                        workSessionCompletedTextView.setText(String.valueOf(newWorkSessionCount));
+                        currentlyRunningServiceType = Utils.getTypeOfBreak(preferences, this);
+                        Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
+                        long duration = Utils.getCurrentDurationPreferenceOf(preferences, this, currentlyRunningServiceType);
+                        stopTimer(Utils.getCurrentDurationPreferenceStringFor(duration));
+                        changeToggleButtonStateText(currentlyRunningServiceType);
+                    }
+                }
+                break;
         }
+    }
+
+    /**
+     * Starts service and CountDownTimer according to duration value.
+     * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
+     *
+     * @param duration is Time Period for which timer should tick
+     */
+    private void startTimer(long duration) {
+        Intent serviceIntent = new Intent(this, CountDownTimerService.class);
+        serviceIntent.putExtra("time_period", duration);
+        serviceIntent.putExtra("time_interval", TIME_INTERVAL);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            startForegroundService(serviceIntent);
+        else
+            startService(serviceIntent);
+    }
+
+    /**
+     * Stops service and resets CountDownTimer to initial value.
+     * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
+     *
+     * @param duration is Time Period for which timer should tick
+     */
+    private void stopTimer(String duration) {
+        Intent serviceIntent = new Intent(getApplicationContext(), CountDownTimerService.class);
+        stopService(serviceIntent);
+        countDownTextView.setText(duration);
+    }
+
+    /**
+     * Changes textOn, textOff for Toggle Button & Resets CountDownTimer to initial value, according to value of currentlyRunningServiceType.
+     *
+     * @param currentlyRunningServiceType can be POMODORO, SHORT_BREAK or LONG_BREAK.
+     */
+    private void changeToggleButtonStateText(int currentlyRunningServiceType) {
+        //
+        timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
+        if (currentlyRunningServiceType == POMODORO) {
+            timerButton.setTextOn(getString(R.string.cancel_pomodoro));
+            timerButton.setTextOff(getString(R.string.start_pomodoro));
+            countDownTextView.setText(workDurationString);
+        } else if (currentlyRunningServiceType == SHORT_BREAK) {
+            timerButton.setTextOn(getString(R.string.skip_short_break));
+            timerButton.setTextOff(getString(R.string.start_short_break));
+            countDownTextView.setText(shortBreakDurationString);
+        } else if (currentlyRunningServiceType == LONG_BREAK) {
+            timerButton.setTextOn(getString(R.string.skip_long_break));
+            timerButton.setTextOff(getString(R.string.start_long_break));
+            countDownTextView.setText(longBreakDurationString);
+        }
+
+        /*
+         https://stackoverflow.com/a/3792554/4593315
+         While changing textOn, textOff programmatically, button doesn't redraw so I used this hack.
+          */
+        timerButton.setChecked(timerButton.isChecked());
     }
 
     /**
      * Checks if a service is running or not.
      *
-     * @param serviceClass
-     * @return
+     * @param serviceClass name of the Service class
+     * @return true if service is running, otherwise false
      */
     private boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
