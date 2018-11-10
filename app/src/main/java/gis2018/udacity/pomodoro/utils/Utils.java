@@ -91,7 +91,7 @@ public class Utils {
             // Switch case to return appropriate minute value of work duration according value stored in shared-preference.
             switch (currentWorkDurationPreference) {
                 case 0:
-                    return 10 * 1000; // 20 minutes
+                    return 20 * 60000; // 20 minutes
                 case 1:
                     return 25 * 60000; // 25 minutes
                 case 2:
@@ -108,7 +108,7 @@ public class Utils {
             // Switch case to return appropriate minute value of short-break duration according value stored in shared-preference.
             switch (currentShortBreakDurationPreference) {
                 case 0:
-                    return 1 * 3000; // 3 minutes
+                    return 3 * 60000; // 3 minutes
                 case 1:
                     return 5 * 60000; // 5 minutes
                 case 2:
@@ -123,7 +123,7 @@ public class Utils {
             // Switch case to return appropriate minute value of long-break duration according value stored in shared-preference.
             switch (currentLongBreakDurationPreference) {
                 case 0:
-                    return 2 * 3000; // 10 minutes
+                    return 10 * 60000; // 10 minutes
                 case 1:
                     return 15 * 60000; // 15 minutes
                 case 2:
