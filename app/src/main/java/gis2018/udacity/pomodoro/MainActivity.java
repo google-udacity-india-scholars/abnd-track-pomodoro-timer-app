@@ -87,20 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // Retrieving value of currentlyRunningServiceType from SharedPreferences.
                 currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, context);
-
-                if (currentlyRunningServiceType == POMODORO) {
-                    // Getting type of break user should take, and updating type of currently running service
-                    currentlyRunningServiceType = Utils.getTypeOfBreak(preferences, getApplicationContext());
-                } else {
-                    // If last value of currentlyRunningServiceType was SHORT_BREAK or LONG_BREAK then set it back to POMODORO
-                    currentlyRunningServiceType = POMODORO;
-                }
-
-                // Updating value of currentlyRunningServiceType in SharedPreferences.
-                Utils.updateCurrentlyRunningServiceType(preferences, getApplicationContext(), currentlyRunningServiceType);
-
                 // Changing textOn & textOff according to value of currentlyRunningServiceType.
                 changeToggleButtonStateText(currentlyRunningServiceType);
+                unregisterLocalBroadcastReceivers();
             }
         };
 
@@ -136,26 +125,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStart() {
+        currentlyRunningServiceType = preferences.getInt(getString(R.string.currently_running_service_type_key), 0);
+        registerLocalBroadcastReceivers();
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((stoppedIntentReceiver),
-                new IntentFilter(CountDownTimerService.STOP_ACTION_BROADCAST));
-        LocalBroadcastManager.getInstance(this).registerReceiver((countDownReceiver),
-                new IntentFilter(CountDownTimerService.COUNTDOWN_BROADCAST));
+    }
+
+    @Override
+    protected void onResume() {
+        currentlyRunningServiceType = preferences.getInt(getString(R.string.currently_running_service_type_key), 0);
+        super.onResume();
     }
 
     @Override
     protected void onStop() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(stoppedIntentReceiver);
+        if (!isServiceRunning(CountDownTimerService.class)) {
+            unregisterLocalBroadcastReceivers();
+        }
         super.onStop();
     }
 
     @Override
     public void onClick(View v) {
+        registerLocalBroadcastReceivers();
+
         // Retrieving value of currentlyRunningServiceType from SharedPreferences.
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
 
         // Switch case to handle different button clicks
         switch (v.getId()) {
+
             // Settings button is clicked
             case R.id.settings_imageview_main:
                 // launch SettingsActivity
@@ -173,32 +171,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startTimer(workDuration);
                     } else {
                         // When "Cancel Pomodoro" is clicked, service is stopped and toggleButton is reset to "Start Pomodoro".
-                        stopTimer(workDurationString);
-                        Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
-                        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
-                        changeToggleButtonStateText(currentlyRunningServiceType);
+                        switchToPomodoro();
                     }
                 } else if (currentlyRunningServiceType == SHORT_BREAK) {
                     if (timerButton.isChecked()) {
                         startTimer(shortBreakDuration);
                     } else {
                         // When "Skip Short Break" is clicked, service is stopped and toggleButton is reset to "Start Pomodoro".
-                        stopTimer(workDurationString);
-                        currentlyRunningServiceType = POMODORO;
-                        Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
-                        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
-                        changeToggleButtonStateText(currentlyRunningServiceType);
+                        switchToPomodoro();
                     }
                 } else if (currentlyRunningServiceType == LONG_BREAK) {
                     if (timerButton.isChecked()) {
                         startTimer(longBreakDuration);
                     } else {
                         // When "Skip Long Break" is clicked, service is stopped and toggleButton is reset to "Start Pomodoro".
-                        stopTimer(workDurationString);
-                        currentlyRunningServiceType = POMODORO;
-                        Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
-                        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
-                        changeToggleButtonStateText(currentlyRunningServiceType);
+                        switchToPomodoro();
                     }
                 }
                 break;
@@ -214,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         long duration = Utils.getCurrentDurationPreferenceOf(preferences, this, currentlyRunningServiceType);
                         stopTimer(Utils.getCurrentDurationPreferenceStringFor(duration));
                         changeToggleButtonStateText(currentlyRunningServiceType);
+                        unregisterLocalBroadcastReceivers();
                     }
                 }
                 break;
@@ -240,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Stops service and resets CountDownTimer to initial value.
      * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
      *
-     * @param duration is Time Period for which timer should tick
+     * @param duration is Time Period for which timer should tick.
      */
     private void stopTimer(String duration) {
         Intent serviceIntent = new Intent(getApplicationContext(), CountDownTimerService.class);
@@ -254,7 +242,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param currentlyRunningServiceType can be POMODORO, SHORT_BREAK or LONG_BREAK.
      */
     private void changeToggleButtonStateText(int currentlyRunningServiceType) {
-        //
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
         if (currentlyRunningServiceType == POMODORO) {
             timerButton.setTextOn(getString(R.string.cancel_pomodoro));
@@ -278,16 +265,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
+     * Registers LocalBroadcastReceivers.
+     */
+    private void registerLocalBroadcastReceivers() {
+        LocalBroadcastManager.getInstance(this).registerReceiver((stoppedIntentReceiver),
+                new IntentFilter(CountDownTimerService.STOP_ACTION_BROADCAST));
+        LocalBroadcastManager.getInstance(this).registerReceiver((countDownReceiver),
+                new IntentFilter(CountDownTimerService.COUNTDOWN_BROADCAST));
+    }
+
+    /**
+     * Unregisters LocalBroadcastReceivers.
+     */
+    private void unregisterLocalBroadcastReceivers() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(stoppedIntentReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(countDownReceiver);
+    }
+
+    /**
+     * Switch to Pomodoro (Work-Session) after completion of Short-Break or Long-Break.
+     */
+    private void switchToPomodoro() {
+        stopTimer(workDurationString);
+        currentlyRunningServiceType = POMODORO;
+        Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
+        changeToggleButtonStateText(currentlyRunningServiceType);
+        unregisterLocalBroadcastReceivers();
+    }
+
+    /**
      * Checks if a service is running or not.
      *
-     * @param serviceClass name of the Service class
-     * @return true if service is running, otherwise false
+     * @param serviceClass name of the Service class.
+     * @return true if service is running, otherwise false.
      */
     private boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
+        if (manager != null) {
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (serviceClass.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
             }
         }
         return false;

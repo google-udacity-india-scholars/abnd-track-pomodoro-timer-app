@@ -13,6 +13,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import gis2018.udacity.pomodoro.utils.Utils;
+
 import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
 
 import static gis2018.udacity.pomodoro.App.CHANNEL_ID;
@@ -69,7 +70,7 @@ public class CountDownTimerService extends Service {
     }
 
     /**
-     * @return a CountDownTimer which ticks every 1 second for a fixed 5 seconds period.
+     * @return a CountDownTimer which ticks every 1 second for given Time period.
      */
     private CountDownTimer countDownTimerBuilder(long TIME_PERIOD, long TIME_INTERVAL,
                                                  final String END_MESSAGE) {
@@ -95,9 +96,19 @@ public class CountDownTimerService extends Service {
             @Override
             public void onFinish() {
                 // Updates and Retrieves new value of WorkSessionCount.
-                if(currentlyRunningServiceType == POMODORO)
+                if (currentlyRunningServiceType == POMODORO) {
                     newWorkSessionCount = Utils.updateWorkSessionCount(preferences, getApplicationContext());
+                    // Getting type of break user should take, and updating type of currently running service
+                    currentlyRunningServiceType = Utils.getTypeOfBreak(preferences, getApplicationContext());
+                } else {
+                    // If last value of currentlyRunningServiceType was SHORT_BREAK or LONG_BREAK then set it back to POMODORO
+                    currentlyRunningServiceType = POMODORO;
+                }
+
                 newWorkSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
+                // Updating value of currentlyRunningServiceType in SharedPreferences.
+                Utils.updateCurrentlyRunningServiceType(preferences, getApplicationContext(), currentlyRunningServiceType);
+
                 Log.v(LOG_TAG, END_MESSAGE);
                 stopSelf();
                 stoppedBroadcastIntent();
