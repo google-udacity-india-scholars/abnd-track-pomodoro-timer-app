@@ -6,17 +6,16 @@ _The most important aspect of collaborative project is to get everyone involved,
 In case you haven't already, please read this [document](https://docs.google.com/document/d/18UC6AAfdgcLLZzuGO_unUlZwc2kBYZqBRogmjDK3Ysc/edit?usp=sharing) very carefully to understand all the details about the Collaborative Projects.
 
 **Team**
-- Looking for Team Members
 - [Michael Hathi](https://github.com/numerative/)
+- [Sanjeev Sharma](https://github.com/thedevelopersanjeev)
+- _Looking for Team Members for UI_
 
 ## Table of Contents
 
 - [Getting Started](#getting-started)
 - [Project URL](#project-url)
   - [Screenshots](#screenshots)
-- [Folder Structure](#folder-structure)
 - [Prerequisites](#prerequisites)
-- [Installation](#installation)
 - [Style Guide](#style-guide)
 - [Resources](#resources)
 - [Acknowledgments](#acknowledgments)
@@ -29,7 +28,7 @@ In case you haven't already, please read this [document](https://docs.google.com
 
 
 ## Project Title
-**Pomodoro - Get more done faster.**
+**Pomodoro - get more done, faster.**
 
 ## Project Description
 - [Orginal post](https://discussions.udacity.com/t/my-collaborative-project-idea/618377)
@@ -42,44 +41,28 @@ This project aims to build a complete and functional pomodoro timer app before p
 [Not yet](#)
 
 ### Screenshots
-_Mockups Required_
+Working prototype
 
-## Folder Structure
-```bash
-├── README.md - This file.
-└── 
-```
+![Screen 1](Pomodoro_Screen_1.png?raw=true "Screen1")![Screen 1](Pomodoro_Screen_2.png?raw=true "Screen1")
 
 ## Prerequisites
 Anyone can contribute to this project, but the two most basic prerequisites are:
 - Git
 - Java
 
-### Installation
-You can add your installation guide here!
-
 ## Project Rubric Level
 For example: ABND - Part 2 Project Rubic used.
 
 ## Acknowledgments
-*Reserved for top contributors*
+*Top Contributors*
+
+- [Tirth Patel](https://github.com/piedcipher)
+- [Sanjeev Sharma](https://github.com/thedevelopersanjeev)
+- [Kartik Ohri](https://github.com/kartikohri1712)
 
 ## Project Moderators
 
 Please reach out to respective Mods for any quries about the Collaborative Projects!
 
-**AND** 
-- @Green_little_robot_.and
-- @TavishJain.and
-- @Shivam.and
-
 **ABND** 
 - @ak003.abnd
-
-**FEND** 
-- @GauravSingh.FEND
-
-**MWS** 
-- @Abhishekji.mws
-- @smriti.mws
-- @Siddiqi.mws
