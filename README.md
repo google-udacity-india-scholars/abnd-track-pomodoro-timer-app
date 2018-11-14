@@ -34,6 +34,10 @@ In case you haven't already, please read this [document](https://docs.google.com
 - [Orginal post](https://discussions.udacity.com/t/my-collaborative-project-idea/618377)
 - [Current Slack thread](https://googleindiascholars.slack.com/archives/GD96L4VA4/p1539274648000100)
 
+The Pomodoro technique  is a simple idea of tricking oneself into working/studying for short 25-minute intervals for a return of short 5/5/5/15-minute break cycles. This results in focused work sessions and a lowered tendency to giving-in to distractions.
+
+Central to this technique is a loudly ticking countdown timer and turns out that a physical timer isn't required if one has a smartphone. Tens of thousands (probably more) of people use some pomodoro app and there are many Pomodoro apps in the market, but nothing beats a simple app.
+
 This project aims to build a complete and functional pomodoro timer app before phase 2 ends on 30/11/2018.
 
 
@@ -43,7 +47,7 @@ This project aims to build a complete and functional pomodoro timer app before p
 ### Screenshots
 Working prototype
 
-![Screen 1](Pomodoro_Screen_1.png?raw=true "Screen1")![Screen 1](Pomodoro_Screen_2.png?raw=true "Screen1")
+![pomodoro_screen_1](https://user-images.githubusercontent.com/28054527/48408222-cef67300-e75e-11e8-8f81-5d210ee7db62.png) ![pomodoro_screen_2](https://user-images.githubusercontent.com/28054527/48408224-cef67300-e75e-11e8-9a7f-7f139063ca0c.png)
 
 ## Prerequisites
 Anyone can contribute to this project, but the two most basic prerequisites are:
@@ -51,7 +55,7 @@ Anyone can contribute to this project, but the two most basic prerequisites are:
 - Java
 
 ## Project Rubric Level
-For example: ABND - Part 2 Project Rubic used.
+ABND - Part 2 Project Rubic used.
 
 ## Acknowledgments
 *Top Contributors*

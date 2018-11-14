@@ -10,13 +10,14 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import gis2018.udacity.pomodoro.utils.Utils;
 
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-
 import static gis2018.udacity.pomodoro.App.CHANNEL_ID;
+import static gis2018.udacity.pomodoro.MainActivity.ringID;
+import static gis2018.udacity.pomodoro.MainActivity.soundPool;
+import static gis2018.udacity.pomodoro.MainActivity.tickID;
+import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
@@ -65,26 +66,20 @@ public class CountDownTimerService extends Service {
                 .build();
 
         startForeground(ID, notification);
-        countDownTimerBuilder(TIME_PERIOD, TIME_INTERVAL, "CountDown Finished").start();
+        countDownTimerBuilder(TIME_PERIOD, TIME_INTERVAL).start();
         return START_REDELIVER_INTENT;
     }
 
     /**
      * @return a CountDownTimer which ticks every 1 second for given Time period.
      */
-    private CountDownTimer countDownTimerBuilder(long TIME_PERIOD, long TIME_INTERVAL,
-                                                 final String END_MESSAGE) {
+    private CountDownTimer countDownTimerBuilder(long TIME_PERIOD, long TIME_INTERVAL) {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, getApplicationContext());
         countDownTimer = new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
             @Override
             public void onTick(long timeInMilliSeconds) {
-                long timeInSeconds = timeInMilliSeconds / 1000;
-                if (timeInSeconds != 1) {
-                    Log.v(LOG_TAG, String.valueOf(timeInMilliSeconds / 1000) + " seconds remaining");
-                } else {
-                    Log.v(LOG_TAG, String.valueOf(timeInMilliSeconds / 1000) + " second remaining");
-                }
+                soundPool.play(tickID, 0.5f, 0.5f, 1, 0, 1f);
 
                 String countDown = Utils.getCurrentDurationPreferenceStringFor(timeInMilliSeconds);
 
@@ -108,8 +103,9 @@ public class CountDownTimerService extends Service {
                 newWorkSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
                 // Updating value of currentlyRunningServiceType in SharedPreferences.
                 Utils.updateCurrentlyRunningServiceType(preferences, getApplicationContext(), currentlyRunningServiceType);
+                //Ring once ticking ends.
+                soundPool.play(ringID, 0.5f, 0.5f, 1, 0, 1f);
 
-                Log.v(LOG_TAG, END_MESSAGE);
                 stopSelf();
                 stoppedBroadcastIntent();
             }

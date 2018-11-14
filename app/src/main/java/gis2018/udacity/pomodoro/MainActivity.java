@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,22 +35,13 @@ import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private int currentlyRunningServiceType; // Type of Service can be POMODORO, SHORT_BREAK or LONG_BREAK
-    private long workDuration; // Time Period for Pomodoro (Work-Session)
-    private String workDurationString; // Time Period for Pomodoro in String
-    private long shortBreakDuration; // Time Period for Short-Break
-    private String shortBreakDurationString; // Time Period for Short-Break in String
-    private long longBreakDuration; // Time Period for Long-Break
-    private String longBreakDurationString; // Time Period for Long-Break in String
-
     private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
+
+    public static SoundPool soundPool;
+    public static int tickID, ringID;
+
     BroadcastReceiver stoppedIntentReceiver;
     BroadcastReceiver countDownReceiver;
-    private SharedPreferences preferences;
-    private int workSessionCount = 0; // Number of Completed Work-Sessions
-    private AlertDialog alertDialog;
-    private boolean isAppVisible = true;
-
     @BindView(R.id.settings_imageview_main)
     ImageView settingsImageView;
     @BindView(R.id.task_change_button_main)
@@ -61,6 +54,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView workSessionCompletedTextView;
     @BindView(R.id.finish_imageview_main)
     ImageView finishImageView; // (Complete Button)
+
+    private int currentlyRunningServiceType; // Type of Service can be POMODORO, SHORT_BREAK or LONG_BREAK
+    private long workDuration; // Time Period for Pomodoro (Work-Session)
+    private String workDurationString; // Time Period for Pomodoro in String
+    private long shortBreakDuration; // Time Period for Short-Break
+    private String shortBreakDurationString; // Time Period for Short-Break in String
+    private long longBreakDuration; // Time Period for Long-Break
+    private String longBreakDurationString; // Time Period for Long-Break in String
+    private SharedPreferences preferences;
+    private int workSessionCount = 0; // Number of Completed Work-Sessions
+    private AlertDialog alertDialog;
+    private boolean isAppVisible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeButton.setOnClickListener(this);
         timerButton.setOnClickListener(this);
         finishImageView.setOnClickListener(this);
+
+        //Preparing SoundPool to play ticking sounds
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        tickID = soundPool.load(this, R.raw.clockticking, 1);
+        ringID = soundPool.load(this, R.raw.bellringing, 2);
 
         // Set button as checked if the service is already running.
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
