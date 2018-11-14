@@ -6,6 +6,7 @@
 package gis2018.udacity.pomodoro;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BroadcastReceiver countDownReceiver;
     private SharedPreferences preferences;
     private int workSessionCount = 0; // Number of Completed Work-Sessions
+    private AlertDialog alertDialog;
+    private boolean isAppVisible = true;
 
     @BindView(R.id.settings_imageview_main)
     ImageView settingsImageView;
@@ -63,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        isAppVisible = true;
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         ButterKnife.bind(this);
         settingsImageView.setOnClickListener(this);
@@ -86,10 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 // Retrieving value of currentlyRunningServiceType from SharedPreferences.
-                currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, context);
+                currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, getApplicationContext());
                 // Changing textOn & textOff according to value of currentlyRunningServiceType.
                 changeToggleButtonStateText(currentlyRunningServiceType);
                 unregisterLocalBroadcastReceivers();
+                alertDialog = createPomodoroCompletionAlertDialog();
+                displayPomodoroCompletionAlertDialog();
             }
         };
 
@@ -101,8 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     countDownTextView.setText(intent.getExtras().getString("countDown"));
             }
         };
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Retrieving current value of Duration for POMODORO, SHORT_BREAK and LONG_BREAK from SharedPreferences.
         workDuration = Utils.getCurrentDurationPreferenceOf(preferences, this, POMODORO);
@@ -121,27 +127,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
         workSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
         workSessionCompletedTextView.setText(String.valueOf(workSessionCount));
+
+        alertDialog = createPomodoroCompletionAlertDialog();
+        displayPomodoroCompletionAlertDialog();
     }
 
     @Override
     protected void onStart() {
-        currentlyRunningServiceType = preferences.getInt(getString(R.string.currently_running_service_type_key), 0);
-        registerLocalBroadcastReceivers();
+        isAppVisible = true;
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
         super.onStart();
     }
 
     @Override
     protected void onResume() {
-        currentlyRunningServiceType = preferences.getInt(getString(R.string.currently_running_service_type_key), 0);
+        isAppVisible = true;
+        registerLocalBroadcastReceivers();
+        // Creates new Alert Dialog.
+        alertDialog = createPomodoroCompletionAlertDialog();
+        displayPomodoroCompletionAlertDialog();
         super.onResume();
     }
 
     @Override
+    protected void onPause() {
+        isAppVisible = false;
+        super.onPause();
+    }
+
+    @Override
     protected void onStop() {
+        isAppVisible = false;
         if (!isServiceRunning(CountDownTimerService.class)) {
             unregisterLocalBroadcastReceivers();
         }
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        isAppVisible = false;
+        super.onDestroy();
     }
 
     @Override
@@ -194,14 +220,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (timerButton.isChecked()) {
                     // Finish (Complete Button) stops service and sets currentlyRunningServiceType to SHORT_BREAK or LONG_BREAK and updates number of completed WorkSessions.
                     if (currentlyRunningServiceType == POMODORO) {
+
+                        // Updates newWorkSessionCount in SharedPreferences and displays it on TextView.
                         int newWorkSessionCount = Utils.updateWorkSessionCount(preferences, this);
                         workSessionCompletedTextView.setText(String.valueOf(newWorkSessionCount));
+
+                        // Retrieves type of break user should take, either SHORT_BREAK or LONG_BREAK, and updates value of currentlyRunningService in SharedPreferences.
                         currentlyRunningServiceType = Utils.getTypeOfBreak(preferences, this);
                         Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
+
                         long duration = Utils.getCurrentDurationPreferenceOf(preferences, this, currentlyRunningServiceType);
                         stopTimer(Utils.getCurrentDurationPreferenceStringFor(duration));
                         changeToggleButtonStateText(currentlyRunningServiceType);
                         unregisterLocalBroadcastReceivers();
+                        alertDialog = createPomodoroCompletionAlertDialog();
+                        displayPomodoroCompletionAlertDialog();
                     }
                 }
                 break;
@@ -287,6 +320,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void switchToPomodoro() {
         stopTimer(workDurationString);
+        if (alertDialog != null)
+            alertDialog.cancel();
         currentlyRunningServiceType = POMODORO;
         Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
@@ -310,5 +345,89 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         return false;
+    }
+
+    /**
+     * Creates layout for alert-dialog, which is shown when Pomodoro (Work-Session) is completed.
+     *
+     * @return alert-dialog
+     */
+    private AlertDialog createPomodoroCompletionAlertDialog() {
+        if (alertDialog != null)
+            alertDialog.cancel();
+
+        View alertDialogLayout = View.inflate(getApplicationContext(), R.layout.layout_alert_dialog, null);
+        final Button startBreakLargeButton = alertDialogLayout.findViewById(R.id.start_break);
+        final Button startOtherBreakMediumButton = alertDialogLayout.findViewById(R.id.start_other_break);
+        Button skipBreakSmallButton = alertDialogLayout.findViewById(R.id.skip_break);
+
+        if (currentlyRunningServiceType == SHORT_BREAK) {
+            startBreakLargeButton.setText(R.string.start_short_break);
+            startOtherBreakMediumButton.setText(R.string.start_long_break);
+        } else if (currentlyRunningServiceType == LONG_BREAK) {
+            startBreakLargeButton.setText(R.string.start_long_break);
+            startOtherBreakMediumButton.setText(R.string.start_short_break);
+        }
+
+        startBreakLargeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentButtonText = startBreakLargeButton.getText().toString();
+                startBreakFromAlertDialog(currentButtonText);
+            }
+        });
+
+        startOtherBreakMediumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentButtonText = startOtherBreakMediumButton.getText().toString();
+                startBreakFromAlertDialog(currentButtonText);
+            }
+        });
+
+        skipBreakSmallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchToPomodoro();
+            }
+        });
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(alertDialogLayout);
+        alertDialogBuilder.setCancelable(false);
+        return alertDialogBuilder.create();
+    }
+
+    /**
+     * Displays alert dialog when a Pomodoro (Work-Session) is finished.
+     */
+    private void displayPomodoroCompletionAlertDialog() {
+        if (currentlyRunningServiceType != POMODORO && isAppVisible && !alertDialog.isShowing() && !isServiceRunning(CountDownTimerService.class)) {
+            alertDialog.show();
+        }
+    }
+
+    /**
+     * Sets appropriate values for medium and large button, and starts service; either SHORT_BREAK or LONG_BREAK.
+     *
+     * @param currentButtonText button text of either medium button or large button.
+     */
+    private void startBreakFromAlertDialog(String currentButtonText) {
+        long breakDuration = 0;
+        if (currentButtonText.equals(getString(R.string.start_long_break))) {
+            Utils.updateCurrentlyRunningServiceType(preferences, getApplicationContext(), LONG_BREAK);
+            breakDuration = longBreakDuration;
+        } else if (currentButtonText.equals(getString(R.string.start_short_break))) {
+            Utils.updateCurrentlyRunningServiceType(preferences, getApplicationContext(), SHORT_BREAK);
+            breakDuration = shortBreakDuration;
+        }
+
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, getApplicationContext());
+        if (alertDialog != null)
+            alertDialog.cancel();
+        registerLocalBroadcastReceivers();
+        changeToggleButtonStateText(currentlyRunningServiceType);
+        startTimer(breakDuration);
+        timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
     }
 }

@@ -8,39 +8,45 @@
 
     <TextView
         android:id="@+id/alert_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:text="@string/pomodoro_completion_alert_message"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
-        tools:text="Message" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/start_break"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         tools:text="Start Break" />
 
     <Button
         android:id="@+id/start_other_break"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black"
         tools:text="Start Other Break" />
 
     <Button
         android:id="@+id/skip_break"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="16dp"
         android:background="@android:color/transparent"
+        android:text="@string/skip_break"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black"
-        tools:text="Skip Break" />
+        android:textColor="@android:color/black" />
 
 </LinearLayout>
