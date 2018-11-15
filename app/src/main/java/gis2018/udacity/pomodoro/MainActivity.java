@@ -339,13 +339,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void switchToPomodoro() {
         stopTimer(workDurationString);
+
+        // Clearing any previous notifications.
+        NotificationManagerCompat
+                .from(getApplicationContext())
+                .cancel(TASK_INFORMATION_NOTIFICATION_ID);
+
         if (alertDialog != null)
             alertDialog.cancel();
         currentlyRunningServiceType = POMODORO;
         Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
         changeToggleButtonStateText(currentlyRunningServiceType);
-        displayTaskInformationNotification();
         unregisterLocalBroadcastReceivers();
     }
 
