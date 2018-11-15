@@ -61,6 +61,7 @@ public class CountDownTimerService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Pomodoro Countdown Timer")
+                .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pendingIntent)
                 .setContentText("Countdown timer is running")
                 .build();
