@@ -7,6 +7,8 @@ package gis2018.udacity.pomodoro;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +19,8 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,9 +33,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import gis2018.udacity.pomodoro.utils.Utils;
 
+import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
 import static gis2018.udacity.pomodoro.utils.Constants.LONG_BREAK;
 import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
 import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.pomodoro.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -108,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 unregisterLocalBroadcastReceivers();
                 alertDialog = createPomodoroCompletionAlertDialog();
                 displayPomodoroCompletionAlertDialog();
+                displayTaskInformationNotification();
             }
         };
 
@@ -241,10 +248,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         long duration = Utils.getCurrentDurationPreferenceOf(preferences, this, currentlyRunningServiceType);
                         stopTimer(Utils.getCurrentDurationPreferenceStringFor(duration));
+                        soundPool.play(ringID, 0.5f, 0.5f, 1, 0, 1f);
                         changeToggleButtonStateText(currentlyRunningServiceType);
                         unregisterLocalBroadcastReceivers();
                         alertDialog = createPomodoroCompletionAlertDialog();
                         displayPomodoroCompletionAlertDialog();
+                        displayTaskInformationNotification();
                     }
                 }
                 break;
@@ -336,6 +345,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
         changeToggleButtonStateText(currentlyRunningServiceType);
+        displayTaskInformationNotification();
         unregisterLocalBroadcastReceivers();
     }
 
@@ -439,5 +449,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeToggleButtonStateText(currentlyRunningServiceType);
         startTimer(breakDuration);
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
+    }
+
+    /**
+     * Creates structure for a notification which is shown when a task is Completed.
+     * Task can be POMODORO, SHORT_BREAK, LONG_BREAK
+     *
+     * @return notification.
+     */
+    private NotificationCompat.Builder createTaskInformationNotification() {
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        String notificationContentText;
+
+        if (currentlyRunningServiceType == POMODORO)
+            notificationContentText = getString(R.string.start_pomodoro);
+        else
+            notificationContentText = getString(R.string.pomodoro_completion_alert_message);
+
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Pomodoro Countdown Timer")
+                .setContentIntent(pendingIntent)
+                .setContentText(notificationContentText)
+                .setAutoCancel(true);
+    }
+
+    /**
+     * Displays a notification when foreground service is finished.
+     */
+    private void displayTaskInformationNotification() {
+        Notification notification = createTaskInformationNotification().build();
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat
+                .from(this);
+
+        // Clearing any previous notifications.
+        notificationManagerCompat
+                .cancel(TASK_INFORMATION_NOTIFICATION_ID);
+
+        // Displays a notification.
+        if (!isServiceRunning(CountDownTimerService.class)) {
+            notificationManagerCompat
+                    .notify(TASK_INFORMATION_NOTIFICATION_ID, notification);
+        }
     }
 }

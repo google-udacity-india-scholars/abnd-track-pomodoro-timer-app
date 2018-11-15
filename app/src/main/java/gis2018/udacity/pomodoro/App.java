@@ -7,8 +7,9 @@ import android.os.Build;
 
 import java.util.Objects;
 
+import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
+
 public class App extends Application {
-    public static final String CHANNEL_ID = "POMODORO";
 
     @Override
     public void onCreate() {

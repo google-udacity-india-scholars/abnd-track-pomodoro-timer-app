@@ -9,21 +9,22 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
 import gis2018.udacity.pomodoro.utils.Utils;
 
-import static gis2018.udacity.pomodoro.App.CHANNEL_ID;
 import static gis2018.udacity.pomodoro.MainActivity.ringID;
 import static gis2018.udacity.pomodoro.MainActivity.soundPool;
 import static gis2018.udacity.pomodoro.MainActivity.tickID;
+import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
 import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
+import static gis2018.udacity.pomodoro.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
     public static final String COUNTDOWN_BROADCAST = "com.gis2018.countdown";
     public static final String STOP_ACTION_BROADCAST = "com.gis2018.stop.action";
-    private static final String LOG_TAG = "CntDwnTmrService_TAG";
     LocalBroadcastManager broadcaster;
     private CountDownTimer countDownTimer;
     private SharedPreferences preferences;
@@ -64,6 +65,11 @@ public class CountDownTimerService extends Service {
                 .setContentIntent(pendingIntent)
                 .setContentText("Countdown timer is running")
                 .build();
+
+        // Clearing any previous notifications.
+        NotificationManagerCompat
+                .from(this)
+                .cancel(TASK_INFORMATION_NOTIFICATION_ID);
 
         startForeground(ID, notification);
         countDownTimerBuilder(TIME_PERIOD, TIME_INTERVAL).start();
