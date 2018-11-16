@@ -43,5 +43,4 @@
     <string name="currently_running_service_type_key">CURRENTLY_RUNNING_SERVICE_TYPE</string>
     <string name="pomodoro_completion_alert_message">Congrats, Pomodoro is over.\n\nIt\'s time for a break.</string>
 
-    <string name="default_notification_channel_id">POMODORO</string>
 </resources>
