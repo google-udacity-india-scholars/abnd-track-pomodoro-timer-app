@@ -22,7 +22,7 @@ public class App extends Application {
             NotificationChannel notificationChannel = new NotificationChannel(
                     CHANNEL_ID,
                     getResources().getString(R.string.app_name),
-                    NotificationManager.IMPORTANCE_HIGH);
+                    NotificationManager.IMPORTANCE_LOW);
 
             NotificationManager notificationManager = Objects.requireNonNull(
                     getSystemService(NotificationManager.class));
