@@ -474,7 +474,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             notificationContentText = getString(R.string.pomodoro_completion_alert_message);
 
         return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notification_icon)
                 .setContentTitle("Pomodoro Countdown Timer")
                 .setContentIntent(pendingIntent)
                 .setContentText(notificationContentText)
