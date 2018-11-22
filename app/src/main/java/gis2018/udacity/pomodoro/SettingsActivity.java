@@ -125,5 +125,6 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     public void onBackPressed() {
         super.onBackPressed();
         NavUtils.navigateUpFromSameTask(this);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
