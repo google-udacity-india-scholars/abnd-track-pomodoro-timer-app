@@ -42,5 +42,7 @@
     <string name="skip_break">Skip Break</string>
     <string name="currently_running_service_type_key">CURRENTLY_RUNNING_SERVICE_TYPE</string>
     <string name="pomodoro_completion_alert_message">Congrats, Pomodoro is over.\n\nIt\'s time for a break.</string>
+    <string name="cancel_notification_toast">Cancel</string>
+    <string name="package_name">gis2018.udacity.pomodoro</string>
 
 </resources>

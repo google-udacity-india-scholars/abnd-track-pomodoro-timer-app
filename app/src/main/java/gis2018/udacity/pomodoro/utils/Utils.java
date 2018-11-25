@@ -2,6 +2,7 @@ package gis2018.udacity.pomodoro.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,20 @@ import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
 import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
 
 public class Utils {
+    /*
+    * isCompleteActionClick  is used for identifying
+    * to trigger stop timer and show dialog box
+    *
+    * when "Complete" from notification is click
+    * */
+    public static boolean isCompleteActionClick = false;
+    /*
+     * isCancelActionClick is used for identifying
+     * to trigger stop timer
+     *
+     * when "Cancel" from notification is click
+     * */
+    public static boolean isCancelActionClick = false;
 
     /**
      * Updates value of WorkSessionCount by 1 and Writes the same to SharedPreferences.
