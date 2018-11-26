@@ -147,6 +147,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         alertDialog = createPomodoroCompletionAlertDialog();
         displayPomodoroCompletionAlertDialog();
+
+        //  when "complete" notification is click
+        if (Utils.isCompleteActionClick) {
+            notificationCompleteAction();
+            Utils.isCompleteActionClick = false;
+        }
+        //  when "Cancel" notification is click
+        if (Utils.isCancelActionClick) {
+            switchToPomodoro();
+            Utils.isCancelActionClick = false;
+        }
+
     }
 
     @Override
@@ -498,6 +510,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isServiceRunning(CountDownTimerService.class)) {
             notificationManagerCompat
                     .notify(TASK_INFORMATION_NOTIFICATION_ID, notification);
+        }
+    }
+
+    /**
+     * Stop timer and show dialog when "Complete" button
+     * from notification is click
+     */
+    public  void notificationCompleteAction(){
+        if (timerButton.isChecked()) {
+            // Finish (Complete Button) stops service and sets currentlyRunningServiceType to SHORT_BREAK or LONG_BREAK and updates number of completed WorkSessions.
+            if (currentlyRunningServiceType == POMODORO) {
+
+                // Updates newWorkSessionCount in SharedPreferences and displays it on TextView.
+                int newWorkSessionCount = Utils.updateWorkSessionCount(preferences, this);
+                workSessionCompletedTextView.setText(String.valueOf(newWorkSessionCount));
+
+                // Retrieves type of break user should take, either SHORT_BREAK or LONG_BREAK, and updates value of currentlyRunningService in SharedPreferences.
+                currentlyRunningServiceType = Utils.getTypeOfBreak(preferences, this);
+                Utils.updateCurrentlyRunningServiceType(preferences, this, currentlyRunningServiceType);
+
+                long duration = Utils.getCurrentDurationPreferenceOf(preferences, this, currentlyRunningServiceType);
+                stopTimer(Utils.getCurrentDurationPreferenceStringFor(duration));
+                soundPool.play(ringID, 0.5f, 0.5f, 1, 0, 1f);
+                changeToggleButtonStateText(currentlyRunningServiceType);
+                unregisterLocalBroadcastReceivers();
+                alertDialog = createPomodoroCompletionAlertDialog();
+                displayPomodoroCompletionAlertDialog();
+                displayTaskInformationNotification();
+            }
         }
     }
 }

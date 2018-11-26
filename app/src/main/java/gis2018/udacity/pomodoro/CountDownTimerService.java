@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -59,12 +60,27 @@ public class CountDownTimerService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
 
+        //For "Complete" button - Intent and PendingIntent
+        Intent completeIntent = new Intent(this,MainActivity.class);
+        completeIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent completeActionPendingIntent = PendingIntent.getActivity(this,
+                0,completeIntent,0);
+        Utils.isCompleteActionClick = true;
+
+        //For "Cancel" button - Intent and PendingIntent
+        Intent cancelIntent = new Intent(this,ActionReceiver.class);
+        PendingIntent cancelActionPendingIntent = PendingIntent.getBroadcast(this,
+                0,cancelIntent,0);
+
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
                 .setContentTitle("Pomodoro Countdown Timer")
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pendingIntent)
                 .setContentText("Countdown timer is running")
+                .addAction(R.drawable.complete,"Complete",completeActionPendingIntent).setColor(Color.GREEN)
+                .addAction(R.drawable.cancel,"Cancel",cancelActionPendingIntent).setColor(Color.RED)
                 .build();
 
         // Clearing any previous notifications.
