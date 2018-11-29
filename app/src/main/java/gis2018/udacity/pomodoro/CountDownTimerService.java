@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -15,22 +14,26 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import gis2018.udacity.pomodoro.utils.Utils;
 
-import static gis2018.udacity.pomodoro.MainActivity.ringID;
-import static gis2018.udacity.pomodoro.MainActivity.soundPool;
-import static gis2018.udacity.pomodoro.MainActivity.tickID;
 import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
+import static gis2018.udacity.pomodoro.utils.Constants.COUNTDOWN_BROADCAST;
+import static gis2018.udacity.pomodoro.utils.Constants.INTENT_NAME_ACTION;
+import static gis2018.udacity.pomodoro.utils.Constants.INTENT_VALUE_CANCEL;
+import static gis2018.udacity.pomodoro.utils.Constants.INTENT_VALUE_COMPLETE;
 import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
+import static gis2018.udacity.pomodoro.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.pomodoro.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.pomodoro.utils.Utils.ringID;
+import static gis2018.udacity.pomodoro.utils.Utils.soundPool;
+import static gis2018.udacity.pomodoro.utils.Utils.tickID;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
-    public static final String COUNTDOWN_BROADCAST = "com.gis2018.countdown";
-    public static final String STOP_ACTION_BROADCAST = "com.gis2018.stop.action";
     LocalBroadcastManager broadcaster;
     private CountDownTimer countDownTimer;
     private SharedPreferences preferences;
     private int newWorkSessionCount;
     private int currentlyRunningServiceType;
+    private Intent completeIntent;
 
     public CountDownTimerService() {
     }
@@ -61,16 +64,16 @@ public class CountDownTimerService extends Service {
                 0, notificationIntent, 0);
 
         //For "Complete" button - Intent and PendingIntent
-        Intent completeIntent = new Intent(this,MainActivity.class);
-        completeIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent completeActionPendingIntent = PendingIntent.getActivity(this,
-                0,completeIntent,0);
-        Utils.isCompleteActionClick = true;
+        completeIntent = new Intent(this, StopTimerActionReceiver.class)
+                .putExtra(INTENT_NAME_ACTION, INTENT_VALUE_COMPLETE);
+        PendingIntent completeActionPendingIntent = PendingIntent.getBroadcast(this,
+                1, completeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //For "Cancel" button - Intent and PendingIntent
-        Intent cancelIntent = new Intent(this,ActionReceiver.class);
+        Intent cancelIntent = new Intent(this, StopTimerActionReceiver.class)
+                .putExtra(INTENT_NAME_ACTION, INTENT_VALUE_CANCEL);
         PendingIntent cancelActionPendingIntent = PendingIntent.getBroadcast(this,
-                0,cancelIntent,0);
+                0, cancelIntent, 0);
 
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -79,8 +82,9 @@ public class CountDownTimerService extends Service {
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pendingIntent)
                 .setContentText("Countdown timer is running")
-                .addAction(R.drawable.complete,"Complete",completeActionPendingIntent).setColor(Color.GREEN)
-                .addAction(R.drawable.cancel,"Cancel",cancelActionPendingIntent).setColor(Color.RED)
+                .addAction(R.drawable.complete, "Complete", completeActionPendingIntent)
+                .addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent)
+                .setOngoing(false)
                 .build();
 
         // Clearing any previous notifications.
