@@ -2,7 +2,8 @@ package gis2018.udacity.pomodoro.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
+import android.media.AudioManager;
+import android.media.SoundPool;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -14,20 +15,8 @@ import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
 import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
 
 public class Utils {
-    /*
-    * isCompleteActionClick  is used for identifying
-    * to trigger stop timer and show dialog box
-    *
-    * when "Complete" from notification is click
-    * */
-    public static boolean isCompleteActionClick = false;
-    /*
-     * isCancelActionClick is used for identifying
-     * to trigger stop timer
-     *
-     * when "Cancel" from notification is click
-     * */
-    public static boolean isCancelActionClick = false;
+    public static SoundPool soundPool;
+    public static int tickID, ringID;
 
     /**
      * Updates value of WorkSessionCount by 1 and Writes the same to SharedPreferences.
@@ -159,5 +148,14 @@ public class Utils {
         return String.format(Locale.getDefault(), "%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(duration) % 60,
                 TimeUnit.MILLISECONDS.toSeconds(duration) % 60);
+    }
+
+    /**
+     * Prepares SoundPool for ticking and ringing sound playback.
+     */
+    public static void prepareSoundPool(Context context) {
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        tickID = soundPool.load(context, R.raw.clockticking, 1);
+        ringID = soundPool.load(context, R.raw.bellringing, 2);
     }
 }
