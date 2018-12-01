@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int workSessionCount = 0; // Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
+    private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +102,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         countDownReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getExtras() != null)
-                    setTextCountDownTextView(intent.getExtras().getString("countDown"));
+                if (intent.getExtras() != null) {
+                    currentCountDown = intent.getExtras().getString("countDown");
+                    setTextCountDownTextView(currentCountDown);
+                }
             }
         };
 
@@ -204,6 +207,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         isAppVisible = false;
         super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        currentCountDown = countDownTextView.getText().toString();
+        outState.putString("currentCountDown", currentCountDown);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currentCountDown = savedInstanceState.getString("currentCountDown");
+        setTextCountDownTextView(currentCountDown);
     }
 
     @Override
