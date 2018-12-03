@@ -1,5 +1,5 @@
 # Pomodoro - A Productivity Timer App
-[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) [![HitCount](http://hits.dwyl.io/google-udacity-india-scholars//{project}.svg)](http://hits.dwyl.io/google-udacity-india-scholars//{project})
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/android-productivity-timer-tametu-app/tametu) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) [![HitCount](http://hits.dwyl.io/google-udacity-india-scholars//{project}.svg)](http://hits.dwyl.io/google-udacity-india-scholars//{project})
 ## Google India Scholar Collaborative Project- ABND Track Phase 2
 
 _The most important aspect of collaborative project is to get everyone involved, and this idea is simple enough for everyone to contribute to, tweak - and maybe even have some fun while doing it._
