@@ -33,7 +33,6 @@ public class CountDownTimerService extends Service {
     private SharedPreferences preferences;
     private int newWorkSessionCount;
     private int currentlyRunningServiceType;
-    private Intent completeIntent;
 
     public CountDownTimerService() {
     }
@@ -58,13 +57,15 @@ public class CountDownTimerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         long TIME_PERIOD = intent.getLongExtra("time_period", 0);
         long TIME_INTERVAL = intent.getLongExtra("time_interval", 0);
+        currentlyRunningServiceType = intent.getIntExtra("service_type", 0);
+
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
 
         //For "Complete" button - Intent and PendingIntent
-        completeIntent = new Intent(this, StopTimerActionReceiver.class)
+        Intent completeIntent = new Intent(this, StopTimerActionReceiver.class)
                 .putExtra(INTENT_NAME_ACTION, INTENT_VALUE_COMPLETE);
         PendingIntent completeActionPendingIntent = PendingIntent.getBroadcast(this,
                 1, completeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -76,15 +77,28 @@ public class CountDownTimerService extends Service {
                 0, cancelIntent, 0);
 
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
                 .setContentTitle("Pomodoro Countdown Timer")
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pendingIntent)
                 .setContentText("Countdown timer is running")
-                .addAction(R.drawable.complete, "Complete", completeActionPendingIntent)
-                .addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent)
-                .setOngoing(false)
+                .setOngoing(false);
+
+        //adding separate cases for both service types to ensure the order of the action
+        //buttons is preserved in the notification
+        switch (currentlyRunningServiceType) {
+            case 0:
+                notificationBuilder.addAction(R.drawable.complete, "Complete", completeActionPendingIntent);
+                notificationBuilder.addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent);
+                break;
+            case 1:
+            case 2:
+                notificationBuilder.addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent);
+                break;
+        }
+
+        Notification notification = notificationBuilder
                 .build();
 
         // Clearing any previous notifications.
