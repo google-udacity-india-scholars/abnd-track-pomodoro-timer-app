@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent serviceIntent = new Intent(this, CountDownTimerService.class);
         serviceIntent.putExtra("time_period", duration);
         serviceIntent.putExtra("time_interval", TIME_INTERVAL);
-        serviceIntent.putExtra("service_type", currentlyRunningServiceType);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundService(serviceIntent);
         else

@@ -39,6 +39,7 @@ public class CountDownTimerService extends Service {
 
     @Override
     public void onCreate() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         broadcaster = LocalBroadcastManager.getInstance(this);
     }
 
@@ -57,8 +58,7 @@ public class CountDownTimerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         long TIME_PERIOD = intent.getLongExtra("time_period", 0);
         long TIME_INTERVAL = intent.getLongExtra("time_interval", 0);
-        currentlyRunningServiceType = intent.getIntExtra("service_type", 0);
-
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -79,22 +79,26 @@ public class CountDownTimerService extends Service {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
-                .setContentTitle("Pomodoro Countdown Timer")
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pendingIntent)
-                .setContentText("Countdown timer is running")
                 .setOngoing(false);
 
         //adding separate cases for both service types to ensure the order of the action
         //buttons is preserved in the notification
         switch (currentlyRunningServiceType) {
             case 0:
-                notificationBuilder.addAction(R.drawable.complete, "Complete", completeActionPendingIntent);
-                notificationBuilder.addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent);
+                notificationBuilder
+                        .addAction(R.drawable.complete, "Complete", completeActionPendingIntent)
+                        .addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent)
+                        .setContentTitle("Pomodoro Countdown Timer")
+                        .setContentText("Countdown timer is running");
                 break;
             case 1:
             case 2:
-                notificationBuilder.addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent);
+                notificationBuilder
+                        .addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent)
+                        .setContentTitle("On a break")
+                        .setContentText("Break timer is running");
                 break;
         }
 
@@ -115,7 +119,6 @@ public class CountDownTimerService extends Service {
      * @return a CountDownTimer which ticks every 1 second for given Time period.
      */
     private CountDownTimer countDownTimerBuilder(long TIME_PERIOD, long TIME_INTERVAL) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, getApplicationContext());
         countDownTimer = new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
             @Override
