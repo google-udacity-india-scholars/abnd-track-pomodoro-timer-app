@@ -24,6 +24,8 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     Spinner shortBreakDurationSpinner;
     @BindView(R.id.long_break_duration_spinner)
     Spinner longBreakDurationSpinner;
+    @BindView(R.id.start_long_break_after_spinner)
+    Spinner startlongbreakafterSpinner;
     private SharedPreferences preferences;
 
     @Override
@@ -50,25 +52,31 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
                 R.array.short_break_duration_array, android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> longBreakDurationAdapter = ArrayAdapter.createFromResource(this,
                 R.array.long_break_duration_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> startlongbreakafterAdapter = ArrayAdapter.createFromResource(this,
+                R.array.start_long_break_after_array, android.R.layout.simple_spinner_item);
 
         // Layout to use when list of choices appears
         workDurationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shortBreakDurationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         longBreakDurationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        startlongbreakafterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Apply the adapter to the spinner
         workDurationSpinner.setAdapter(workDurationAdapter);
         shortBreakDurationSpinner.setAdapter(shortBreakDurationAdapter);
         longBreakDurationSpinner.setAdapter(longBreakDurationAdapter);
+        startlongbreakafterSpinner.setAdapter(startlongbreakafterAdapter);
 
         // Set the default selection
         workDurationSpinner.setSelection(preferences.getInt(getString(R.string.work_duration_key), 1));
         shortBreakDurationSpinner.setSelection(preferences.getInt(getString(R.string.short_break_duration_key), 1));
         longBreakDurationSpinner.setSelection(preferences.getInt(getString(R.string.long_break_duration_key), 1));
+        startlongbreakafterSpinner.setSelection(preferences.getInt(getString((R.string.start_long_break_after)), 1));
 
         workDurationSpinner.setOnItemSelectedListener(this);
         shortBreakDurationSpinner.setOnItemSelectedListener(this);
         longBreakDurationSpinner.setOnItemSelectedListener(this);
+     
     }
 
     /**
@@ -103,6 +111,11 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
                 Log.v(LOG_TAG, (String) parent.getItemAtPosition(position));
                 // save the corresponding item position
                 editor.putInt(getString(R.string.long_break_duration_key), position);
+            case R.id.start_long_break_after_spinner:
+                Log.v(LOG_TAG, (String) parent.getItemAtPosition(position));
+                // save the corresponding item position
+                editor.putInt(getString(R.string.start_long_break_after), position);
+
         }
         editor.apply();
 
@@ -110,6 +123,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.work_duration_key), -1)));
         Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.short_break_duration_key), -1)));
         Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.long_break_duration_key), -1)));
+        Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.start_long_break_after), -1)));
     }
 
     /**

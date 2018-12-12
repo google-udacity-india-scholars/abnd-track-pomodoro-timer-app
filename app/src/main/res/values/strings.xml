@@ -4,9 +4,12 @@
     <string name="short_break_duration">Short Break Duration :</string>
     <string name="long_break_duration">Long Break Duration :</string>
     <string name="work_duration_key">WORK_DURATION</string>
+    <string name="lba">Start Long Break After</string>
+
     <string name="short_break_duration_key">SHORT_BREAK_DURATION</string>
     <string name="long_break_duration_key">LONG_BREAK_DURATION</string>
     <string name="work_session_count_key">WORK_SESSION_COUNT</string>
+    <string name="start_long_break_after">LONG_BREAK_AFTER_DURATION</string>
     <string-array name="work_duration_array">
         <item>20 minutes</item>
         <item>25 minutes</item>
@@ -19,6 +22,13 @@
         <item>5 minutes</item>
         <item>10 minutes</item>
         <item>15 minutes</item>
+    </string-array>
+    <string-array name="start_long_break_after_array">
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+        <item>4 minutes</item>
+        <item>5 minutes</item>
+        <item>6 minutes</item>
     </string-array>
     <string-array name="long_break_duration_array">
         <item>10 minutes</item>
