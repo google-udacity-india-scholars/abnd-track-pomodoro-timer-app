@@ -24,11 +24,11 @@
         <item>15 minutes</item>
     </string-array>
     <string-array name="start_long_break_after_array">
-        <item>2 session</item>
-        <item>3 session</item>
-        <item>4 session</item>
-        <item>5 session</item>
-        <item>6 session</item>
+        <item>2 sessions</item>
+        <item>3 sessions</item>
+        <item>4 sessions</item>
+        <item>5 sessions</item>
+        <item>6 sessions</item>
     </string-array>
     <string-array name="long_break_duration_array">
         <item>10 minutes</item>
