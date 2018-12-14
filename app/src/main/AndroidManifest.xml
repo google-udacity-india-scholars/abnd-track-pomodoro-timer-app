@@ -4,6 +4,7 @@
     package="gis2018.udacity.pomodoro">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -18,8 +19,9 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".MainActivity"
-            android:launchMode = "singleTop"
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +35,12 @@
             android:parentActivityName=".MainActivity" />
         <!-- Broadcast receiver for notification action button -->
         <receiver android:name=".StopTimerActionReceiver" />
+
+        <activity android:name=".Aboutus"
+            android:label="ABOUT US"
+            android:parentActivityName=".SettingsActivity">
+
+        </activity>
     </application>
 
 </manifest>

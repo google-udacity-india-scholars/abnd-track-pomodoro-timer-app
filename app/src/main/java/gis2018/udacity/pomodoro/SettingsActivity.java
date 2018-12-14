@@ -1,5 +1,6 @@
 package gis2018.udacity.pomodoro;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +40,14 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         initSpinner();
+        TextView aboutus=(TextView)findViewById(R.id.Aboutus);
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(SettingsActivity.this,Aboutus.class);
+                startActivity(i);
+            }
+        });
     }
 
     /**
