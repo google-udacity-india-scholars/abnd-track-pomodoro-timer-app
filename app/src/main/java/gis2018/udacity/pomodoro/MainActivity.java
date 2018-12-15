@@ -21,8 +21,11 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -122,6 +125,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         alertDialog = createPomodoroCompletionAlertDialog();
         displayPomodoroCompletionAlertDialog();
+         EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);
+        final SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        message.setText(prefs.getString("autoSave", ""));
+
+
+        message.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count)
+            {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after)
+            {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                prefs.edit().putString("autoSave", s.toString()).commit();
+            }
+        });
+
+
+
+
+
     }
 
     private void setInitialValuesOnScreen() {
