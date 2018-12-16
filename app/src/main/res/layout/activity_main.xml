@@ -75,9 +75,11 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:gravity="center"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:hint="@string/task_name"
+                android:defaultValue="Task 1"
+                android:hint="Enter the task name here"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textStyle="bold"
                 android:cursorVisible="false"/>

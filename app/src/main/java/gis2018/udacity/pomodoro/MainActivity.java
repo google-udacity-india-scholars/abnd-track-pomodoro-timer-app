@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .getDefaultSharedPreferences(this);
 
         message.setText(prefs.getString("autoSave", ""));
+        if(message.getText().toString().trim().length() == 0)
+            message.setText("Task 1", TextView.BufferType.EDITABLE);
 
 
         message.addTextChangedListener(new TextWatcher() {
@@ -148,7 +150,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void afterTextChanged(Editable s)
             {
+
                 prefs.edit().putString("autoSave", s.toString()).commit();
+
             }
         });
 
