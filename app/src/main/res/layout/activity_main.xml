@@ -67,7 +67,7 @@
                 android:text="@string/change_task"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <TextView
+            <EditText
                 android:id="@+id/current_task_name_textview_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,11 +75,14 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:gravity="center"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/task_name"
+                android:defaultValue="Task 1"
+                android:hint="Enter the task name here"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:cursorVisible="false"/>
 
             <TextView
                 android:id="@+id/sessions_completed_textview_main"
