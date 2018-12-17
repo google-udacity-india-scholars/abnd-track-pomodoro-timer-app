@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro.utils;
+package gis2018.udacity.tametu.utils;
 
 public class Constants {
 

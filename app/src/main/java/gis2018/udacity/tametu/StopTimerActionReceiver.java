@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro;
+package gis2018.udacity.tametu;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import gis2018.udacity.pomodoro.utils.StopTimerUtils;
+import gis2018.udacity.tametu.utils.StopTimerUtils;
 
-import static gis2018.udacity.pomodoro.utils.Constants.INTENT_VALUE_CANCEL;
-import static gis2018.udacity.pomodoro.utils.Constants.INTENT_VALUE_COMPLETE;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_CANCEL;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_COMPLETE;
 
 
 /**

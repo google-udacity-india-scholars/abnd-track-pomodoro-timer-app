@@ -3,7 +3,7 @@
  *  Enhanced at http://www.mp3smaller.com/ & http://www.mp3louder.com/
  */
 
-package gis2018.udacity.pomodoro;
+package gis2018.udacity.tametu;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -32,18 +32,18 @@ import android.widget.ToggleButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import gis2018.udacity.pomodoro.utils.Utils;
+import gis2018.udacity.tametu.utils.Utils;
 
-import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
-import static gis2018.udacity.pomodoro.utils.Constants.COMPLETE_ACTION_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.COUNTDOWN_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.LONG_BREAK;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
-import static gis2018.udacity.pomodoro.utils.Constants.STOP_ACTION_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
-import static gis2018.udacity.pomodoro.utils.StopTimerUtils.sessionCancel;
-import static gis2018.udacity.pomodoro.utils.StopTimerUtils.sessionComplete;
+import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
+import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.POMODORO;
+import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionCancel;
+import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionComplete;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

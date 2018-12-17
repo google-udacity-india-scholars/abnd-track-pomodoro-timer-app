@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro;
+package gis2018.udacity.tametu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

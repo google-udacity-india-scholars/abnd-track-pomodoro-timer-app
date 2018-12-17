@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro.utils;
+package gis2018.udacity.tametu.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,11 +8,11 @@ import android.media.SoundPool;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import gis2018.udacity.pomodoro.R;
+import gis2018.udacity.tametu.R;
 
-import static gis2018.udacity.pomodoro.utils.Constants.LONG_BREAK;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.POMODORO;
+import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
 
 public class Utils {
     public static SoundPool soundPool;

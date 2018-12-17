@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro;
+package gis2018.udacity.tametu;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -12,19 +12,19 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
-import gis2018.udacity.pomodoro.utils.Utils;
+import gis2018.udacity.tametu.utils.Utils;
 
-import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
-import static gis2018.udacity.pomodoro.utils.Constants.COUNTDOWN_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.INTENT_NAME_ACTION;
-import static gis2018.udacity.pomodoro.utils.Constants.INTENT_VALUE_CANCEL;
-import static gis2018.udacity.pomodoro.utils.Constants.INTENT_VALUE_COMPLETE;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Constants.STOP_ACTION_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
-import static gis2018.udacity.pomodoro.utils.Utils.ringID;
-import static gis2018.udacity.pomodoro.utils.Utils.soundPool;
-import static gis2018.udacity.pomodoro.utils.Utils.tickID;
+import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
+import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_NAME_ACTION;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_CANCEL;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_COMPLETE;
+import static gis2018.udacity.tametu.utils.Constants.POMODORO;
+import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.Utils.ringID;
+import static gis2018.udacity.tametu.utils.Utils.soundPool;
+import static gis2018.udacity.tametu.utils.Utils.tickID;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;

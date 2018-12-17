@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro.utils;
+package gis2018.udacity.tametu.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,14 +6,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 
-import gis2018.udacity.pomodoro.CountDownTimerService;
+import gis2018.udacity.tametu.CountDownTimerService;
 
-import static gis2018.udacity.pomodoro.MainActivity.currentlyRunningServiceType;
-import static gis2018.udacity.pomodoro.utils.Constants.COMPLETE_ACTION_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Utils.ringID;
-import static gis2018.udacity.pomodoro.utils.Utils.soundPool;
-import static gis2018.udacity.pomodoro.utils.Utils.updateCurrentlyRunningServiceType;
+import static gis2018.udacity.tametu.MainActivity.currentlyRunningServiceType;
+import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.POMODORO;
+import static gis2018.udacity.tametu.utils.Utils.ringID;
+import static gis2018.udacity.tametu.utils.Utils.soundPool;
+import static gis2018.udacity.tametu.utils.Utils.updateCurrentlyRunningServiceType;
 
 public class StopTimerUtils {
 
