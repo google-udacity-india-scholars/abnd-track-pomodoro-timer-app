@@ -97,5 +97,4 @@
         android:text="About Us"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_long_break_after_spinner" />
-
 </android.support.constraint.ConstraintLayout>

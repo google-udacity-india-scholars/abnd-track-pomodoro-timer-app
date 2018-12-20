@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro;
+package gis2018.udacity.tametu;
 
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -7,7 +7,7 @@ import android.os.Build;
 
 import java.util.Objects;
 
-import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
+import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
 
 public class App extends Application {
 

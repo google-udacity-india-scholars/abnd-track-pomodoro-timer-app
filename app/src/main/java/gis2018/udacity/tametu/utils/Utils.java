@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro.utils;
+package gis2018.udacity.tametu.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,11 +8,12 @@ import android.media.SoundPool;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import gis2018.udacity.pomodoro.R;
+import gis2018.udacity.tametu.R;
 
-import static gis2018.udacity.pomodoro.utils.Constants.LONG_BREAK;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
+import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 
 public class Utils {
     public static SoundPool soundPool;
@@ -88,7 +89,7 @@ public class Utils {
      * @return duration of CountDown for a service in milliSeconds according to value of currentlyRunningServiceType.
      */
     public static long getCurrentDurationPreferenceOf(SharedPreferences preferences, Context context, int currentlyRunningServiceType) {
-        if (currentlyRunningServiceType == POMODORO) {
+        if (currentlyRunningServiceType == TAMETU) {
             // Current value of work duration stored in shared-preference
             int currentWorkDurationPreference = preferences.getInt(context.getString(R.string.work_duration_key), 1);
 
