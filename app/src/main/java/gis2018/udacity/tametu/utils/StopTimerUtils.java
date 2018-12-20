@@ -10,7 +10,8 @@ import gis2018.udacity.tametu.CountDownTimerService;
 
 import static gis2018.udacity.tametu.MainActivity.currentlyRunningServiceType;
 import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
-import static gis2018.udacity.tametu.utils.Constants.POMODORO;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Utils.ringID;
 import static gis2018.udacity.tametu.utils.Utils.soundPool;
 import static gis2018.udacity.tametu.utils.Utils.updateCurrentlyRunningServiceType;
@@ -23,7 +24,7 @@ public class StopTimerUtils {
     public static void sessionComplete(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        if (currentlyRunningServiceType == POMODORO) {
+        if (currentlyRunningServiceType == TAMETU) {
 
             // Updates newWorkSessionCount in SharedPreferences and displays it on TextView.
             Utils.updateWorkSessionCount(preferences, context);
@@ -45,7 +46,7 @@ public class StopTimerUtils {
      * Tasks executed when the session is cancelled prematurely
      */
     public static void sessionCancel(Context context, SharedPreferences preferences) {
-        updateCurrentlyRunningServiceType(preferences, context, POMODORO);
+        updateCurrentlyRunningServiceType(preferences, context, TAMETU);
         stopTimer(context);
         sendBroadcast(context);
     }

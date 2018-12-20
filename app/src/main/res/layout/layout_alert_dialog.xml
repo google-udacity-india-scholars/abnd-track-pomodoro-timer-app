@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
-        android:text="@string/pomodoro_completion_alert_message"
+        android:text="@string/tametu_completion_alert_message"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 

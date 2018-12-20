@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("gis2018.udacity.pomodoro", appContext.getPackageName());
+        assertEquals("gis2018.udacity.tametu", appContext.getPackageName());
     }
 }
