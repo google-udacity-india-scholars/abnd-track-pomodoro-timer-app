@@ -7,7 +7,7 @@ public class Constants {
     public static int LONG_BREAK = 2;
 
     public static int TASK_INFORMATION_NOTIFICATION_ID = 10;
-    public static final String CHANNEL_ID = "POMODORO";
+    public static final String CHANNEL_ID = "TAMETU";
 
     //Broadcast ID
     public static final String COUNTDOWN_BROADCAST = "com.gis2018.countdown";
