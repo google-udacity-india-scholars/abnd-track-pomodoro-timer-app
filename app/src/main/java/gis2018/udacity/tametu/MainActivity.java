@@ -73,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long longBreakDuration; // Time Period for Long-Break
     private String longBreakDurationString; // Time Period for Long-Break in String
     private SharedPreferences preferences;
-    private int workSessionCount = 0; // Number of Completed Work-Sessions
+    private int workSessionCount = 0;
+    private int task_on_hand_count=0;// Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
     private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
         workSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
-        workSessionCountTextView.setText(String.valueOf(workSessionCount));
+        workSessionCountTextView.setText(String.valueOf(task_on_hand_count));
     }
 
     private void retrieveDurationValues() {
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void sessionCompleteAVFeedback(Context context) {
         //Update completed session text view count
         workSessionCountTextView.setText(String.valueOf(preferences
-                .getInt(getString(R.string.work_session_count_key), 0)));
+                .getInt(getString(R.string.task_on_hand_count_key), 0)));
         // Retrieving value of currentlyRunningServiceType from SharedPreferences.
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences,
                 getApplicationContext());
@@ -213,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         isAppVisible = true;
+
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
         super.onStart();
     }

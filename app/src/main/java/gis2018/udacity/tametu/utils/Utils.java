@@ -26,9 +26,10 @@ public class Utils {
      * @param context     Injected Context from caller
      * @return updated value of WorkSessionCount
      */
-    public static int updateWorkSessionCount(SharedPreferences preferences, Context context) {
+   public static int updateWorkSessionCount(SharedPreferences preferences, Context context) {
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
-        int oldWorkSessionCount = preferences.getInt(context.getString(R.string.work_session_count_key), 0);
+        int oldWorkSessionCount = preferences.getInt(context.getString(R.string.task_on_hand_count_key), 0);
+
 
         // Updating oldWorkSessionCount by 1.
         int newWorkSessionCount = ++oldWorkSessionCount;
@@ -36,8 +37,10 @@ public class Utils {
         // Writing value of workSessionCount after a session is completed (New value of workSessionCount) in SharedPreference.
         preferences
                 .edit()
+                .putInt(context.getString(R.string.task_on_hand_count_key), newWorkSessionCount)
                 .putInt(context.getString(R.string.work_session_count_key), newWorkSessionCount)
                 .apply();
+
 
         return newWorkSessionCount;
     }
@@ -50,7 +53,7 @@ public class Utils {
      * @return type of break, user should take
      */
     public static int getTypeOfBreak(SharedPreferences preferences, Context context) {
-        int currentWorkSessionCount = preferences.getInt(context.getString(R.string.work_session_count_key), 0);
+        int currentWorkSessionCount = preferences.getInt(context.getString(R.string.task_on_hand_count_key), 0);
         if (currentWorkSessionCount % 4 == 0)
             return LONG_BREAK;
         return SHORT_BREAK;
@@ -65,6 +68,9 @@ public class Utils {
      * @param currentlyRunningServiceType can be POMODORO, SHORT_BREAK or LONG_BREAK
      */
     public static void updateCurrentlyRunningServiceType(SharedPreferences preferences, Context context, int currentlyRunningServiceType) {
+
+
+
         preferences
                 .edit()
                 .putInt(context.getString(R.string.currently_running_service_type_key), currentlyRunningServiceType)
@@ -91,6 +97,7 @@ public class Utils {
     public static long getCurrentDurationPreferenceOf(SharedPreferences preferences, Context context, int currentlyRunningServiceType) {
         if (currentlyRunningServiceType == TAMETU) {
             // Current value of work duration stored in shared-preference
+
             int currentWorkDurationPreference = preferences.getInt(context.getString(R.string.work_duration_key), 1);
 
             // Switch case to return appropriate minute value of work duration according value stored in shared-preference.

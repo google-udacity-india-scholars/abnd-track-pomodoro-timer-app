@@ -9,6 +9,7 @@
     <string name="short_break_duration_key">SHORT_BREAK_DURATION</string>
     <string name="long_break_duration_key">LONG_BREAK_DURATION</string>
     <string name="work_session_count_key">WORK_SESSION_COUNT</string>
+    <string name="task_on_hand_count_key">TASK_ON_HAND_COUNT</string>
     <string name="start_long_break_after">LONG_BREAK_AFTER_DURATION</string>
     <string-array name="work_duration_array">
         <item>20 minutes</item>
