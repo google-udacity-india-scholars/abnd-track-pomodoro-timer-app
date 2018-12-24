@@ -81,11 +81,12 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         workDurationSpinner.setSelection(preferences.getInt(getString(R.string.work_duration_key), 1));
         shortBreakDurationSpinner.setSelection(preferences.getInt(getString(R.string.short_break_duration_key), 1));
         longBreakDurationSpinner.setSelection(preferences.getInt(getString(R.string.long_break_duration_key), 1));
-        startlongbreakafterSpinner.setSelection(preferences.getInt(getString((R.string.start_long_break_after)), 1));
+        startlongbreakafterSpinner.setSelection(preferences.getInt(getString((R.string.start_long_break_after)), 2));
 
         workDurationSpinner.setOnItemSelectedListener(this);
         shortBreakDurationSpinner.setOnItemSelectedListener(this);
         longBreakDurationSpinner.setOnItemSelectedListener(this);
+        startlongbreakafterSpinner.setOnItemSelectedListener(this);
      
     }
 
