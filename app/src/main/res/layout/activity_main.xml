@@ -4,7 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FF4179"
     tools:context=".MainActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:text="Tametu"
+        android:padding="10dp"
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/countdown_textview_main"
@@ -15,6 +23,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@id/cardview_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,48 +51,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/current_task_textview_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/current_task"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-            <Button
-                android:id="@+id/task_change_button_main"
-                style="?borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/current_task_textview_main"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/change_task"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
             <EditText
                 android:id="@+id/current_task_name_textview_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/current_task_textview_main"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
+                android:layout_marginTop="28dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:cursorVisible="false"
                 android:defaultValue="Task 1"
+                android:gravity="center"
                 android:hint="Enter the task name here"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold"
-                android:cursorVisible="false"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/sessions_completed_textview_main"
@@ -90,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/current_task_name_textview_main"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="28dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/work_sessions_completed"
@@ -103,7 +86,7 @@
                 android:layout_below="@id/current_task_name_textview_main"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="26dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_toEndOf="@id/sessions_completed_textview_main"
@@ -117,7 +100,7 @@
 
     <ImageView
         android:id="@+id/finish_imageview_main"
-        android:layout_width="117dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
@@ -126,7 +109,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/timer_button_main"
         app:layout_constraintHorizontal_bias="0.5"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/circle"
+        android:scaleType="fitXY"
         android:clickable="true"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -146,7 +130,7 @@
 
     <ImageView
         android:id="@+id/settings_imageview_main"
-        android:layout_width="118dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
@@ -155,7 +139,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/circle"
+        android:scaleType="fitXY"
         android:clickable="true"
         app:layout_constraintStart_toEndOf="@id/timer_button_main" />
 

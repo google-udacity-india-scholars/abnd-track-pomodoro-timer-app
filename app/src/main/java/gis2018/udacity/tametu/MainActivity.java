@@ -5,6 +5,7 @@
 
 package gis2018.udacity.tametu;
 
+import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BroadcastReceiver completedBroadcastReceiver;
     @BindView(R.id.settings_imageview_main)
     ImageView settingsImageView;
-    @BindView(R.id.task_change_button_main)
+
     Button changeButton;
     @BindView(R.id.timer_button_main)
     ToggleButton timerButton;
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         isAppVisible = true;
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -206,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setOnClickListeners() {
         settingsImageView.setOnClickListener(this);
-        changeButton.setOnClickListener(this);
         timerButton.setOnClickListener(this);
         finishImageView.setOnClickListener(this);
     }
@@ -282,9 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
 
-            case R.id.task_change_button_main:
-                // Todo: Define on task change
-                break;
+
 
             case R.id.timer_button_main:
                 if (currentlyRunningServiceType == TAMETU) {
