@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.util.Date;
+
 import gis2018.udacity.tametu.CountDownTimerService;
 
 import static gis2018.udacity.tametu.MainActivity.currentlyRunningServiceType;
@@ -40,6 +42,9 @@ public class StopTimerUtils {
                     1f);
             sendBroadcast(context);
         }
+        Date date = new Date(System.currentTimeMillis()); //or simply new Date();
+        long millis = date.getTime();
+        preferences.edit().putInt("pause",(int)millis/1000).apply();
     }
 
     /**

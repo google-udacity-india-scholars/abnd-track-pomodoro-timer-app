@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -29,6 +30,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import java.util.Date;
+import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String longBreakDurationString; // Time Period for Long-Break in String
     private SharedPreferences preferences;
     private int workSessionCount = 0;
-    private int task_on_hand_count=0;// Number of Completed Work-Sessions
+    private int task_on_hand_count = 0;// Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
     private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
@@ -127,39 +131,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         alertDialog = createTametuCompletionAlertDialog();
         displayTametuCompletionAlertDialog();
-         EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);
+        EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);
         final SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
 
         message.setText(prefs.getString("autoSave", ""));
-        if(message.getText().toString().trim().length() == 0)
+        if (message.getText().toString().trim().length() == 0)
             message.setText("Task 1", TextView.BufferType.EDITABLE);
 
 
         message.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
-                                      int count)
-            {
+                                      int count) {
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after)
-            {
+                                          int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
 
                 prefs.edit().putString("autoSave", s.toString()).commit();
 
             }
         });
-
-
-
 
 
     }
@@ -287,6 +285,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.timer_button_main:
+
+                Date date = new Date(System.currentTimeMillis()); //or simply new Date();
+                long millis = date.getTime();
+                int resume = (int) millis / 1000;
+                int pause = preferences.getInt("pause", 0);
+                if ((resume - pause) >= 14400)
+                    preferences.edit().putInt(getString(R.string.work_session_count_key), 0).apply();
+
                 if (currentlyRunningServiceType == TAMETU) {
                     if (timerButton.isChecked()) {
                         startTimer(workDuration);
@@ -510,7 +516,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String notificationContentText;
 
-        if (currentlyRunningServiceType ==TAMETU)
+        if (currentlyRunningServiceType == TAMETU)
             notificationContentText = getString(R.string.start_tametu);
         else
             notificationContentText = getString(R.string.tametu_completion_alert_message);
