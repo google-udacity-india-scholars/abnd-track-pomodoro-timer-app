@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Tamétû - get more done, faster</string>
+    <string name="app_name">TAMETU</string>
     <string name="work_duration">Work Duration :</string>
     <string name="short_break_duration">Short Break Duration :</string>
     <string name="long_break_duration">Long Break Duration :</string>
     <string name="work_duration_key">WORK_DURATION</string>
-    <string name="lba">Start Long Break After</string>
+    <string name="lba">Start Long Break After:</string>
 
     <string name="short_break_duration_key">SHORT_BREAK_DURATION</string>
     <string name="long_break_duration_key">LONG_BREAK_DURATION</string>

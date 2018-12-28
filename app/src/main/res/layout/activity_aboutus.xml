@@ -12,8 +12,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="  ABOUT US"
+            android:padding="5dp"
+            android:layout_marginTop="11dp"
+            android:fontFamily="sans-serif"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="WORDS BY DEVELOPERS"
             android:padding="15dp"
+            android:layout_marginTop="15dp"
             android:textStyle="bold"
             android:fontFamily="sans-serif"/>
     <TextView

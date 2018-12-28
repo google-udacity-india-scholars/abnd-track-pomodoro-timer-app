@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView workSessionCountTextView;
     @BindView(R.id.finish_imageview_main)
     ImageView finishImageView; // (Complete Button)
+    @BindView(R.id.sessions_completed_textview_main)
+    TextView textcountdown;
     private long workDuration; // Time Period for Pomodoro (Work-Session)
     private String workDurationString; // Time Period for Pomodoro in String
     private long shortBreakDuration; // Time Period for Short-Break
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String longBreakDurationString; // Time Period for Long-Break in String
     private SharedPreferences preferences;
     private int workSessionCount = 0;
-    private int task_on_hand_count=0;// Number of Completed Work-Sessions
+    private int task_on_hand_count = 0;// Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
     private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
@@ -127,39 +129,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         alertDialog = createTametuCompletionAlertDialog();
         displayTametuCompletionAlertDialog();
-         EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);
+        final EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);
         final SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
 
         message.setText(prefs.getString("autoSave", ""));
-        if(message.getText().toString().trim().length() == 0)
+
+        if (message.getText().toString().trim().length() == 0)
             message.setText("Task 1", TextView.BufferType.EDITABLE);
 
 
         message.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
-                                      int count)
-            {
+                                      int count) {
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after)
-            {
+                                          int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
-
+            public void afterTextChanged(Editable s) {
                 prefs.edit().putString("autoSave", s.toString()).commit();
 
             }
         });
-
-
-
 
 
     }
@@ -188,6 +184,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sessionCompleteAVFeedback(Context context) {
+        textcountdown.setVisibility(View.VISIBLE);
+        workSessionCountTextView.setVisibility(View.VISIBLE);
         //Update completed session text view count
         workSessionCountTextView.setText(String.valueOf(preferences
                 .getInt(getString(R.string.task_on_hand_count_key), 0)));
@@ -213,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         isAppVisible = true;
-
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
         super.onStart();
     }
@@ -282,8 +279,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
 
-
             case R.id.timer_button_main:
+                workSessionCountTextView.setVisibility(View.INVISIBLE);
+                textcountdown.setVisibility(View.INVISIBLE);
                 if (currentlyRunningServiceType == TAMETU) {
                     if (timerButton.isChecked()) {
                         startTimer(workDuration);
@@ -348,16 +346,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void changeToggleButtonStateText(int currentlyRunningServiceType) {
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
         if (currentlyRunningServiceType == TAMETU) {
-            timerButton.setTextOn(getString(R.string.cancel_tametu));
-            timerButton.setTextOff(getString(R.string.start_tametu));
             countDownTextView.setText(workDurationString);
         } else if (currentlyRunningServiceType == SHORT_BREAK) {
-            timerButton.setTextOn(getString(R.string.skip_short_break));
-            timerButton.setTextOff(getString(R.string.start_short_break));
             countDownTextView.setText(shortBreakDurationString);
         } else if (currentlyRunningServiceType == LONG_BREAK) {
-            timerButton.setTextOn(getString(R.string.skip_long_break));
-            timerButton.setTextOff(getString(R.string.start_long_break));
             countDownTextView.setText(longBreakDurationString);
         }
 
@@ -507,7 +499,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String notificationContentText;
 
-        if (currentlyRunningServiceType ==TAMETU)
+        if (currentlyRunningServiceType == TAMETU)
             notificationContentText = getString(R.string.start_tametu);
         else
             notificationContentText = getString(R.string.tametu_completion_alert_message);

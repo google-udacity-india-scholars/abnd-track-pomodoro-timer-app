@@ -4,15 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".SettingsActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:text="  Settings"
+        android:padding="5dp"
+        android:fontFamily="sans-serif"
+        />
 
     <TextView
         android:id="@+id/work_duration_text_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="66dp"
         android:text="@string/work_duration"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:textSize="15sp"
+        android:textColor="#FFFFFF"
         android:layout_marginTop="16dp"
         android:text="@string/short_break_duration"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +67,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
         android:layout_marginTop="16dp"
         android:text="@string/long_break_duration"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +89,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:textSize="15sp"
+        android:textColor="#FFFFFF"
         android:layout_marginTop="16dp"
         android:text="@string/lba"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +113,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="About Us"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_long_break_after_spinner" />
 </android.support.constraint.ConstraintLayout>

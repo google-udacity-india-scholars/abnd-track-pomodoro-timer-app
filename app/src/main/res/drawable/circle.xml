@@ -2,7 +2,7 @@
     android:shape="oval">
     <solid android:color="#FFFFFF" />
     <size
-        android:width="50dp"
-        android:height="50dp" />
-    <corners android:radius="20dp" />
+        android:width="40dp"
+        android:height="40dp" />
+    <corners android:radius="40dp" />
 </shape>
