@@ -496,7 +496,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setSmallIcon(R.drawable.ic_notification_icon)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setColor(getResources().getColor(R.color.colorPrimary));
+                .setColor(getResources().getColor(R.color.colorPrimary))
+                .setUsesChronometer(true); //timer that counts-up. Displays time in-between two sessions
 
         switch (currentlyRunningServiceType) {
             case TAMETU:
