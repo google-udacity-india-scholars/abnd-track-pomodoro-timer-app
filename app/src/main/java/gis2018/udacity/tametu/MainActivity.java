@@ -16,7 +16,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -32,7 +31,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.Date;
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,17 +40,17 @@ import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
 import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
-import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
 import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.Constants.TIME_INTERVAL;
+import static gis2018.udacity.tametu.utils.NotificationActionUtils.getIntervalAction;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionCancel;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionComplete;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
 
     public static int currentlyRunningServiceType; // Type of Service can be TAMETU, SHORT_BREAK or LONG_BREAK
     BroadcastReceiver stoppedBroadcastReceiver;
@@ -514,19 +512,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        String notificationContentText;
+        NotificationCompat.Action startTametuAction = new NotificationCompat.Action(
+                R.drawable.complete,
+                getString(R.string.start_tametu),
+                pendingIntent
+        );
 
-        if (currentlyRunningServiceType == TAMETU)
-            notificationContentText = getString(R.string.start_tametu);
-        else
-            notificationContentText = getString(R.string.tametu_completion_alert_message);
-
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
-                .setContentTitle("Tametu Countdown Timer")
                 .setContentIntent(pendingIntent)
-                .setContentText(notificationContentText)
                 .setAutoCancel(true);
+
+        switch (currentlyRunningServiceType) {
+            case TAMETU:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .setContentTitle(getString(R.string.break_over_notification_title))
+                        .setContentText(getString(R.string.start_tametu));
+                break;
+            case SHORT_BREAK:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(LONG_BREAK, MainActivity.this))
+                        .setContentTitle(getString(R.string.tametu_completion_alert_message))
+                        .setContentText(getString(R.string.session_over_notification_content_text));
+                break;
+            case LONG_BREAK:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(SHORT_BREAK, MainActivity.this))
+                        .setContentTitle(getString(R.string.tametu_completion_alert_message))
+                        .setContentText(getString(R.string.session_over_notification_content_text));
+                break;
+            default:
+        }
+
+        return notificationBuilder;
     }
 
     /**
