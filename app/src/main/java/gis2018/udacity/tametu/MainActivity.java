@@ -14,9 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -32,7 +30,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.Date;
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,17 +39,17 @@ import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
 import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
-import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
 import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.NotificationActionUtils.getIntervalAction;
+import static gis2018.udacity.tametu.utils.StartTimerUtils.startTimer;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionCancel;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionComplete;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
 
     public static int currentlyRunningServiceType; // Type of Service can be TAMETU, SHORT_BREAK or LONG_BREAK
     BroadcastReceiver stoppedBroadcastReceiver;
@@ -77,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long longBreakDuration; // Time Period for Long-Break
     private String longBreakDurationString; // Time Period for Long-Break in String
     private SharedPreferences preferences;
-    private int workSessionCount = 0;
     private int task_on_hand_count = 0;// Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
@@ -168,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeToggleButtonStateText(currentlyRunningServiceType);
 
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
-        workSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
+        task_on_hand_count = preferences.getInt(getString(R.string.task_on_hand_count_key), 0);
         workSessionCountTextView.setText(String.valueOf(task_on_hand_count));
     }
 
@@ -295,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (currentlyRunningServiceType == TAMETU) {
                     if (timerButton.isChecked()) {
-                        startTimer(workDuration);
+                        startTimer(workDuration, this);
                     } else {
                         // When "Cancel Pomodoro" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -303,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else if (currentlyRunningServiceType == SHORT_BREAK) {
                     if (timerButton.isChecked()) {
-                        startTimer(shortBreakDuration);
+                        startTimer(shortBreakDuration, this);
                     } else {
                         // When "Skip Short Break" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -311,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else if (currentlyRunningServiceType == LONG_BREAK) {
                     if (timerButton.isChecked()) {
-                        startTimer(longBreakDuration);
+                        startTimer(longBreakDuration, this);
                     } else {
                         // When "Skip Long Break" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -329,24 +325,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-    /**
-     * Starts service and CountDownTimer according to duration value.
-     * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
-     *
-     * @param duration is Time Period for which timer should tick
-     */
-    private void startTimer(long duration) {
-        Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-        serviceIntent.putExtra("time_period", duration);
-        serviceIntent.putExtra("time_interval", TIME_INTERVAL);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startForegroundService(serviceIntent);
-        else
-            startService(serviceIntent);
-    }
-
 
     /**
      * Changes textOn, textOff for Toggle Button & Resets CountDownTimer to initial value,
@@ -500,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             alertDialog.cancel();
         registerLocalBroadcastReceivers();
         changeToggleButtonStateText(currentlyRunningServiceType);
-        startTimer(breakDuration);
+        startTimer(breakDuration, this);
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
     }
 
@@ -514,19 +492,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        String notificationContentText;
-
-        if (currentlyRunningServiceType == TAMETU)
-            notificationContentText = getString(R.string.start_tametu);
-        else
-            notificationContentText = getString(R.string.tametu_completion_alert_message);
-
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
-                .setContentTitle("Tametu Countdown Timer")
                 .setContentIntent(pendingIntent)
-                .setContentText(notificationContentText)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setColor(getResources().getColor(R.color.colorPrimary));
+
+        switch (currentlyRunningServiceType) {
+            case TAMETU:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .setContentTitle(getString(R.string.break_over_notification_title))
+                        .setContentText(getString(R.string.break_over_notification_content_text));
+                break;
+            case SHORT_BREAK:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(LONG_BREAK, MainActivity.this))
+                        .setContentTitle(getString(R.string.tametu_completion_notification_message))
+                        .setContentText(getString(R.string.session_over_notification_content_text));
+                break;
+            case LONG_BREAK:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(SHORT_BREAK, MainActivity.this))
+                        .setContentTitle(getString(R.string.tametu_completion_alert_message))
+                        .setContentText(getString(R.string.session_over_notification_content_text));
+                break;
+            default:
+        }
+
+        return notificationBuilder;
     }
 
     /**

@@ -13,7 +13,6 @@ import gis2018.udacity.tametu.CountDownTimerService;
 import static gis2018.udacity.tametu.MainActivity.currentlyRunningServiceType;
 import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
-import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Utils.ringID;
 import static gis2018.udacity.tametu.utils.Utils.soundPool;
 import static gis2018.udacity.tametu.utils.Utils.updateCurrentlyRunningServiceType;
@@ -69,7 +68,7 @@ public class StopTimerUtils {
      * Stops service and resets CountDownTimer to initial value.
      * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
      */
-    public static void stopTimer(Context context) {
+    private static void stopTimer(Context context) {
         Intent serviceIntent = new Intent(context, CountDownTimerService.class);
         context.stopService(serviceIntent);
     }

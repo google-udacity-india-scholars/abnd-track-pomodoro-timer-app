@@ -19,7 +19,6 @@ import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.INTENT_NAME_ACTION;
 import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_CANCEL;
 import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_COMPLETE;
-import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
