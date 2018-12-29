@@ -10,6 +10,12 @@ import static gis2018.udacity.tametu.utils.Constants.TIME_INTERVAL;
 
 public class StartTimerUtils {
 
+    /**
+     * Starts service and CountDownTimer according to duration value.
+     * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
+     *
+     * @param duration is Time Period for which timer should tick
+     */
     public static void startTimer(long duration, Context context) {
         Intent serviceIntent = new Intent(context, CountDownTimerService.class);
         serviceIntent.putExtra("time_period", duration);

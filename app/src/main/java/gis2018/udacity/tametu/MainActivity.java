@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -44,8 +43,8 @@ import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
 import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
-import static gis2018.udacity.tametu.utils.Constants.TIME_INTERVAL;
 import static gis2018.udacity.tametu.utils.NotificationActionUtils.getIntervalAction;
+import static gis2018.udacity.tametu.utils.StartTimerUtils.startTimer;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionCancel;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionComplete;
 
@@ -75,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long longBreakDuration; // Time Period for Long-Break
     private String longBreakDurationString; // Time Period for Long-Break in String
     private SharedPreferences preferences;
-    private int workSessionCount = 0;
     private int task_on_hand_count = 0;// Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
@@ -166,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeToggleButtonStateText(currentlyRunningServiceType);
 
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
-        workSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
+        task_on_hand_count = preferences.getInt(getString(R.string.task_on_hand_count_key), 0);
         workSessionCountTextView.setText(String.valueOf(task_on_hand_count));
     }
 
@@ -293,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (currentlyRunningServiceType == TAMETU) {
                     if (timerButton.isChecked()) {
-                        startTimer(workDuration);
+                        startTimer(workDuration, this);
                     } else {
                         // When "Cancel Pomodoro" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -301,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else if (currentlyRunningServiceType == SHORT_BREAK) {
                     if (timerButton.isChecked()) {
-                        startTimer(shortBreakDuration);
+                        startTimer(shortBreakDuration, this);
                     } else {
                         // When "Skip Short Break" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -309,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else if (currentlyRunningServiceType == LONG_BREAK) {
                     if (timerButton.isChecked()) {
-                        startTimer(longBreakDuration);
+                        startTimer(longBreakDuration, this);
                     } else {
                         // When "Skip Long Break" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -327,24 +325,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-    /**
-     * Starts service and CountDownTimer according to duration value.
-     * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
-     *
-     * @param duration is Time Period for which timer should tick
-     */
-    private void startTimer(long duration) {
-        Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-        serviceIntent.putExtra("time_period", duration);
-        serviceIntent.putExtra("time_interval", TIME_INTERVAL);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startForegroundService(serviceIntent);
-        else
-            startService(serviceIntent);
-    }
-
 
     /**
      * Changes textOn, textOff for Toggle Button & Resets CountDownTimer to initial value,
@@ -498,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             alertDialog.cancel();
         registerLocalBroadcastReceivers();
         changeToggleButtonStateText(currentlyRunningServiceType);
-        startTimer(breakDuration);
+        startTimer(breakDuration, this);
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
     }
 
