@@ -57,6 +57,8 @@
     <string name="package_name">gis2018.udacity.tametu</string>
     <string name="intro">The Pomodoro technique is a simple idea of tricking oneself into working/studying for short 25-minute intervals for a return of short 5/5/5/15-minute break cycles.The motive behind this was to have a Pomodoro better than what is already on market, but in order to avoid copyright issues, we cannot use the term Pomodoro. We can craft this to sound a little better .We aimed to build a simple productivity timer that is helpful and lovable. Tamétû likes to keep things simple and is therefore an ensemble of just the most required features.</string>
     <string name="creation">Students of Google India Udacity Scholarship and NJACK Winter of Code Participants</string>
-    <string name="break_over_notification_title">Break\'s over. Get back to work.</string>
+    <string name="break_over_notification_title">Break\'s over.</string>
     <string name="session_over_notification_content_text">Time to relax. Start a break</string>
+    <string name="break_over_notification_content_text">Let\'s get this done.</string>
+    <string name="tametu_completion_notification_message">Congrats, you completed a session.</string>
 </resources>

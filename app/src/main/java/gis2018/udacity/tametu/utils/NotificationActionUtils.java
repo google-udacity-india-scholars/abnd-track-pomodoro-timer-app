@@ -17,7 +17,10 @@ import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 
 public class NotificationActionUtils {
-
+    /**
+     * @param currentlyRunningServiceType The next service that shall be run
+     * @return Returns Action Buttons and assigns pendingIntents to Actions
+     */
     public static NotificationCompat.Action getIntervalAction(int currentlyRunningServiceType,
                                                               Context context) {
 

@@ -15,9 +15,9 @@ import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_COMPLETE;
 /**
  * StopTimerActionReceiver is used when notification
  * <p>
- * COMPLETE
+ * COMPLETE and CANCEL
  * <p>
- * action button is click
+ * action buttons are click
  */
 public class StopTimerActionReceiver extends BroadcastReceiver {
 
