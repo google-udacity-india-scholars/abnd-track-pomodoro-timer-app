@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="gis2018.udacity.pomodoro">
+    package="gis2018.udacity.tametu">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
-        android:name=".App"
+        android:name="gis2018.udacity.tametu.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,12 +15,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <service
-            android:name=".CountDownTimerService"
+            android:name="gis2018.udacity.tametu.CountDownTimerService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".MainActivity"
-            android:launchMode = "singleTop">
+        <activity
+            android:name="gis2018.udacity.tametu.MainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,11 +30,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="gis2018.udacity.tametu.SettingsActivity"
             android:label="Settings"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="gis2018.udacity.tametu.MainActivity" />
         <!-- Broadcast receiver for notification action button -->
-        <receiver android:name=".StopTimerActionReceiver" />
+        <receiver android:name="gis2018.udacity.tametu.StopTimerActionReceiver" />
+        <receiver android:name=".StartTimerActionReceiver" />
+
+        <activity android:name="gis2018.udacity.tametu.Aboutus"
+            android:label="ABOUT US"
+            android:parentActivityName="gis2018.udacity.tametu.SettingsActivity">
+
+        </activity>
     </application>
 
 </manifest>

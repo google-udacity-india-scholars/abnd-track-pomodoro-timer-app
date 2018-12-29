@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro.utils;
+package gis2018.udacity.tametu.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,14 +6,16 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 
-import gis2018.udacity.pomodoro.CountDownTimerService;
+import java.util.Date;
 
-import static gis2018.udacity.pomodoro.MainActivity.currentlyRunningServiceType;
-import static gis2018.udacity.pomodoro.utils.Constants.COMPLETE_ACTION_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Utils.ringID;
-import static gis2018.udacity.pomodoro.utils.Utils.soundPool;
-import static gis2018.udacity.pomodoro.utils.Utils.updateCurrentlyRunningServiceType;
+import gis2018.udacity.tametu.CountDownTimerService;
+
+import static gis2018.udacity.tametu.MainActivity.currentlyRunningServiceType;
+import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
+import static gis2018.udacity.tametu.utils.Utils.ringID;
+import static gis2018.udacity.tametu.utils.Utils.soundPool;
+import static gis2018.udacity.tametu.utils.Utils.updateCurrentlyRunningServiceType;
 
 public class StopTimerUtils {
 
@@ -23,7 +25,7 @@ public class StopTimerUtils {
     public static void sessionComplete(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        if (currentlyRunningServiceType == POMODORO) {
+        if (currentlyRunningServiceType == TAMETU) {
 
             // Updates newWorkSessionCount in SharedPreferences and displays it on TextView.
             Utils.updateWorkSessionCount(preferences, context);
@@ -39,13 +41,16 @@ public class StopTimerUtils {
                     1f);
             sendBroadcast(context);
         }
+        Date date = new Date(System.currentTimeMillis()); //or simply new Date();
+        long millis = date.getTime();
+        preferences.edit().putInt("pause",(int)millis/1000).apply();
     }
 
     /**
      * Tasks executed when the session is cancelled prematurely
      */
     public static void sessionCancel(Context context, SharedPreferences preferences) {
-        updateCurrentlyRunningServiceType(preferences, context, POMODORO);
+        updateCurrentlyRunningServiceType(preferences, context, TAMETU);
         stopTimer(context);
         sendBroadcast(context);
     }
@@ -63,7 +68,7 @@ public class StopTimerUtils {
      * Stops service and resets CountDownTimer to initial value.
      * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
      */
-    public static void stopTimer(Context context) {
+    private static void stopTimer(Context context) {
         Intent serviceIntent = new Intent(context, CountDownTimerService.class);
         context.stopService(serviceIntent);
     }

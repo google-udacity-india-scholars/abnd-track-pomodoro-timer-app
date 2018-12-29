@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro;
+package gis2018.udacity.tametu;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -12,19 +12,19 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
-import gis2018.udacity.pomodoro.utils.Utils;
+import gis2018.udacity.tametu.utils.Utils;
 
-import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
-import static gis2018.udacity.pomodoro.utils.Constants.COUNTDOWN_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.INTENT_NAME_ACTION;
-import static gis2018.udacity.pomodoro.utils.Constants.INTENT_VALUE_CANCEL;
-import static gis2018.udacity.pomodoro.utils.Constants.INTENT_VALUE_COMPLETE;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Constants.STOP_ACTION_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
-import static gis2018.udacity.pomodoro.utils.Utils.ringID;
-import static gis2018.udacity.pomodoro.utils.Utils.soundPool;
-import static gis2018.udacity.pomodoro.utils.Utils.tickID;
+import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
+import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_NAME_ACTION;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_CANCEL;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_COMPLETE;
+import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
+import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.Utils.ringID;
+import static gis2018.udacity.tametu.utils.Utils.soundPool;
+import static gis2018.udacity.tametu.utils.Utils.tickID;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
@@ -33,13 +33,13 @@ public class CountDownTimerService extends Service {
     private SharedPreferences preferences;
     private int newWorkSessionCount;
     private int currentlyRunningServiceType;
-    private Intent completeIntent;
 
     public CountDownTimerService() {
     }
 
     @Override
     public void onCreate() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         broadcaster = LocalBroadcastManager.getInstance(this);
     }
 
@@ -58,13 +58,14 @@ public class CountDownTimerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         long TIME_PERIOD = intent.getLongExtra("time_period", 0);
         long TIME_INTERVAL = intent.getLongExtra("time_interval", 0);
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
 
         //For "Complete" button - Intent and PendingIntent
-        completeIntent = new Intent(this, StopTimerActionReceiver.class)
+        Intent completeIntent = new Intent(this, StopTimerActionReceiver.class)
                 .putExtra(INTENT_NAME_ACTION, INTENT_VALUE_COMPLETE);
         PendingIntent completeActionPendingIntent = PendingIntent.getBroadcast(this,
                 1, completeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -76,15 +77,32 @@ public class CountDownTimerService extends Service {
                 0, cancelIntent, 0);
 
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
-                .setContentTitle("Pomodoro Countdown Timer")
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pendingIntent)
-                .setContentText("Countdown timer is running")
-                .addAction(R.drawable.complete, "Complete", completeActionPendingIntent)
-                .addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent)
-                .setOngoing(false)
+                .setOngoing(false);
+
+        //adding separate cases for both service types to ensure the order of the action
+        //buttons is preserved in the notification
+        switch (currentlyRunningServiceType) {
+            case 0:
+                notificationBuilder
+                        .addAction(R.drawable.complete, "Complete", completeActionPendingIntent)
+                        .addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent)
+                        .setContentTitle("Tametu Countdown Timer")
+                        .setContentText("Countdown timer is running");
+                break;
+            case 1:
+            case 2:
+                notificationBuilder
+                        .addAction(R.drawable.cancel, "Cancel", cancelActionPendingIntent)
+                        .setContentTitle("On a break")
+                        .setContentText("Break timer is running");
+                break;
+        }
+
+        Notification notification = notificationBuilder
                 .build();
 
         // Clearing any previous notifications.
@@ -101,7 +119,6 @@ public class CountDownTimerService extends Service {
      * @return a CountDownTimer which ticks every 1 second for given Time period.
      */
     private CountDownTimer countDownTimerBuilder(long TIME_PERIOD, long TIME_INTERVAL) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, getApplicationContext());
         countDownTimer = new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
             @Override
@@ -118,13 +135,13 @@ public class CountDownTimerService extends Service {
             @Override
             public void onFinish() {
                 // Updates and Retrieves new value of WorkSessionCount.
-                if (currentlyRunningServiceType == POMODORO) {
+                if (currentlyRunningServiceType == TAMETU) {
                     newWorkSessionCount = Utils.updateWorkSessionCount(preferences, getApplicationContext());
                     // Getting type of break user should take, and updating type of currently running service
                     currentlyRunningServiceType = Utils.getTypeOfBreak(preferences, getApplicationContext());
                 } else {
                     // If last value of currentlyRunningServiceType was SHORT_BREAK or LONG_BREAK then set it back to POMODORO
-                    currentlyRunningServiceType = POMODORO;
+                    currentlyRunningServiceType = TAMETU;
                 }
 
                 newWorkSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);

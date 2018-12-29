@@ -1,4 +1,4 @@
-package gis2018.udacity.pomodoro.utils;
+package gis2018.udacity.tametu.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,11 +8,11 @@ import android.media.SoundPool;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import gis2018.udacity.pomodoro.R;
+import gis2018.udacity.tametu.R;
 
-import static gis2018.udacity.pomodoro.utils.Constants.LONG_BREAK;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 
 public class Utils {
     public static SoundPool soundPool;
@@ -28,16 +28,17 @@ public class Utils {
     public static int updateWorkSessionCount(SharedPreferences preferences, Context context) {
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
         int oldWorkSessionCount = preferences.getInt(context.getString(R.string.work_session_count_key), 0);
-
+        int taskOnHandCount = preferences.getInt(context.getString(R.string.task_on_hand_count_key), 0);
         // Updating oldWorkSessionCount by 1.
         int newWorkSessionCount = ++oldWorkSessionCount;
+        int newtaskonhandcount = ++taskOnHandCount;
 
         // Writing value of workSessionCount after a session is completed (New value of workSessionCount) in SharedPreference.
         preferences
                 .edit()
+                .putInt(context.getString(R.string.task_on_hand_count_key), newtaskonhandcount)
                 .putInt(context.getString(R.string.work_session_count_key), newWorkSessionCount)
                 .apply();
-
         return newWorkSessionCount;
     }
 
@@ -50,7 +51,28 @@ public class Utils {
      */
     public static int getTypeOfBreak(SharedPreferences preferences, Context context) {
         int currentWorkSessionCount = preferences.getInt(context.getString(R.string.work_session_count_key), 0);
-        if (currentWorkSessionCount % 4 == 0)
+        int session = preferences.getInt(context.getString(R.string.start_long_break_after), 2);
+        int longbreakintervalsession;
+        switch (session) {
+            case 0:
+                longbreakintervalsession = 2;
+                break;
+            case 1:
+                longbreakintervalsession = 3;
+                break;
+            case 2:
+                longbreakintervalsession = 4;
+                break;
+            case 3:
+                longbreakintervalsession = 5;
+                break;
+            case 4:
+                longbreakintervalsession = 6;
+                break;
+            default:
+                longbreakintervalsession = 4;
+        }
+        if (currentWorkSessionCount % longbreakintervalsession == 0)
             return LONG_BREAK;
         return SHORT_BREAK;
     }
@@ -88,10 +110,9 @@ public class Utils {
      * @return duration of CountDown for a service in milliSeconds according to value of currentlyRunningServiceType.
      */
     public static long getCurrentDurationPreferenceOf(SharedPreferences preferences, Context context, int currentlyRunningServiceType) {
-        if (currentlyRunningServiceType == POMODORO) {
+        if (currentlyRunningServiceType == TAMETU) {
             // Current value of work duration stored in shared-preference
             int currentWorkDurationPreference = preferences.getInt(context.getString(R.string.work_duration_key), 1);
-
             // Switch case to return appropriate minute value of work duration according value stored in shared-preference.
             switch (currentWorkDurationPreference) {
                 case 0:

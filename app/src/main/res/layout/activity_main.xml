@@ -61,11 +61,14 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:gravity="center"
                 android:layout_marginEnd="8dp"
-                android:inputType="text"
-                android:text="@string/task_name"
+                android:layout_marginBottom="8dp"
+                android:defaultValue="Task 1"
+                android:hint="Enter the task name here"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:cursorVisible="false"/>
 
             <TextView
                 android:id="@+id/sessions_completed_textview_main"
@@ -109,6 +112,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/timer_button_main"
         app:layout_constraintHorizontal_bias="0.5"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ToggleButton
@@ -118,8 +123,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:textOff="@string/start_pomodoro"
-        android:textOn="@string/cancel_pomodoro"
+        android:textOff="@string/start_tametu"
+        android:textOn="@string/cancel_tametu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/settings_imageview_main"
         app:layout_constraintHorizontal_bias="0.5"
@@ -136,6 +141,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         app:layout_constraintStart_toEndOf="@id/timer_button_main" />
 
 </android.support.constraint.ConstraintLayout>

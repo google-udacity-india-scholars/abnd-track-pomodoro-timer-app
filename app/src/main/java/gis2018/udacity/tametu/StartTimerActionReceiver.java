@@ -1,0 +1,43 @@
+package gis2018.udacity.tametu;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import gis2018.udacity.tametu.utils.Utils;
+
+import static gis2018.udacity.tametu.utils.Constants.INTENT_NAME_ACTION;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_LONG_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.INTENT_VALUE_START;
+import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
+import static gis2018.udacity.tametu.utils.StartTimerUtils.startTimer;
+
+public class StartTimerActionReceiver extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String receivedIntent = intent.getStringExtra(INTENT_NAME_ACTION);
+        SharedPreferences prefences = PreferenceManager.getDefaultSharedPreferences(context);
+        switch (receivedIntent) {
+            case INTENT_VALUE_START:
+                long workDuration = Utils.getCurrentDurationPreferenceOf(prefences, context,
+                        TAMETU);
+                startTimer(workDuration, context);
+                break;
+            case INTENT_VALUE_SHORT_BREAK:
+                long shortBreakDuration = Utils.getCurrentDurationPreferenceOf(prefences, context,
+                        SHORT_BREAK);
+                startTimer(shortBreakDuration, context);
+                break;
+            case INTENT_VALUE_LONG_BREAK:
+                long longBreakDuration = Utils.getCurrentDurationPreferenceOf(prefences, context,
+                        LONG_BREAK);
+                startTimer(longBreakDuration, context);
+        }
+    }
+}

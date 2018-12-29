@@ -3,7 +3,7 @@
  *  Enhanced at http://www.mp3smaller.com/ & http://www.mp3louder.com/
  */
 
-package gis2018.udacity.pomodoro;
+package gis2018.udacity.tametu;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -14,39 +14,44 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import gis2018.udacity.pomodoro.utils.Utils;
+import gis2018.udacity.tametu.utils.Utils;
 
-import static gis2018.udacity.pomodoro.utils.Constants.CHANNEL_ID;
-import static gis2018.udacity.pomodoro.utils.Constants.COMPLETE_ACTION_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.COUNTDOWN_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.LONG_BREAK;
-import static gis2018.udacity.pomodoro.utils.Constants.POMODORO;
-import static gis2018.udacity.pomodoro.utils.Constants.SHORT_BREAK;
-import static gis2018.udacity.pomodoro.utils.Constants.STOP_ACTION_BROADCAST;
-import static gis2018.udacity.pomodoro.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
-import static gis2018.udacity.pomodoro.utils.StopTimerUtils.sessionCancel;
-import static gis2018.udacity.pomodoro.utils.StopTimerUtils.sessionComplete;
+import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
+import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
+import static gis2018.udacity.tametu.utils.Constants.TAMETU;
+import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.NotificationActionUtils.getIntervalAction;
+import static gis2018.udacity.tametu.utils.StartTimerUtils.startTimer;
+import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionCancel;
+import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionComplete;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
 
-    public static int currentlyRunningServiceType; // Type of Service can be POMODORO, SHORT_BREAK or LONG_BREAK
+    public static int currentlyRunningServiceType; // Type of Service can be TAMETU, SHORT_BREAK or LONG_BREAK
     BroadcastReceiver stoppedBroadcastReceiver;
     BroadcastReceiver countDownReceiver;
     BroadcastReceiver completedBroadcastReceiver;
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long longBreakDuration; // Time Period for Long-Break
     private String longBreakDurationString; // Time Period for Long-Break in String
     private SharedPreferences preferences;
-    private int workSessionCount = 0; // Number of Completed Work-Sessions
+    private int task_on_hand_count = 0;// Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
     private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
@@ -118,8 +123,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         retrieveDurationValues(); //Duration values for Session and Short and Long Breaks
         setInitialValuesOnScreen(); //Button Text and Worksession Count
 
-        alertDialog = createPomodoroCompletionAlertDialog();
-        displayPomodoroCompletionAlertDialog();
+        alertDialog = createTametuCompletionAlertDialog();
+        displayTametuCompletionAlertDialog();
+        EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);
+        final SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        message.setText(prefs.getString("autoSave", ""));
+        if (message.getText().toString().trim().length() == 0)
+            message.setText("Task 1", TextView.BufferType.EDITABLE);
+
+
+        message.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                prefs.edit().putString("autoSave", s.toString()).commit();
+
+            }
+        });
+
+
     }
 
     private void setInitialValuesOnScreen() {
@@ -128,14 +162,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeToggleButtonStateText(currentlyRunningServiceType);
 
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
-        workSessionCount = preferences.getInt(getString(R.string.work_session_count_key), 0);
-        workSessionCountTextView.setText(String.valueOf(workSessionCount));
+        task_on_hand_count = preferences.getInt(getString(R.string.task_on_hand_count_key), 0);
+        workSessionCountTextView.setText(String.valueOf(task_on_hand_count));
     }
 
     private void retrieveDurationValues() {
         // Retrieving current value of Duration for POMODORO, SHORT_BREAK and
         // LONG_BREAK from SharedPreferences.
-        workDuration = Utils.getCurrentDurationPreferenceOf(preferences, this, POMODORO);
+        workDuration = Utils.getCurrentDurationPreferenceOf(preferences, this, TAMETU);
         shortBreakDuration = Utils.getCurrentDurationPreferenceOf(preferences, this, SHORT_BREAK);
         longBreakDuration = Utils.getCurrentDurationPreferenceOf(preferences, this, LONG_BREAK);
 
@@ -148,13 +182,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void sessionCompleteAVFeedback(Context context) {
         //Update completed session text view count
         workSessionCountTextView.setText(String.valueOf(preferences
-                .getInt(getString(R.string.work_session_count_key), 0)));
+                .getInt(getString(R.string.task_on_hand_count_key), 0)));
         // Retrieving value of currentlyRunningServiceType from SharedPreferences.
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences,
                 getApplicationContext());
         changeToggleButtonStateText(currentlyRunningServiceType);
-        alertDialog = createPomodoroCompletionAlertDialog();
-        displayPomodoroCompletionAlertDialog();
+        alertDialog = createTametuCompletionAlertDialog();
+        displayTametuCompletionAlertDialog();
         displayTaskInformationNotification();
         //Reset Timer TextView
         String duration = Utils.getCurrentDurationPreferenceStringFor(Utils.
@@ -171,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         isAppVisible = true;
+
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
         super.onStart();
     }
@@ -180,8 +215,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isAppVisible = true;
         registerLocalBroadcastReceivers();
         // Creates new Alert Dialog.
-        alertDialog = createPomodoroCompletionAlertDialog();
-        displayPomodoroCompletionAlertDialog();
+        alertDialog = createTametuCompletionAlertDialog();
+        displayTametuCompletionAlertDialog();
         super.onResume();
     }
 
@@ -240,9 +275,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 
 
             case R.id.timer_button_main:
-                if (currentlyRunningServiceType == POMODORO) {
+
+                Date date = new Date(System.currentTimeMillis()); //or simply new Date();
+                long millis = date.getTime();
+                int resume = (int) millis / 1000;
+                int pause = preferences.getInt("pause", 0);
+                if ((resume - pause) >= 14400)
+                    preferences.edit().putInt(getString(R.string.work_session_count_key), 0).apply();
+
+                if (currentlyRunningServiceType == TAMETU) {
                     if (timerButton.isChecked()) {
-                        startTimer(workDuration);
+                        startTimer(workDuration, this);
                     } else {
                         // When "Cancel Pomodoro" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -250,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else if (currentlyRunningServiceType == SHORT_BREAK) {
                     if (timerButton.isChecked()) {
-                        startTimer(shortBreakDuration);
+                        startTimer(shortBreakDuration, this);
                     } else {
                         // When "Skip Short Break" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -258,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else if (currentlyRunningServiceType == LONG_BREAK) {
                     if (timerButton.isChecked()) {
-                        startTimer(longBreakDuration);
+                        startTimer(longBreakDuration, this);
                     } else {
                         // When "Skip Long Break" is clicked, service is stopped and toggleButton
                         // is reset to "Start Pomodoro".
@@ -278,23 +321,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * Starts service and CountDownTimer according to duration value.
-     * Duration can be initial value of either POMODORO, SHORT_BREAK or LONG_BREAK.
-     *
-     * @param duration is Time Period for which timer should tick
-     */
-    private void startTimer(long duration) {
-        Intent serviceIntent = new Intent(this, CountDownTimerService.class);
-        serviceIntent.putExtra("time_period", duration);
-        serviceIntent.putExtra("time_interval", TIME_INTERVAL);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startForegroundService(serviceIntent);
-        else
-            startService(serviceIntent);
-    }
-
-
-    /**
      * Changes textOn, textOff for Toggle Button & Resets CountDownTimer to initial value,
      * according to value of currentlyRunningServiceType.
      *
@@ -302,9 +328,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void changeToggleButtonStateText(int currentlyRunningServiceType) {
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
-        if (currentlyRunningServiceType == POMODORO) {
-            timerButton.setTextOn(getString(R.string.cancel_pomodoro));
-            timerButton.setTextOff(getString(R.string.start_pomodoro));
+        if (currentlyRunningServiceType == TAMETU) {
+            timerButton.setTextOn(getString(R.string.cancel_tametu));
+            timerButton.setTextOff(getString(R.string.start_tametu));
             countDownTextView.setText(workDurationString);
         } else if (currentlyRunningServiceType == SHORT_BREAK) {
             timerButton.setTextOn(getString(R.string.skip_short_break));
@@ -371,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *
      * @return alert-dialog
      */
-    private AlertDialog createPomodoroCompletionAlertDialog() {
+    private AlertDialog createTametuCompletionAlertDialog() {
         if (alertDialog != null)
             alertDialog.cancel();
 
@@ -420,8 +446,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * Displays alert dialog when a Pomodoro (Work-Session) is finished.
      */
-    private void displayPomodoroCompletionAlertDialog() {
-        if (currentlyRunningServiceType != POMODORO && isAppVisible && !alertDialog.isShowing() && !isServiceRunning(CountDownTimerService.class)) {
+    private void displayTametuCompletionAlertDialog() {
+        if (currentlyRunningServiceType != TAMETU && isAppVisible && !alertDialog.isShowing() && !isServiceRunning(CountDownTimerService.class)) {
             alertDialog.show();
         }
     }
@@ -446,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             alertDialog.cancel();
         registerLocalBroadcastReceivers();
         changeToggleButtonStateText(currentlyRunningServiceType);
-        startTimer(breakDuration);
+        startTimer(breakDuration, this);
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
     }
 
@@ -460,19 +486,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        String notificationContentText;
-
-        if (currentlyRunningServiceType == POMODORO)
-            notificationContentText = getString(R.string.start_pomodoro);
-        else
-            notificationContentText = getString(R.string.pomodoro_completion_alert_message);
-
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
-                .setContentTitle("Pomodoro Countdown Timer")
                 .setContentIntent(pendingIntent)
-                .setContentText(notificationContentText)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setColor(getResources().getColor(R.color.colorPrimary));
+
+        switch (currentlyRunningServiceType) {
+            case TAMETU:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .setContentTitle(getString(R.string.break_over_notification_title))
+                        .setContentText(getString(R.string.break_over_notification_content_text));
+                break;
+            case SHORT_BREAK:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(LONG_BREAK, MainActivity.this))
+                        .setContentTitle(getString(R.string.tametu_completion_notification_message))
+                        .setContentText(getString(R.string.session_over_notification_content_text));
+                break;
+            case LONG_BREAK:
+                notificationBuilder
+                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(SHORT_BREAK, MainActivity.this))
+                        .setContentTitle(getString(R.string.tametu_completion_alert_message))
+                        .setContentText(getString(R.string.session_over_notification_content_text));
+                break;
+            default:
+        }
+
+        return notificationBuilder;
     }
 
     /**
