@@ -5,10 +5,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -50,7 +50,6 @@ public class CountDownTimerService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -76,12 +75,32 @@ public class CountDownTimerService extends Service {
         PendingIntent cancelActionPendingIntent = PendingIntent.getBroadcast(this,
                 0, cancelIntent, 0);
 
+        Notification.Builder notificationBuilder = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationBuilder = new Notification.Builder(this, CHANNEL_ID);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        } else {
+            notificationBuilder = new Notification.Builder(this);
+        }
+
+        notificationBuilder = notificationBuilder
                 .setSmallIcon(R.drawable.ic_notification_icon)
-                .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(pendingIntent)
                 .setOngoing(false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            notificationBuilder = notificationBuilder
+                    .setWhen(System.currentTimeMillis() + TIME_PERIOD)
+                    .setUsesChronometer(true)
+                    .setChronometerCountDown(true);
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notificationBuilder = notificationBuilder
+                    .setColor(getResources().getColor(R.color.colorPrimary));
+
+        }
 
         //adding separate cases for both service types to ensure the order of the action
         //buttons is preserved in the notification
