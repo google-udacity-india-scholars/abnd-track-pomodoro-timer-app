@@ -492,12 +492,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        NotificationCompat.Action startTametuAction = new NotificationCompat.Action(
-                R.drawable.complete,
-                getString(R.string.start_tametu),
-                pendingIntent
-        );
-
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_icon)
                 .setContentIntent(pendingIntent)
