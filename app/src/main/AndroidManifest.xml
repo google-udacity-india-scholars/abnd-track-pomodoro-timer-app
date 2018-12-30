@@ -35,6 +35,7 @@
             android:parentActivityName="gis2018.udacity.tametu.MainActivity" />
         <!-- Broadcast receiver for notification action button -->
         <receiver android:name="gis2018.udacity.tametu.StopTimerActionReceiver" />
+        <receiver android:name=".StartTimerActionReceiver" />
 
         <activity android:name="gis2018.udacity.tametu.Aboutus"
             android:label="ABOUT US"

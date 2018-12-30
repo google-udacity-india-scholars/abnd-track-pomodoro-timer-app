@@ -129,12 +129,6 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         }
         editor.apply();
-
-        // Print the saved preferences in logs
-        Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.work_duration_key), -1)));
-        Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.short_break_duration_key), -1)));
-        Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.long_break_duration_key), -1)));
-        Log.v(LOG_TAG, String.valueOf(preferences.getInt(getString(R.string.start_long_break_after), -1)));
     }
 
     /**
