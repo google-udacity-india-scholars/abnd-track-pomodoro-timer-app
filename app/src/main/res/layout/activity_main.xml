@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/bg"
     tools:context=".MainActivity">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/quicksand_medium"
+        android:padding="5dp"
+        android:text="  Tametu"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
-        android:text="  Tametu"
-        android:padding="5dp"
-        android:fontFamily="sans-serif"/>
+        tools:fontFamily="@font/raleway_semibold" />
     <TextView
         android:id="@+id/countdown_textview_main"
         android:layout_width="wrap_content"
@@ -63,12 +65,14 @@
                 android:layout_marginBottom="8dp"
                 android:background="@android:color/transparent"
                 android:cursorVisible="false"
-                android:textSize="22sp"
                 android:defaultValue="Task 1"
                 android:gravity="center"
                 android:hint="Enter the task name here"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:textColor="#F37335"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:fontFamily="@font/quicksand_medium" />
 
             <TextView
                 android:id="@+id/sessions_completed_textview_main"
@@ -107,18 +111,18 @@
 
     <ImageView
         android:id="@+id/finish_imageview_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="47dp"
+        android:layout_height="44dp"
         android:layout_marginStart="6dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/circle"
+        android:clickable="true"
         android:contentDescription="@string/complete_imageview_content_desc"
+        android:scaleType="fitXY"
         android:src="@drawable/complete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/timer_button_main"
         app:layout_constraintHorizontal_bias="0.5"
-        android:background="@drawable/circle"
-        android:scaleType="fitXY"
-        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ToggleButton
@@ -138,18 +142,17 @@
 
     <ImageView
         android:id="@+id/settings_imageview_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:clickable="true"
         android:contentDescription="@string/settings_imageview_content_desc"
-        android:src="@drawable/settings"
+        android:scaleType="fitXY"
+        android:src="@drawable/setting"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        android:background="@drawable/circle"
-        android:scaleType="fitXY"
-        android:clickable="true"
         app:layout_constraintStart_toEndOf="@id/timer_button_main" />
 
 </android.support.constraint.ConstraintLayout>

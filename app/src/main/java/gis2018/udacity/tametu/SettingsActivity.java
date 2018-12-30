@@ -57,13 +57,13 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     private void initSpinner() {
         // Create an array adapter for all three spinners using the string array
         ArrayAdapter<CharSequence> workDurationAdapter = ArrayAdapter.createFromResource(this,
-                R.array.work_duration_array, android.R.layout.simple_spinner_item);
+                R.array.work_duration_array, R.layout.spinner_item);
         ArrayAdapter<CharSequence> shortBreakDurationAdapter = ArrayAdapter.createFromResource(this,
-                R.array.short_break_duration_array, android.R.layout.simple_spinner_item);
+                R.array.short_break_duration_array, R.layout.spinner_item);
         ArrayAdapter<CharSequence> longBreakDurationAdapter = ArrayAdapter.createFromResource(this,
-                R.array.long_break_duration_array, android.R.layout.simple_spinner_item);
+                R.array.long_break_duration_array, R.layout.spinner_item);
         ArrayAdapter<CharSequence> startlongbreakafterAdapter = ArrayAdapter.createFromResource(this,
-                R.array.start_long_break_after_array, android.R.layout.simple_spinner_item);
+                R.array.start_long_break_after_array, R.layout.spinner_item);
 
         // Layout to use when list of choices appears
         workDurationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

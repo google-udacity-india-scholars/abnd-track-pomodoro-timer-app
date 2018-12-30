@@ -41,6 +41,9 @@
             android:parentActivityName="gis2018.udacity.tametu.SettingsActivity">
 
         </activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
