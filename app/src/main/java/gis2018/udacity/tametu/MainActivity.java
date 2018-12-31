@@ -150,10 +150,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void afterTextChanged(Editable s) {
 
-                preferences.edit().putInt(getString(R.string.work_session_count_key),0).apply();
-                preferences.edit().putInt(getString(R.string.task_on_hand_count_key),0).apply();
-                workSessionCountTextView.setText("0");
-                prefs.edit().putString("autoSave", s.toString()).commit();
+                preferences.edit().putInt(getString(R.string.task_on_hand_count_key), 0).apply();
+                workSessionCountTextView.setText(String.valueOf(preferences.getInt(
+                        getString(R.string.task_on_hand_count_key), 0)));
+                prefs.edit().putString("autoSave", s.toString()).apply();
 
             }
         });
