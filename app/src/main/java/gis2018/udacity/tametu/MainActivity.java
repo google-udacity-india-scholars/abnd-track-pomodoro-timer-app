@@ -5,7 +5,6 @@
 
 package gis2018.udacity.tametu;
 
-import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog = createTametuCompletionAlertDialog();
         displayTametuCompletionAlertDialog();
 
-        final EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);      
+        final EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);
 
         final SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
@@ -492,16 +491,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private NotificationCompat.Builder createTaskInformationNotification() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-        String notificationContentText;
-
-        if (currentlyRunningServiceType == TAMETU)
-            notificationContentText = getString(R.string.start_tametu);
-        else
-            notificationContentText = getString(R.string.tametu_completion_alert_message);
-
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
-
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
 
                 .setSmallIcon(R.drawable.ic_notification_icon)
