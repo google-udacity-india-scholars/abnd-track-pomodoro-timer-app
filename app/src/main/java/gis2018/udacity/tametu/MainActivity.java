@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BroadcastReceiver completedBroadcastReceiver;
     @BindView(R.id.settings_imageview_main)
     ImageView settingsImageView;
-    @BindView(R.id.task_change_button_main)
-    Button changeButton;
     @BindView(R.id.timer_button_main)
     ToggleButton timerButton;
     @BindView(R.id.countdown_textview_main)
@@ -203,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setOnClickListeners() {
         settingsImageView.setOnClickListener(this);
-        changeButton.setOnClickListener(this);
         timerButton.setOnClickListener(this);
         finishImageView.setOnClickListener(this);
     }
@@ -278,10 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
-
-            case R.id.task_change_button_main:
-                // Todo: Define on task change
-                break;
+                
 
             case R.id.timer_button_main:
 
