@@ -16,6 +16,7 @@
         android:textColor="#FFFFFF"
         android:textSize="32sp"
         tools:fontFamily="@font/raleway_semibold" />
+
     <TextView
         android:id="@+id/countdown_textview_main"
         android:layout_width="wrap_content"
@@ -37,12 +38,12 @@
         android:id="@+id/cardview_main"
         android:layout_width="match_parent"
         android:layout_height="260dp"
+        android:layout_margin="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:minHeight="220dp"
-        android:layout_margin="10dp"
         app:cardCornerRadius="25dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toTopOf="@id/timer_button_main"
@@ -50,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/countdown_textview_main">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -60,9 +61,7 @@
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="28dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:background="@android:color/transparent"
                 android:cursorVisible="false"
                 android:defaultValue="Task 1"
@@ -72,40 +71,38 @@
                 android:textColor="#F37335"
                 android:textSize="22sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:fontFamily="@font/quicksand_medium" />
-
-            <TextView
-                android:id="@+id/sessions_completed_textview_main"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_below="@id/current_task_name_textview_main"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="68dp"
-                android:layout_marginEnd="8dp"
-                android:visibility="invisible"
-                android:layout_marginBottom="8dp"
-                android:text="@string/work_sessions_completed"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/session_completed_value_textview_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_below="@id/current_task_name_textview_main"
-                android:visibility="invisible"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="69dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_toEndOf="@id/sessions_completed_textview_main"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="#59F37335"
+                android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="1" />
 
-        </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/insert_point"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/session_completed_value_textview_main"
+                app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 

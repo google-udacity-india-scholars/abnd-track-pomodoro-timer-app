@@ -35,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import gis2018.udacity.tametu.utils.Utils;
 
+import static gis2018.udacity.tametu.utils.CheckMarkUtils.updateCheckMarkCount;
 import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
 import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
@@ -46,6 +47,7 @@ import static gis2018.udacity.tametu.utils.Constants.START_LONG_BREAK_AFTER_KEY;
 import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.Constants.TASK_ON_HAND_COUNT_KEY;
 import static gis2018.udacity.tametu.utils.Constants.WORK_DURATION_KEY;
 import static gis2018.udacity.tametu.utils.NotificationActionUtils.getIntervalAction;
 import static gis2018.udacity.tametu.utils.StartTimerUtils.startTimer;
@@ -65,12 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ToggleButton timerButton;
     @BindView(R.id.countdown_textview_main)
     TextView countDownTextView;
-    @BindView(R.id.session_completed_value_textview_main)
-    TextView workSessionCountTextView;
     @BindView(R.id.finish_imageview_main)
     ImageView finishImageView; // (Complete Button)
-    @BindView(R.id.sessions_completed_textview_main)
-    TextView textcountdown;
     private long workDuration; // Time Period for Pomodoro (Work-Session)
     private String workDurationString; // Time Period for Pomodoro in String
     private long shortBreakDuration; // Time Period for Short-Break
@@ -78,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long longBreakDuration; // Time Period for Long-Break
     private String longBreakDurationString; // Time Period for Long-Break in String
     private SharedPreferences preferences;
-    private int task_on_hand_count = 0;// Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
     private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
@@ -155,16 +152,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 preferences.edit().putInt(getString(R.string.task_on_hand_count_key), 0).apply();
-                workSessionCountTextView.setText(String.valueOf(preferences.getInt(
-                        getString(R.string.task_on_hand_count_key), 0)));
                 prefs.edit().putString("autoSave", s.toString()).apply();
 
             }
         });
 
         preferences.registerOnSharedPreferenceChangeListener(this);
+
 
     }
 
@@ -174,8 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeToggleButtonStateText(currentlyRunningServiceType);
 
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
-        task_on_hand_count = preferences.getInt(getString(R.string.task_on_hand_count_key), 0);
-        workSessionCountTextView.setText(String.valueOf(task_on_hand_count));
+        updateCheckMarkCount(this);
     }
 
     private void retrieveDurationValues() {
@@ -192,11 +186,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sessionCompleteAVFeedback(Context context) {
-        textcountdown.setVisibility(View.VISIBLE);
-        workSessionCountTextView.setVisibility(View.VISIBLE);
-        //Update completed session text view count
-        workSessionCountTextView.setText(String.valueOf(preferences
-                .getInt(getString(R.string.task_on_hand_count_key), 0)));
         // Retrieving value of currentlyRunningServiceType from SharedPreferences.
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences,
                 getApplicationContext());
@@ -286,12 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
 
-                
-
             case R.id.timer_button_main:
-
-                workSessionCountTextView.setVisibility(View.INVISIBLE);
-                textcountdown.setVisibility(View.INVISIBLE);
                 Date date = new Date(System.currentTimeMillis()); //or simply new Date();
                 long millis = date.getTime();
                 int resume = (int) millis / 1000;
@@ -557,6 +541,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case START_LONG_BREAK_AFTER_KEY:
                 retrieveDurationValues();
                 setInitialValuesOnScreen();
+                break;
+            case TASK_ON_HAND_COUNT_KEY:
+                updateCheckMarkCount(this);
         }
     }
 }

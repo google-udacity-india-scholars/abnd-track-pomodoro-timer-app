@@ -29,5 +29,7 @@ public class Constants {
     public static final String SHORT_BREAK_DURATION_KEY = "SHORT_BREAK_DURATION";
     public static final String LONG_BREAK_DURATION_KEY = "LONG_BREAK_DURATION";
     public static final String START_LONG_BREAK_AFTER_KEY = "LONG_BREAK_AFTER_DURATION";
+    public static final String WORK_SESSION_COUNT_KEY = "WORK_SESSION_COUNT";
+    public static final String TASK_ON_HAND_COUNT_KEY = "TASK_ON_HAND_COUNT";
 
 }
