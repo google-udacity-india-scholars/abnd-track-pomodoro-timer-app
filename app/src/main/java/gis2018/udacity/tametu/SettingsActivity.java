@@ -81,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         workDurationSpinner.setSelection(preferences.getInt(getString(R.string.work_duration_key), 1));
         shortBreakDurationSpinner.setSelection(preferences.getInt(getString(R.string.short_break_duration_key), 1));
         longBreakDurationSpinner.setSelection(preferences.getInt(getString(R.string.long_break_duration_key), 1));
-        startlongbreakafterSpinner.setSelection(preferences.getInt(getString((R.string.start_long_break_after)), 2));
+        startlongbreakafterSpinner.setSelection(preferences.getInt(getString((R.string.start_long_break_after_key)), 2));
 
         workDurationSpinner.setOnItemSelectedListener(this);
         shortBreakDurationSpinner.setOnItemSelectedListener(this);
@@ -125,7 +125,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             case R.id.start_long_break_after_spinner:
                 Log.v(LOG_TAG, (String) parent.getItemAtPosition(position));
                 // save the corresponding item position
-                editor.putInt(getString(R.string.start_long_break_after), position);
+                editor.putInt(getString(R.string.start_long_break_after_key), position);
 
         }
         editor.apply();

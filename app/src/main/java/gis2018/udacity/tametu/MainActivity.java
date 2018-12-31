@@ -39,16 +39,20 @@ import static gis2018.udacity.tametu.utils.Constants.CHANNEL_ID;
 import static gis2018.udacity.tametu.utils.Constants.COMPLETE_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.COUNTDOWN_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK_DURATION_KEY;
 import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
+import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK_DURATION_KEY;
+import static gis2018.udacity.tametu.utils.Constants.START_LONG_BREAK_AFTER_KEY;
 import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.Constants.WORK_DURATION_KEY;
 import static gis2018.udacity.tametu.utils.NotificationActionUtils.getIntervalAction;
 import static gis2018.udacity.tametu.utils.StartTimerUtils.startTimer;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionCancel;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionComplete;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     public static int currentlyRunningServiceType; // Type of Service can be TAMETU, SHORT_BREAK or LONG_BREAK
@@ -74,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long longBreakDuration; // Time Period for Long-Break
     private String longBreakDurationString; // Time Period for Long-Break in String
     private SharedPreferences preferences;
-    private int workSessionCount = 0;
     private int task_on_hand_count = 0;// Number of Completed Work-Sessions
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
@@ -161,12 +164,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        preferences.registerOnSharedPreferenceChangeListener(this);
 
     }
 
     private void setInitialValuesOnScreen() {
         // Changing textOn & textOff according to value of currentlyRunningServiceType.
-        //currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
+        currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
         changeToggleButtonStateText(currentlyRunningServiceType);
 
         // Retrieving value of workSessionCount (Current value of workSessionCount) from SharedPreference.
@@ -492,7 +496,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-
                 .setSmallIcon(R.drawable.ic_notification_icon)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
@@ -542,6 +545,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isServiceRunning(CountDownTimerService.class)) {
             notificationManagerCompat
                     .notify(TASK_INFORMATION_NOTIFICATION_ID, notification);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case WORK_DURATION_KEY:
+            case SHORT_BREAK_DURATION_KEY:
+            case LONG_BREAK_DURATION_KEY:
+            case START_LONG_BREAK_AFTER_KEY:
+                retrieveDurationValues();
+                setInitialValuesOnScreen();
         }
     }
 }

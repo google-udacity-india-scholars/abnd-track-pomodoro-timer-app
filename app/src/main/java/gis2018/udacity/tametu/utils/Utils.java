@@ -51,7 +51,7 @@ public class Utils {
      */
     public static int getTypeOfBreak(SharedPreferences preferences, Context context) {
         int currentWorkSessionCount = preferences.getInt(context.getString(R.string.work_session_count_key), 0);
-        int session = preferences.getInt(context.getString(R.string.start_long_break_after), 2);
+        int session = preferences.getInt(context.getString(R.string.start_long_break_after_key), 2);
         int longbreakintervalsession;
         switch (session) {
             case 0:

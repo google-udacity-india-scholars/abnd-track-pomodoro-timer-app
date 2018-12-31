@@ -23,4 +23,11 @@ public class Constants {
     public static final String INTENT_VALUE_LONG_BREAK = "long";
 
     public static final long TIME_INTERVAL = 1000; // Time Interval is 1 second
+
+    //SharePreferences Keys
+    public static final String WORK_DURATION_KEY = "WORK_DURATION";
+    public static final String SHORT_BREAK_DURATION_KEY = "SHORT_BREAK_DURATION";
+    public static final String LONG_BREAK_DURATION_KEY = "LONG_BREAK_DURATION";
+    public static final String START_LONG_BREAK_AFTER_KEY = "LONG_BREAK_AFTER_DURATION";
+
 }
