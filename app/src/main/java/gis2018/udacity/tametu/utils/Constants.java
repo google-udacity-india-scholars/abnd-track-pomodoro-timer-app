@@ -31,5 +31,6 @@ public class Constants {
     public static final String START_LONG_BREAK_AFTER_KEY = "LONG_BREAK_AFTER_DURATION";
     public static final String WORK_SESSION_COUNT_KEY = "WORK_SESSION_COUNT";
     public static final String TASK_ON_HAND_COUNT_KEY = "TASK_ON_HAND_COUNT";
-
+    public static final String TICKING_VOLUME_LEVEL_KEY = "TICKING_VOLUME_LEVEL";
+    public static final String RINGING_VOLUME_LEVEL_KEY = "RINGING_VOLUME_LEVEL";
 }

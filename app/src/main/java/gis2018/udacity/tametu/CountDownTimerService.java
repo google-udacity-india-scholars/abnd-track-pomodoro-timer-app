@@ -25,6 +25,8 @@ import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATI
 import static gis2018.udacity.tametu.utils.Utils.ringID;
 import static gis2018.udacity.tametu.utils.Utils.soundPool;
 import static gis2018.udacity.tametu.utils.Utils.tickID;
+import static gis2018.udacity.tametu.utils.VolumeSeekBarUtils.floatRingingVolumeLevel;
+import static gis2018.udacity.tametu.utils.VolumeSeekBarUtils.floatTickingVolumeLevel;
 
 public class CountDownTimerService extends Service {
     public static final int ID = 1;
@@ -142,7 +144,10 @@ public class CountDownTimerService extends Service {
         countDownTimer = new CountDownTimer(TIME_PERIOD, TIME_INTERVAL) {
             @Override
             public void onTick(long timeInMilliSeconds) {
-                soundPool.play(tickID, 0.5f, 0.5f, 1, 0, 1f);
+                soundPool.play(tickID,
+                        floatTickingVolumeLevel,
+                        floatTickingVolumeLevel,
+                        1, 0, 1f);
 
                 String countDown = Utils.getCurrentDurationPreferenceStringFor(timeInMilliSeconds);
 
@@ -167,8 +172,10 @@ public class CountDownTimerService extends Service {
                 // Updating value of currentlyRunningServiceType in SharedPreferences.
                 Utils.updateCurrentlyRunningServiceType(preferences, getApplicationContext(), currentlyRunningServiceType);
                 //Ring once ticking ends.
-                soundPool.play(ringID, 0.5f, 0.5f, 1, 0, 1f);
-
+                soundPool.play(ringID,
+                        floatRingingVolumeLevel,
+                        floatRingingVolumeLevel,
+                        2, 0, 1f);
                 stopSelf();
                 stoppedBroadcastIntent();
             }

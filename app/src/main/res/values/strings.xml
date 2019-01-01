@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">TAMETU</string>
-    <string name="work_duration">Work Duration :</string>
-    <string name="short_break_duration">Short Break Duration :</string>
-    <string name="long_break_duration">Long Break Duration :</string>
+    <string name="work_duration">Work duration :</string>
+    <string name="short_break_duration">Short Break duration :</string>
+    <string name="long_break_duration">Long Break duration :</string>
     <string name="work_duration_key">WORK_DURATION</string>
-    <string name="lba">Start Long Break After :</string>
+    <string name="lba">Start Long Break after :</string>
+    <string name="set_ticking_volume">Set ticking Volume :</string>
+    <string name="set_ringing_volume">Set ringing Volume :</string>
+
 
     <string name="short_break_duration_key">SHORT_BREAK_DURATION</string>
     <string name="long_break_duration_key">LONG_BREAK_DURATION</string>

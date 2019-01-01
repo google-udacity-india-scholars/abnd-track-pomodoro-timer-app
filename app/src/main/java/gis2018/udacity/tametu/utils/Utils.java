@@ -176,7 +176,7 @@ public class Utils {
      */
     public static void prepareSoundPool(Context context) {
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-        tickID = soundPool.load(context, R.raw.clockticking, 1);
+        tickID = soundPool.load(context, R.raw.clockticking, 2);
         ringID = soundPool.load(context, R.raw.bellringing, 2);
     }
 }

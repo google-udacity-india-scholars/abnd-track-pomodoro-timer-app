@@ -16,6 +16,7 @@ import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Utils.ringID;
 import static gis2018.udacity.tametu.utils.Utils.soundPool;
 import static gis2018.udacity.tametu.utils.Utils.updateCurrentlyRunningServiceType;
+import static gis2018.udacity.tametu.utils.VolumeSeekBarUtils.floatRingingVolumeLevel;
 
 public class StopTimerUtils {
 
@@ -37,13 +38,13 @@ public class StopTimerUtils {
                     currentlyRunningServiceType);
 
             stopTimer(context);
-            soundPool.play(ringID, 0.5f, 0.5f, 1, 0,
+            soundPool.play(ringID, floatRingingVolumeLevel, floatRingingVolumeLevel, 2, 0,
                     1f);
             sendBroadcast(context);
         }
         Date date = new Date(System.currentTimeMillis()); //or simply new Date();
         long millis = date.getTime();
-        preferences.edit().putInt("pause",(int)millis/1000).apply();
+        preferences.edit().putInt("pause", (int) millis / 1000).apply();
     }
 
     /**

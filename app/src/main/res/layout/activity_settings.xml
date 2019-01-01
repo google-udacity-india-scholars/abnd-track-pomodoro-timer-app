@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     tools:context=".SettingsActivity">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:textSize="28sp"
-        android:text="  Settings"
-        android:padding="5dp"
         android:fontFamily="@font/raleway_semibold"
-        />
+        android:padding="5dp"
+        android:text="  Settings"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp" />
 
     <TextView
         android:id="@+id/work_duration_text_label"
@@ -22,9 +22,9 @@
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="66dp"
+        android:fontFamily="@font/quicksand_medium"
         android:text="@string/work_duration"
         android:textColor="#FFFFFF"
-        android:fontFamily="@font/quicksand_medium"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,8 +35,8 @@
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/layout_bg"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/layout_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/work_duration_text_label" />
@@ -46,11 +46,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textSize="15sp"
-        android:textColor="#FFFFFF"
-        android:fontFamily="@font/quicksand_medium"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_medium"
         android:text="@string/short_break_duration"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/work_duration_spinner" />
 
@@ -60,8 +60,8 @@
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/layout_bg"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/layout_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/short_break_duration_text_label" />
@@ -71,11 +71,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textColor="#FFFFFF"
-        android:fontFamily="@font/quicksand_medium"
-        android:textSize="15sp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_medium"
         android:text="@string/long_break_duration"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/short_break_duration_spinner" />
 
@@ -85,21 +85,22 @@
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/layout_bg"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/layout_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/long_break_duration_text_label" />
+
     <TextView
         android:id="@+id/start_long_break_after_text_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textSize="15sp"
-        android:textColor="#FFFFFF"
-        android:fontFamily="@font/quicksand_medium"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_medium"
         android:text="@string/lba"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/long_break_duration_spinner" />
 
@@ -107,23 +108,72 @@
         android:id="@+id/start_long_break_after_spinner"
         android:layout_width="0dp"
         android:layout_height="32dp"
-        android:background="@drawable/layout_bg"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/layout_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_long_break_after_text_label" />
+
+    <TextView
+        android:id="@+id/ticking_seek_bar_text_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_medium"
+        android:text="@string/set_ticking_volume"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_long_break_after_spinner" />
+
+    <SeekBar
+        android:id="@+id/ticking_seek_bar"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/start_long_break_after_spinner"
+        app:layout_constraintStart_toStartOf="@+id/start_long_break_after_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/ticking_seek_bar_text_label" />
+
+    <TextView
+        android:id="@+id/ringing_seek_bar_text_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_medium"
+        android:text="@string/set_ringing_volume"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ticking_seek_bar" />
+
+    <SeekBar
+        android:id="@+id/ringing_seek_bar"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/start_long_break_after_spinner"
+        app:layout_constraintStart_toStartOf="@+id/start_long_break_after_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/ringing_seek_bar_text_label" />
+
     <TextView
         android:id="@+id/Aboutus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:text="About Us"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/quicksand_medium"
+        android:text="About Us"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_long_break_after_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/ringing_seek_bar" />
 </android.support.constraint.ConstraintLayout>
