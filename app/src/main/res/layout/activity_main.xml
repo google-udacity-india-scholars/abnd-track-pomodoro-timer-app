@@ -61,7 +61,9 @@
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@android:color/transparent"
                 android:cursorVisible="false"
                 android:defaultValue="Task 1"
@@ -71,8 +73,10 @@
                 android:textColor="#F37335"
                 android:textSize="22sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:fontFamily="@font/quicksand_medium" />
 
             <TextView
@@ -91,6 +95,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="1" />
 
+            <!--Checkmarks get dynamically to this LinearLayout-->
             <LinearLayout
                 android:id="@+id/insert_point"
                 android:layout_width="0dp"
@@ -108,23 +113,23 @@
 
     <ImageView
         android:id="@+id/finish_imageview_main"
-        android:layout_width="47dp"
-        android:layout_height="44dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="6dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/circle"
         android:clickable="true"
         android:contentDescription="@string/complete_imageview_content_desc"
         android:scaleType="fitXY"
         android:src="@drawable/complete"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/timer_button_main"
         app:layout_constraintEnd_toStartOf="@id/timer_button_main"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timer_button_main" />
 
     <ToggleButton
         android:id="@+id/timer_button_main"
-        android:layout_width="81dp"
+        android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -139,17 +144,24 @@
 
     <ImageView
         android:id="@+id/settings_imageview_main"
-        android:layout_width="50dp"
-        android:layout_height="45dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:clickable="true"
         android:contentDescription="@string/settings_imageview_content_desc"
         android:scaleType="fitXY"
         android:src="@drawable/setting"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/timer_button_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/timer_button_main" />
+        app:layout_constraintStart_toEndOf="@id/timer_button_main"
+        app:layout_constraintTop_toTopOf="@+id/timer_button_main" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="523dp" />
 
 </android.support.constraint.ConstraintLayout>
