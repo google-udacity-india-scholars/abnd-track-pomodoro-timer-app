@@ -52,19 +52,13 @@ Anyone can contribute to this project, but the two most basic prerequisites are:
 - Git
 - Java
 
-## Project Rubric Level
-ABND - Part 2 Project Rubic used.
-
 ## Acknowledgments
 *Top Contributors*
 
 - [Tirth Patel](https://github.com/piedcipher)
 - [Sanjeev Sharma](https://github.com/thedevelopersanjeev)
 - [Kartik Ohri](https://github.com/kartikohri1712)
-
-## Project Moderators
-
-Please reach out to respective Mods for any quries about the Collaborative Projects!
-
-**ABND** 
-- @ak003.abnd
+- [Anmol Chaddha](https://github.com/chanmol1999)
+- [Hannan Shaikh](https://github.com/iamhshaikh)
+- [Mahima](https://github.com/amy6)
+- [Sreekant Shenoy](https://github.com/geekykant)
