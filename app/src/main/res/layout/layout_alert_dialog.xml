@@ -5,66 +5,65 @@
     android:background="#F37335"
     android:layout_height="wrap_content">
 
-<LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/layout_bg3"
-    android:gravity="center"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/alert_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="414dp"
+        android:background="@drawable/bg"
         android:gravity="center"
-        android:fontFamily="@font/raleway_semibold"
-        android:text="@string/tametu_completion_alert_message"
-        android:textColor="#FFFFFF"
-        android:textSize="28sp" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/start_break"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:textColor="#F37335"
-        android:fontFamily="@font/quicksand_medium"
-        android:textSize="28dp"
+        <TextView
+            android:id="@+id/alert_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/raleway_semibold"
+            android:gravity="center"
+            android:text="@string/tametu_completion_alert_message"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
 
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/layout_bg"
-        tools:text="Start Break" />
+        <Button
+            android:id="@+id/start_break"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/layout_bg"
+            android:fontFamily="@font/quicksand_medium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
 
-    <Button
-        android:id="@+id/start_other_break"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:textColor="#F37335"
-        android:fontFamily="@font/quicksand_medium"
-        android:textSize="28dp"
+            android:textColor="#F37335"
+            android:textSize="22dp"
+            tools:text="Start Break" />
 
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:background="@drawable/layout_bg"
-        tools:text="Start Other Break" />
+        <Button
+            android:id="@+id/start_other_break"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/layout_bg"
+            android:fontFamily="@font/quicksand_medium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
 
-    <Button
-        android:id="@+id/skip_break"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_margin="16dp"
-        android:background="@android:color/transparent"
-        android:text="@string/skip_break"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/colorPrimary" />
+            android:textColor="#F37335"
+            android:textSize="22dp"
+            tools:text="Start Other Break" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/skip_break"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_margin="16dp"
+            android:background="@android:color/transparent"
+            android:text="@string/skip_break"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
