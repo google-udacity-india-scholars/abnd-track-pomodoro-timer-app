@@ -13,6 +13,7 @@ public class Constants {
     public static final String COUNTDOWN_BROADCAST = "com.gis2018.countdown";
     public static final String STOP_ACTION_BROADCAST = "com.gis2018.stop.action";
     public static final String COMPLETE_ACTION_BROADCAST = "com.gis2018.complete.action";
+    public static final String START_ACTION_BROADCAST = "com.gis2018.start.action";
 
     //Intent names and values
     public static final String INTENT_NAME_ACTION = "action";

@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 
 import gis2018.udacity.tametu.CountDownTimerService;
 
 import static gis2018.udacity.tametu.utils.Constants.RINGING_VOLUME_LEVEL_KEY;
+import static gis2018.udacity.tametu.utils.Constants.START_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TICKING_VOLUME_LEVEL_KEY;
 import static gis2018.udacity.tametu.utils.Constants.TIME_INTERVAL;
+import static gis2018.udacity.tametu.utils.Utils.prepareSoundPool;
 import static gis2018.udacity.tametu.utils.VolumeSeekBarUtils.convertToFloat;
 import static gis2018.udacity.tametu.utils.VolumeSeekBarUtils.floatRingingVolumeLevel;
 import static gis2018.udacity.tametu.utils.VolumeSeekBarUtils.floatTickingVolumeLevel;
@@ -26,6 +29,7 @@ public class StartTimerUtils {
      */
     public static void startTimer(long duration, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        prepareSoundPool(context); //Prepare SoundPool
         floatTickingVolumeLevel = convertToFloat(preferences
                 .getInt(TICKING_VOLUME_LEVEL_KEY, maxVolume), maxVolume); //set ticking volume
         floatRingingVolumeLevel = convertToFloat(preferences
@@ -38,5 +42,16 @@ public class StartTimerUtils {
             context.startForegroundService(serviceIntent);
         else
             context.startService(serviceIntent);
+
+        sendBroadcast(context);
+    }
+
+    /**
+     * Update MainActivity Elements through  broadcast
+     */
+    private static void sendBroadcast(Context context) {
+        LocalBroadcastManager completedBroadcastManager = LocalBroadcastManager.getInstance(context);
+        completedBroadcastManager.sendBroadcast(
+                new Intent(START_ACTION_BROADCAST));
     }
 }

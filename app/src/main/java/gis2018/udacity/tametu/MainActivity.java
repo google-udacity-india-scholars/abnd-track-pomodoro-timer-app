@@ -43,6 +43,7 @@ import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK;
 import static gis2018.udacity.tametu.utils.Constants.LONG_BREAK_DURATION_KEY;
 import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK;
 import static gis2018.udacity.tametu.utils.Constants.SHORT_BREAK_DURATION_KEY;
+import static gis2018.udacity.tametu.utils.Constants.START_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.START_LONG_BREAK_AFTER_KEY;
 import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
@@ -54,13 +55,15 @@ import static gis2018.udacity.tametu.utils.StartTimerUtils.startTimer;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionCancel;
 import static gis2018.udacity.tametu.utils.StopTimerUtils.sessionComplete;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     public static int currentlyRunningServiceType; // Type of Service can be TAMETU, SHORT_BREAK or LONG_BREAK
     BroadcastReceiver stoppedBroadcastReceiver;
     BroadcastReceiver countDownReceiver;
     BroadcastReceiver completedBroadcastReceiver;
+    BroadcastReceiver startBroadcastReceiver;
     @BindView(R.id.settings_imageview_main)
     ImageView settingsImageView;
     @BindView(R.id.timer_button_main)
@@ -90,8 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         setOnClickListeners();
 
-        Utils.prepareSoundPool(this); //Prepare SoundPool to play ticking sounds
-
         // Set button as checked if the service is already running.
         timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
 
@@ -119,6 +120,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onReceive(Context context, Intent intent) {
                 sessionCompleteAVFeedback(context);
+            }
+        };
+
+        //Receives broadcast when timer starts
+        startBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                sessionStartAVFeedback();
             }
         };
 
@@ -161,6 +170,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         preferences.registerOnSharedPreferenceChangeListener(this);
 
 
+    }
+
+    private void sessionStartAVFeedback() {
+        ToggleButton toggleButton = findViewById(R.id.timer_button_main);
+        toggleButton.setChecked(true);
+
+        try {
+            if (alertDialog.isShowing())
+                alertDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setInitialValuesOnScreen() {
@@ -353,6 +374,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new IntentFilter(COUNTDOWN_BROADCAST));
         LocalBroadcastManager.getInstance(this).registerReceiver(completedBroadcastReceiver,
                 new IntentFilter(COMPLETE_ACTION_BROADCAST));
+        LocalBroadcastManager.getInstance(this).registerReceiver(startBroadcastReceiver,
+                new IntentFilter(START_ACTION_BROADCAST));
     }
 
     /**
@@ -362,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LocalBroadcastManager.getInstance(this).unregisterReceiver(stoppedBroadcastReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(countDownReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(completedBroadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(startBroadcastReceiver);
     }
 
     private void setTextCountDownTextView(String duration) {
