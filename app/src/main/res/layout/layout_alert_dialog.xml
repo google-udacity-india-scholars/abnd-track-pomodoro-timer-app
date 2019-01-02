@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:background="#F37335"
+    android:layout_height="wrap_content">
+
+<LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg3"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -14,9 +21,10 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
+        android:fontFamily="@font/raleway_semibold"
         android:text="@string/tametu_completion_alert_message"
-        android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textColor="#FFFFFF"
+        android:textSize="28sp" />
 
     <Button
         android:id="@+id/start_break"
@@ -25,7 +33,12 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
+        android:textColor="#F37335"
+        android:fontFamily="@font/quicksand_medium"
+        android:textSize="28dp"
+
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:background="@drawable/layout_bg"
         tools:text="Start Break" />
 
     <Button
@@ -35,8 +48,12 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black"
+        android:textColor="#F37335"
+        android:fontFamily="@font/quicksand_medium"
+        android:textSize="28dp"
+
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:background="@drawable/layout_bg"
         tools:text="Start Other Break" />
 
     <Button
@@ -47,6 +64,7 @@
         android:background="@android:color/transparent"
         android:text="@string/skip_break"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black" />
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>
+</android.support.constraint.ConstraintLayout>
