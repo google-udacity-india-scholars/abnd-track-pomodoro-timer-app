@@ -3,6 +3,7 @@ package gis2018.udacity.tametu.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -30,10 +31,12 @@ public class StartTimerUtils {
     public static void startTimer(long duration, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         prepareSoundPool(context); //Prepare SoundPool
+        final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        maxVolume = (audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)); // -1 just because otherwise converttofloat returns infinity
         floatTickingVolumeLevel = convertToFloat(preferences
-                .getInt(TICKING_VOLUME_LEVEL_KEY, maxVolume), maxVolume); //set ticking volume
+                .getInt(TICKING_VOLUME_LEVEL_KEY, maxVolume - 1), maxVolume); //set ticking volume
         floatRingingVolumeLevel = convertToFloat(preferences
-                .getInt(RINGING_VOLUME_LEVEL_KEY, maxVolume), maxVolume); //also set ringing volume
+                .getInt(RINGING_VOLUME_LEVEL_KEY, maxVolume - 1), maxVolume); //also set ringing volume
         Intent serviceIntent = new Intent(context, CountDownTimerService.class);
         serviceIntent.putExtra("time_period", duration);
         serviceIntent.putExtra("time_interval", TIME_INTERVAL);
