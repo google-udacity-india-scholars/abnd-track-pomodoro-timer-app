@@ -6,47 +6,50 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name="gis2018.udacity.tametu.App"
+        android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="  TAMETU"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <service
-            android:name="gis2018.udacity.tametu.CountDownTimerService"
+            android:name=".CountDownTimerService"
             android:enabled="true"
             android:exported="false" />
 
         <activity
-            android:name="gis2018.udacity.tametu.MainActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <!-- Broadcast receiver for notification action button -->
+        <receiver android:name=".StopTimerActionReceiver" />
+        <receiver android:name=".StartTimerActionReceiver" />
+
+        <activity
+            android:name=".Aboutus"
+            android:label="ABOUT US"
+            android:parentActivityName=".SettingsActivity"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".first">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="gis2018.udacity.tametu.SettingsActivity"
-            android:label="Settings"
-            android:parentActivityName="gis2018.udacity.tametu.MainActivity"
-            android:screenOrientation="portrait" />
-        <!-- Broadcast receiver for notification action button -->
-        <receiver android:name="gis2018.udacity.tametu.StopTimerActionReceiver" />
-        <receiver android:name=".StartTimerActionReceiver" />
-
-        <activity
-            android:name="gis2018.udacity.tametu.Aboutus"
-            android:label="ABOUT US"
-            android:parentActivityName="gis2018.udacity.tametu.SettingsActivity">
-
-        </activity>
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

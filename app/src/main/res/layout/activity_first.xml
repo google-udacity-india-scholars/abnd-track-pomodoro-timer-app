@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context="gis2018.udacity.tametu.first">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp"
+        android:fontFamily="@font/raleway_semibold"
+        android:text="Get more Done"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="38sp" />
+
+    <TextView
+        android:layout_width="143dp"
+        android:layout_height="54dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="131dp"
+        android:background="@drawable/layout_bg2"
+        android:fontFamily="@font/raleway_semibold"
+        android:gravity="center"
+        android:text="Faster"
+        android:textAllCaps="true"
+        android:textColor="#FF4B2B"
+        android:textSize="32sp" />
+
+    <ImageView
+        android:layout_width="228dp"
+        android:layout_height="177dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="230dp"
+        android:src="@drawable/icon" />
+
+
+    <TextView
+        android:id="@+id/tametu"
+        android:layout_width="245dp"
+        android:layout_height="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="435dp"
+        android:fontFamily="@font/quicksand_medium"
+        android:gravity="center"
+        android:text="Tametu Timer"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>
