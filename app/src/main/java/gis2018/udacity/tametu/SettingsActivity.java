@@ -87,10 +87,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
                 R.array.start_long_break_after_array, R.layout.spinner_item);
 
         // Layout to use when list of choices appears
-        workDurationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        shortBreakDurationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        longBreakDurationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        startlongbreakafterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        workDurationAdapter.setDropDownViewResource(R.layout.spinner_item);
+        shortBreakDurationAdapter.setDropDownViewResource(R.layout.spinner_item);
+        longBreakDurationAdapter.setDropDownViewResource(R.layout.spinner_item);
+        startlongbreakafterAdapter.setDropDownViewResource(R.layout.spinner_item);
 
         // Apply the adapter to the spinner
         workDurationSpinner.setAdapter(workDurationAdapter);
