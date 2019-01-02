@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:background="#F37335"
+    android:background="@drawable/bg"
+    android:layout_gravity="center"
     android:layout_height="wrap_content">
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="414dp"
-        android:background="@drawable/bg"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -35,7 +36,6 @@
             android:background="@drawable/layout_bg"
             android:fontFamily="@font/quicksand_medium"
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:textColor="#F37335"
             android:textSize="22dp"
             tools:text="Start Break" />
@@ -50,7 +50,6 @@
             android:background="@drawable/layout_bg"
             android:fontFamily="@font/quicksand_medium"
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:textColor="#F37335"
             android:textSize="22dp"
             tools:text="Start Other Break" />
@@ -61,6 +60,7 @@
             android:layout_height="44dp"
             android:layout_margin="16dp"
             android:background="@android:color/transparent"
+            app:fontFamily="@font/quicksand_medium"
             android:text="@string/skip_break"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#FFFFFF" />
