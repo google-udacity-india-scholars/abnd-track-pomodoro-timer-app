@@ -45,7 +45,7 @@ Central to this technique is a loudly ticking countdown timer and turns out that
 ### Screenshots
 Working prototype
 
-![tametu_screen_1](https://user-images.githubusercontent.com/28054527/48408222-cef67300-e75e-11e8-8f81-5d210ee7db62.png) ![tametu_screen_2](https://user-images.githubusercontent.com/28054527/48408224-cef67300-e75e-11e8-9a7f-7f139063ca0c.png)
+<img src="https://user-images.githubusercontent.com/28054527/50595743-bcc7c400-0ec7-11e9-8c20-b1383a32edbf.png" width="400"> <img src="https://user-images.githubusercontent.com/28054527/50595742-bcc7c400-0ec7-11e9-961b-076b7a0b8fba.png" width="400">
 
 ## Prerequisites
 Anyone can contribute to this project, but the two most basic prerequisites are:
