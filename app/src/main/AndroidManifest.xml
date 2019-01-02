@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".App"
+        android:name="gis2018.udacity.tametu.App"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="  TAMETU"

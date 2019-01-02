@@ -1,20 +1,15 @@
 package gis2018.udacity.tametu;
 
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class first extends AppCompatActivity {
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
+    private final int SPLASH_DISPLAY_LENGTH = 1200;
 
 
     @Override
