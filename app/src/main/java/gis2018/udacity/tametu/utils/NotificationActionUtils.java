@@ -29,30 +29,30 @@ public class NotificationActionUtils {
                 return new NotificationCompat.Action(
                         R.drawable.play,
                         context.getString(R.string.start_tametu),
-                        getPendingIntent(INTENT_VALUE_START, context));
+                        getPendingIntent(SHORT_BREAK, INTENT_VALUE_START, context));
             case SHORT_BREAK:
                 return new NotificationCompat.Action(
                         R.drawable.short_break,
                         context.getString(R.string.start_short_break),
-                        getPendingIntent(INTENT_VALUE_SHORT_BREAK, context));
+                        getPendingIntent(SHORT_BREAK, INTENT_VALUE_SHORT_BREAK, context));
             case LONG_BREAK:
                 return new NotificationCompat.Action(
                         R.drawable.long_break,
                         context.getString(R.string.start_long_break),
-                        getPendingIntent(INTENT_VALUE_LONG_BREAK, context));
+                        getPendingIntent(LONG_BREAK, INTENT_VALUE_LONG_BREAK, context));
             default:
                 return null;
         }
 
     }
 
-    private static PendingIntent getPendingIntent(String INTENT_VALUE, Context context) {
+    private static PendingIntent getPendingIntent(int requestCode, String INTENT_VALUE, Context context) {
         Intent startIntent = new Intent(context, StartTimerActionReceiver.class)
                 .putExtra(INTENT_NAME_ACTION, INTENT_VALUE);
         return PendingIntent.getBroadcast(
                 context,
-                1,
+                requestCode,
                 startIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_ONE_SHOT);
     }
 }
