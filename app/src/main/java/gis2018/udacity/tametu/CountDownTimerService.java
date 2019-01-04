@@ -86,7 +86,7 @@ public class CountDownTimerService extends Service {
         }
 
         notificationBuilder = notificationBuilder
-                .setSmallIcon(R.drawable.ic_notification_icon)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(pendingIntent)
                 .setOngoing(false);
 
