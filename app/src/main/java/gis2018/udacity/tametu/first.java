@@ -25,6 +25,7 @@ public class first extends AppCompatActivity {
                 /* Create an Intent that will start the Menu-Activity. */
                 Intent mainIntent = new Intent(first.this, MainActivity.class);
                 startActivity(mainIntent);
+                finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
 
