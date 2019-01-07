@@ -4,12 +4,10 @@
 
 _The most important aspect of collaborative project is to get everyone involved, and this idea is simple enough for everyone to contribute to, tweak - and maybe even have some fun while doing it._
 
-In case you haven't already, please read this [document](https://docs.google.com/document/d/18UC6AAfdgcLLZzuGO_unUlZwc2kBYZqBRogmjDK3Ysc/edit?usp=sharing) very carefully to understand all the details about the Collaborative Projects.
 
 **Team**
 - [Michael Hathi](https://github.com/numerative/)
 - [Sanjeev Sharma](https://github.com/thedevelopersanjeev)
-- _Looking for Team Members for UI_
 
 ## Table of Contents
 
@@ -17,8 +15,6 @@ In case you haven't already, please read this [document](https://docs.google.com
 - [Project URL](#project-url)
   - [Screenshots](#screenshots)
 - [Prerequisites](#prerequisites)
-- [Style Guide](#style-guide)
-- [Resources](#resources)
 - [Acknowledgments](#acknowledgments)
 
 ## Getting Started
@@ -40,15 +36,14 @@ Central to this technique is a loudly ticking countdown timer and turns out that
 
 
 ## Project URL
-[Not yet](#)
+[GitHub Release](https://github.com/NJACKWinterOfCode/android-productivity-timer-tametu-app/releases)
 
 ### Screenshots
-Working prototype
 
 <img src="https://user-images.githubusercontent.com/28054527/50595743-bcc7c400-0ec7-11e9-8c20-b1383a32edbf.png" width="400"> <img src="https://user-images.githubusercontent.com/28054527/50595742-bcc7c400-0ec7-11e9-961b-076b7a0b8fba.png" width="400">
 
 ## Prerequisites
-Anyone can contribute to this project, but the two most basic prerequisites are:
+Anyone can contribute to this project, but the two most basic prerequisites are knowledge of:
 - Git
 - Java
 
