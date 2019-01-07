@@ -513,20 +513,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (currentlyRunningServiceType) {
             case TAMETU:
                 notificationBuilder
-                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(TAMETU, MainActivity.this))
                         .setContentTitle(getString(R.string.break_over_notification_title))
                         .setContentText(getString(R.string.break_over_notification_content_text));
                 break;
             case SHORT_BREAK:
                 notificationBuilder
-                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(SHORT_BREAK, MainActivity.this))
                         .addAction(getIntervalAction(LONG_BREAK, MainActivity.this))
                         .setContentTitle(getString(R.string.tametu_completion_notification_message))
                         .setContentText(getString(R.string.session_over_notification_content_text));
                 break;
             case LONG_BREAK:
                 notificationBuilder
-                        .addAction(getIntervalAction(currentlyRunningServiceType, MainActivity.this))
+                        .addAction(getIntervalAction(LONG_BREAK, MainActivity.this))
                         .addAction(getIntervalAction(SHORT_BREAK, MainActivity.this))
                         .setContentTitle(getString(R.string.tametu_completion_alert_message))
                         .setContentText(getString(R.string.session_over_notification_content_text));

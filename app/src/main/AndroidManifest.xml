@@ -8,8 +8,11 @@
     <application
         android:name="gis2018.udacity.tametu.App"
         android:allowBackup="true"
+
         android:icon="@mipmap/ic_launcher"
         android:label="  TAMETU"
+        android:icon="@drawable/icon"
+        android:label="Tamétû - get more done, faster"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -33,11 +36,6 @@
         <!-- Broadcast receiver for notification action button -->
         <receiver android:name=".StopTimerActionReceiver" />
         <receiver android:name=".StartTimerActionReceiver" />
-
-        <activity
-            android:name=".Aboutus"
-            android:label="ABOUT US"
-            android:parentActivityName=".SettingsActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
