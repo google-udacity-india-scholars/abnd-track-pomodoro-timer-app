@@ -34,11 +34,6 @@
         <receiver android:name=".StopTimerActionReceiver" />
         <receiver android:name=".StartTimerActionReceiver" />
 
-        <activity
-            android:name=".Aboutus"
-            android:label="ABOUT US"
-            android:parentActivityName=".SettingsActivity"></activity>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

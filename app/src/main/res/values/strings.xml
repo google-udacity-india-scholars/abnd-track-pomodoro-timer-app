@@ -58,7 +58,10 @@
     <string name="tametu_completion_alert_message">Congrats, Tamétû is over.\n\nIt\'s time for a break.</string>
     <string name="cancel_notification_toast">Cancel</string>
     <string name="package_name">gis2018.udacity.tametu</string>
-    <string name="intro">The Pomodoro technique is a simple idea of tricking oneself into working/studying for short 25-minute intervals for a return of short 5/5/5/15-minute break cycles.The motive behind this was to have a Pomodoro better than what is already on market, but in order to avoid copyright issues, we cannot use the term Pomodoro. We can craft this to sound a little better .We aimed to build a simple productivity timer that is helpful and lovable. Tamétû likes to keep things simple and is therefore an ensemble of just the most required features.</string>
+    <string name="intro">We aimed to build a simple productivity timer that is helpful and lovable.
+        Tamétû likes to keep things simple and is therefore an ensemble of just the most required features.
+        \n\nIcon made by <a href="https://www.flaticon.com/authors/bqlqn">bqlqn</a> from
+        <a href="https://www.flaticon.com">www.flaticon.com</a></string>
     <string name="creation">Students of Google India Udacity Scholarship and NJACK Winter of Code Participants</string>
     <string name="break_over_notification_title">Break\'s over.</string>
     <string name="session_over_notification_content_text">Time to relax. Start a break</string>
