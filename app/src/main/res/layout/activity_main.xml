@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_medium"
         android:padding="5dp"
-        android:text="  Tametu"
+        android:text="  Tamétû"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
         tools:fontFamily="@font/raleway_semibold" />

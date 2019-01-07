@@ -9,7 +9,7 @@
         android:name="gis2018.udacity.tametu.App"
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="  TAMETU"
+        android:label="Tamétû - get more done, faster"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
