@@ -69,4 +69,5 @@
     <string name="tametu_completion_notification_message">Congrats, you completed a session.</string>
     <string name="splash_act_name">Tamétû</string>
     <string name="tagline">Get things done, faster</string>
+    <string name="task_hint">Enter task name</string>
 </resources>
