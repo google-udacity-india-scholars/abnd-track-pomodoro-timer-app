@@ -67,6 +67,6 @@
     <string name="session_over_notification_content_text">Time to relax. Start a break</string>
     <string name="break_over_notification_content_text">Let\'s get this done.</string>
     <string name="tametu_completion_notification_message">Congrats, you completed a session.</string>
-    <string name="splash_act_name">Tametu Timer</string>
-    <string name="tagline">Getting things done, faster</string>
+    <string name="splash_act_name">Tamétû</string>
+    <string name="tagline">Get things done, faster</string>
 </resources>
