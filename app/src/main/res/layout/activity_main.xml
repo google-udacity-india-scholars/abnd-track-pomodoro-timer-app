@@ -10,11 +10,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/quicksand_medium"
         android:padding="5dp"
-        android:text="  Tamétû"
+        android:text="Tamétû"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:fontFamily="@font/raleway_semibold" />
 
     <TextView
