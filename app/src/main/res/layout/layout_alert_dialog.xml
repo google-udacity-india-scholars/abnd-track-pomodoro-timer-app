@@ -1,69 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-   xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bg"
     android:layout_gravity="center"
-    android:layout_height="wrap_content">
+    android:layout_height="414dp">
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="414dp"
+
+    <TextView
+        android:id="@+id/alert_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/raleway_semibold"
         android:gravity="center"
-        android:orientation="vertical">
+        android:text="@string/tametu_completion_alert_message"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/alert_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:fontFamily="@font/raleway_semibold"
-            android:gravity="center"
-            android:text="@string/tametu_completion_alert_message"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+    <Button
+        android:id="@+id/start_break"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/layout_bg"
+        android:fontFamily="@font/quicksand_medium"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#F37335"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alert_title"
+        tools:text="Start Break" />
 
-        <Button
-            android:id="@+id/start_break"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/layout_bg"
-            android:fontFamily="@font/quicksand_medium"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#F37335"
-            android:textSize="22dp"
-            tools:text="Start Break" />
+    <Button
+        android:id="@+id/start_other_break"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/layout_bg"
+        android:fontFamily="@font/quicksand_medium"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#F37335"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_break"
+        tools:text="Start Other Break" />
 
-        <Button
-            android:id="@+id/start_other_break"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/layout_bg"
-            android:fontFamily="@font/quicksand_medium"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#F37335"
-            android:textSize="22dp"
-            tools:text="Start Other Break" />
+    <Button
+        android:id="@+id/skip_break"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:text="@string/skip_break"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#FFFFFF"
+        app:fontFamily="@font/quicksand_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_other_break" />
 
-        <Button
-            android:id="@+id/skip_break"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_margin="16dp"
-            android:background="@android:color/transparent"
-            app:fontFamily="@font/quicksand_medium"
-            android:text="@string/skip_break"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#FFFFFF" />
-
-    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
