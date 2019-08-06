@@ -74,7 +74,7 @@
                 android:defaultValue="Task 1"
                 android:gravity="center"
                 android:hint="@string/task_hint"
-                android:inputType="textCapSentences|textShortMessage"
+                android:inputType="textCapSentences|textShortMessage|textMultiLine"
                 android:scrollHorizontally="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="#F37335"
