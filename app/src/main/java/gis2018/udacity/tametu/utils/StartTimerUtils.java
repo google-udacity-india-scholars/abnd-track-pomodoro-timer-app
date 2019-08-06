@@ -6,7 +6,8 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import gis2018.udacity.tametu.CountDownTimerService;
 

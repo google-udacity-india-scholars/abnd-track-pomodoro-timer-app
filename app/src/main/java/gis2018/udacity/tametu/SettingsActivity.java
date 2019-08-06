@@ -3,8 +3,6 @@ package gis2018.udacity.tametu;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

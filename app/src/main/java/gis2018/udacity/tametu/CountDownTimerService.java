@@ -9,8 +9,9 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.LocalBroadcastManager;
+
+import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import gis2018.udacity.tametu.utils.Utils;
 
