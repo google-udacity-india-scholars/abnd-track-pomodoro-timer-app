@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import gis2018.udacity.tametu.utils.Utils;
 
@@ -28,16 +29,19 @@ public class StartTimerActionReceiver extends BroadcastReceiver {
                 long workDuration = Utils.getCurrentDurationPreferenceOf(prefences, context,
                         TAMETU);
                 startTimer(workDuration, context);
+                Log.d("TIMER was started with", String.valueOf(workDuration));
                 break;
             case INTENT_VALUE_SHORT_BREAK:
                 long shortBreakDuration = Utils.getCurrentDurationPreferenceOf(prefences, context,
                         SHORT_BREAK);
                 startTimer(shortBreakDuration, context);
+                Log.d("SHRT_BRK started with", String.valueOf(shortBreakDuration));
                 break;
             case INTENT_VALUE_LONG_BREAK:
                 long longBreakDuration = Utils.getCurrentDurationPreferenceOf(prefences, context,
                         LONG_BREAK);
                 startTimer(longBreakDuration, context);
+                Log.d("LONG_BRK started with", String.valueOf(longBreakDuration));
         }
     }
 }
