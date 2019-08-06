@@ -34,4 +34,5 @@ public class Constants {
     public static final String TASK_ON_HAND_COUNT_KEY = "TASK_ON_HAND_COUNT";
     public static final String TICKING_VOLUME_LEVEL_KEY = "TICKING_VOLUME_LEVEL";
     public static final String RINGING_VOLUME_LEVEL_KEY = "RINGING_VOLUME_LEVEL";
+    public static final String TASK_MESSAGE = "TASK_MESSAGE";
 }

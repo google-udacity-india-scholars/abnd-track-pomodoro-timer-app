@@ -48,6 +48,7 @@ import static gis2018.udacity.tametu.utils.Constants.START_LONG_BREAK_AFTER_KEY;
 import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
+import static gis2018.udacity.tametu.utils.Constants.TASK_MESSAGE;
 import static gis2018.udacity.tametu.utils.Constants.TASK_ON_HAND_COUNT_KEY;
 import static gis2018.udacity.tametu.utils.Constants.WORK_DURATION_KEY;
 import static gis2018.udacity.tametu.utils.NotificationActionUtils.getIntervalAction;
@@ -343,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         sessionCancel(this, preferences);
                     }
                 }
+                preferences.edit().putString(TASK_MESSAGE, message.getText().toString()).apply(); //Stores the task message to shared prefs. This will be used to display in the notification.
                 break;
 
             case R.id.finish_imageview_main:
