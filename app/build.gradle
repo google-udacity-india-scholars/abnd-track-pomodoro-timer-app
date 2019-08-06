@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "gis2018.udacity.pomodoro"
+        applicationId "gis2018.udacity.tametu"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
-        versionName "0.1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
