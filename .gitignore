@@ -3,6 +3,9 @@
 ### AndroidStudio ###
 # Covers files to be ignored for android development using Android Studio.
 
+# release folder
+app/release/**
+
 # Built application files
 *.apk
 *.ap_
