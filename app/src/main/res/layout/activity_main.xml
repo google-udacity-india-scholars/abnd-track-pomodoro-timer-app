@@ -103,7 +103,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="1" />
 
-            <!--Checkmarks get dynamically to this LinearLayout-->
+            <!--Checkmarks get dynamically added to this LinearLayout-->
             <LinearLayout
                 android:id="@+id/insert_point"
                 android:layout_width="0dp"

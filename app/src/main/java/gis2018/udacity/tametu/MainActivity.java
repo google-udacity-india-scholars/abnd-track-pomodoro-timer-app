@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
     private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
+    @BindView(R.id.current_task_name_textview_main)
+    EditText message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         setOnClickListeners();
 
-        // Set button as checked if the service is already running.
-        timerButton.setChecked(isServiceRunning(CountDownTimerService.class));
+        determineViewState(isServiceRunning(CountDownTimerService.class));
 
         // Receives broadcast that the timer has stopped.
         stoppedBroadcastReceiver = new BroadcastReceiver() {
@@ -137,8 +138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog = createTametuCompletionAlertDialog();
         displayTametuCompletionAlertDialog();
 
-        final EditText message = (EditText) findViewById(R.id.current_task_name_textview_main);
-
         final SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(this);
 
@@ -172,10 +171,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void determineViewState(boolean serviceRunning) {
+        // Set button as checked if the service is already running.
+        timerButton.setChecked(serviceRunning);
+        //Set task message editable-ity.
+        message.setFocusableInTouchMode(!serviceRunning);
+        message.setClickable(!serviceRunning);
+        message.setFocusable(!serviceRunning);
+    }
+
     private void sessionStartAVFeedback() {
         ToggleButton toggleButton = findViewById(R.id.timer_button_main);
         toggleButton.setChecked(true);
-
+        //Disable editing.
+        message.setClickable(false);
+        message.setFocusable(false);
         try {
             if (alertDialog.isShowing())
                 alertDialog.dismiss();
@@ -207,6 +217,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sessionCompleteAVFeedback(Context context) {
+        //Enable editing the task message
+        message.setClickable(true);
+        message.setFocusable(true);
+        message.setFocusableInTouchMode(true);
         // Retrieving value of currentlyRunningServiceType from SharedPreferences.
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences,
                 getApplicationContext());
