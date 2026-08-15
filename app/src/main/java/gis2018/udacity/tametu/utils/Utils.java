@@ -1,9 +1,11 @@
 package gis2018.udacity.tametu.utils;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -169,6 +171,23 @@ public class Utils {
         return String.format(Locale.getDefault(), "%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(duration) % 60,
                 TimeUnit.MILLISECONDS.toSeconds(duration) % 60);
+    }
+
+    /**
+     * Apps targeting Android 12 (API 31) and above must explicitly mark every PendingIntent as
+     * mutable or immutable, otherwise the system throws an IllegalArgumentException when the
+     * PendingIntent is created. None of this app's PendingIntents need to be filled in by the
+     * receiving system component, so they are always created immutable.
+     *
+     * @param extraFlags any additional flags (e.g. FLAG_UPDATE_CURRENT, FLAG_ONE_SHOT) to OR in.
+     * @return extraFlags combined with FLAG_IMMUTABLE on API 23+ (FLAG_IMMUTABLE doesn't exist
+     * on older platforms, where PendingIntents are immutable by default behavior-wise anyway).
+     */
+    public static int pendingIntentFlags(int extraFlags) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return extraFlags | PendingIntent.FLAG_IMMUTABLE;
+        }
+        return extraFlags;
     }
 
     /**

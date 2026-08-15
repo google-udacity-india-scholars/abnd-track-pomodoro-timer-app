@@ -54,6 +54,6 @@ public class NotificationActionUtils {
                 context,
                 requestCode,
                 startIntent,
-                PendingIntent.FLAG_ONE_SHOT);
+                Utils.pendingIntentFlags(PendingIntent.FLAG_ONE_SHOT));
     }
 }

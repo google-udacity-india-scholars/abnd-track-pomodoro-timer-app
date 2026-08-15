@@ -135,6 +135,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
             case R.id.long_break_duration_spinner:
                 // save the corresponding item position
                 editor.putInt(getString(R.string.long_break_duration_key), position);
+                break;
             case R.id.start_long_break_after_spinner:
                 // save the corresponding item position
                 editor.putInt(getString(R.string.start_long_break_after_key), position);

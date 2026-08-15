@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- Required on Android 13+ (API 33) to actually display notifications, including the
+         foreground-service notification for the running timer. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name="gis2018.udacity.tametu.App"
@@ -13,10 +17,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <!-- targetSdkVersion 34+ requires every foreground service to declare a type. None of
+             the built-in categories (mediaPlayback, dataSync, location, ...) fit a Pomodoro
+             countdown, so this uses specialUse with a justification, as recommended by
+             https://developer.android.com/develop/background-work/services/fgs/service-types -->
         <service
             android:name=".CountDownTimerService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Shows an ongoing notification with actions while a Pomodoro work or break countdown is running" />
+        </service>
 
         <activity
             android:name=".MainActivity"

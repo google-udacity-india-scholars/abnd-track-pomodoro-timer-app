@@ -5,6 +5,7 @@
 
 package gis2018.udacity.tametu;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -14,6 +15,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -25,9 +28,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.Date;
@@ -86,6 +92,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
     @BindView(R.id.current_task_name_textview_main)
     EditText message;
+    // Handles the result of the POST_NOTIFICATIONS runtime permission request (Android 13+).
+    // Must be registered before the Activity reaches STARTED, so this is done as a field.
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                // No-op either way: if denied, notifications (including the running-timer
+                // notification) simply won't be shown, but the timer itself still works.
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         isAppVisible = true;
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        requestNotificationPermissionIfNeeded();
 
         ButterKnife.bind(this);
         setOnClickListeners();
@@ -171,6 +185,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         preferences.registerOnSharedPreferenceChangeListener(this);
 
 
+    }
+
+    /**
+     * On Android 13+ (API 33), posting any notification - including the ongoing timer
+     * notification and the session-complete notification - requires the runtime
+     * POST_NOTIFICATIONS permission. Without requesting it, notifications silently never appear.
+     */
+    private void requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
     }
 
     private void determineViewState(boolean serviceRunning) {
@@ -519,7 +546,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private NotificationCompat.Builder createTaskInformationNotification() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                Utils.pendingIntentFlags(0));
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(pendingIntent)

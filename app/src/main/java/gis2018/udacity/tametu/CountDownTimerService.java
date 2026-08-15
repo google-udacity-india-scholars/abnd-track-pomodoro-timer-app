@@ -24,6 +24,7 @@ import static gis2018.udacity.tametu.utils.Constants.STOP_ACTION_BROADCAST;
 import static gis2018.udacity.tametu.utils.Constants.TAMETU;
 import static gis2018.udacity.tametu.utils.Constants.TASK_INFORMATION_NOTIFICATION_ID;
 import static gis2018.udacity.tametu.utils.Constants.TASK_MESSAGE;
+import static gis2018.udacity.tametu.utils.Utils.pendingIntentFlags;
 import static gis2018.udacity.tametu.utils.Utils.ringID;
 import static gis2018.udacity.tametu.utils.Utils.soundPool;
 import static gis2018.udacity.tametu.utils.Utils.tickID;
@@ -65,19 +66,19 @@ public class CountDownTimerService extends Service {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+                0, notificationIntent, pendingIntentFlags(0));
 
         //For "Complete" button - Intent and PendingIntent
         Intent completeIntent = new Intent(this, StopTimerActionReceiver.class)
                 .putExtra(INTENT_NAME_ACTION, INTENT_VALUE_COMPLETE);
         PendingIntent completeActionPendingIntent = PendingIntent.getBroadcast(this,
-                1, completeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                1, completeIntent, pendingIntentFlags(PendingIntent.FLAG_UPDATE_CURRENT));
 
         //For "Cancel" button - Intent and PendingIntent
         Intent cancelIntent = new Intent(this, StopTimerActionReceiver.class)
                 .putExtra(INTENT_NAME_ACTION, INTENT_VALUE_CANCEL);
         PendingIntent cancelActionPendingIntent = PendingIntent.getBroadcast(this,
-                0, cancelIntent, 0);
+                0, cancelIntent, pendingIntentFlags(0));
 
         Notification.Builder notificationBuilder = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
