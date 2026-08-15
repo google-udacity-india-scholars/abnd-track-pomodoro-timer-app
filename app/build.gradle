@@ -7,11 +7,11 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdk = 36
+    compileSdk = 37
     defaultConfig {
         applicationId "gis2018.udacity.tametu"
         minSdkVersion 23
-        targetSdkVersion 36
+        targetSdkVersion 37
         versionCode 3
         versionName "1.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -38,6 +38,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+    }
     namespace = 'gis2018.udacity.tametu'
 }
 
@@ -52,8 +55,8 @@ dependencies {
     // LocalBroadcastManager used to ship transitively via appcompat's legacy-support-v4
     // dependency; newer appcompat versions dropped that, so it must be declared directly.
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
-    implementation 'com.jakewharton:butterknife:10.2.3'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+    // ButterKnife removed (unmaintained since 2020; also required final resource IDs, which
+    // blocked upgrading to AGP 9.x). Views are now bound via ViewBinding instead.
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.7.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'

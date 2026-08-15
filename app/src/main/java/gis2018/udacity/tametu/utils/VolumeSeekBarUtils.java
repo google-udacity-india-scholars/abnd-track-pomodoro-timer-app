@@ -29,13 +29,13 @@ public class VolumeSeekBarUtils {
         final AudioManager audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
         maxVolume = (audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) - 1); // -1 just because otherwise converttofloat returns infinity
         seekBar.setMax(maxVolume - 1);
-        switch (seekBar.getId()) {
-            case R.id.ticking_seek_bar:
-                seekBar.setProgress(preferences.getInt(TICKING_VOLUME_LEVEL_KEY, maxVolume));
-                break;
-            case R.id.ringing_seek_bar:
-                seekBar.setProgress(preferences.getInt(RINGING_VOLUME_LEVEL_KEY, maxVolume));
-                break;
+        // Can't be a switch: view IDs are no longer compile-time constants once
+        // android.nonFinalResIds defaults to true.
+        int id = seekBar.getId();
+        if (id == R.id.ticking_seek_bar) {
+            seekBar.setProgress(preferences.getInt(TICKING_VOLUME_LEVEL_KEY, maxVolume));
+        } else if (id == R.id.ringing_seek_bar) {
+            seekBar.setProgress(preferences.getInt(RINGING_VOLUME_LEVEL_KEY, maxVolume));
         }
         return seekBar;
     }

@@ -38,8 +38,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import gis2018.udacity.tametu.databinding.ActivityMainBinding;
 import gis2018.udacity.tametu.utils.Utils;
 
 import static gis2018.udacity.tametu.utils.CheckMarkUtils.updateCheckMarkCount;
@@ -72,13 +71,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BroadcastReceiver countDownReceiver;
     BroadcastReceiver completedBroadcastReceiver;
     BroadcastReceiver startBroadcastReceiver;
-    @BindView(R.id.settings_imageview_main)
+    private ActivityMainBinding binding;
     ImageView settingsImageView;
-    @BindView(R.id.timer_button_main)
     ToggleButton timerButton;
-    @BindView(R.id.countdown_textview_main)
     TextView countDownTextView;
-    @BindView(R.id.finish_imageview_main)
     ImageView finishImageView; // (Complete Button)
     private long workDuration; // Time Period for Pomodoro (Work-Session)
     private String workDurationString; // Time Period for Pomodoro in String
@@ -90,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AlertDialog alertDialog;
     private boolean isAppVisible = true;
     private String currentCountDown; // Current duration for Work-Session, Short-Break or Long-Break
-    @BindView(R.id.current_task_name_textview_main)
     EditText message;
     // Handles the result of the POST_NOTIFICATIONS runtime permission request (Android 13+).
     // Must be registered before the Activity reaches STARTED, so this is done as a field.
@@ -103,12 +98,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         isAppVisible = true;
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         requestNotificationPermissionIfNeeded();
 
-        ButterKnife.bind(this);
+        settingsImageView = binding.settingsImageviewMain;
+        timerButton = binding.timerButtonMain;
+        countDownTextView = binding.countdownTextviewMain;
+        finishImageView = binding.finishImageviewMain;
+        message = binding.currentTaskNameTextviewMain;
         setOnClickListeners();
 
         determineViewState(isServiceRunning(CountDownTimerService.class));
@@ -328,60 +328,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Retrieving value of currentlyRunningServiceType from SharedPreferences.
         currentlyRunningServiceType = Utils.retrieveCurrentlyRunningServiceType(preferences, this);
 
-        // Switch case to handle different button clicks
-        switch (v.getId()) {
+        // Chain of ifs to handle different button clicks. (Can't be a switch: view IDs are no
+        // longer compile-time constants once android.nonFinalResIds defaults to true.)
+        int id = v.getId();
 
-            // Settings button is clicked
-            case R.id.settings_imageview_main:
-                // launch SettingsActivity
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                break;
+        // Settings button is clicked
+        if (id == R.id.settings_imageview_main) {
+            // launch SettingsActivity
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else if (id == R.id.timer_button_main) {
+            Date date = new Date(System.currentTimeMillis()); //or simply new Date();
+            long millis = date.getTime();
+            int resume = (int) millis / 1000;
+            int pause = preferences.getInt("pause", 0);
+            if ((resume - pause) >= 14400)
+                preferences.edit().putInt(getString(R.string.work_session_count_key), 0).apply();
 
-            case R.id.timer_button_main:
-                Date date = new Date(System.currentTimeMillis()); //or simply new Date();
-                long millis = date.getTime();
-                int resume = (int) millis / 1000;
-                int pause = preferences.getInt("pause", 0);
-                if ((resume - pause) >= 14400)
-                    preferences.edit().putInt(getString(R.string.work_session_count_key), 0).apply();
-
-                if (currentlyRunningServiceType == TAMETU) {
-                    if (timerButton.isChecked()) {
-                        startTimer(workDuration, this);
-                    } else {
-                        // When "Cancel Pomodoro" is clicked, service is stopped and toggleButton
-                        // is reset to "Start Pomodoro".
-                        sessionCancel(this, preferences);
-                    }
-                } else if (currentlyRunningServiceType == SHORT_BREAK) {
-                    if (timerButton.isChecked()) {
-                        startTimer(shortBreakDuration, this);
-                    } else {
-                        // When "Skip Short Break" is clicked, service is stopped and toggleButton
-                        // is reset to "Start Pomodoro".
-                        sessionCancel(this, preferences);
-                    }
-                } else if (currentlyRunningServiceType == LONG_BREAK) {
-                    if (timerButton.isChecked()) {
-                        startTimer(longBreakDuration, this);
-                    } else {
-                        // When "Skip Long Break" is clicked, service is stopped and toggleButton
-                        // is reset to "Start Pomodoro".
-                        sessionCancel(this, preferences);
-                    }
-                }
-                preferences.edit().putString(TASK_MESSAGE, message.getText().toString()).apply(); //Stores the task message to shared prefs. This will be used to display in the notification.
-                break;
-
-            case R.id.finish_imageview_main:
+            if (currentlyRunningServiceType == TAMETU) {
                 if (timerButton.isChecked()) {
-                    // Finish (Complete Button) stops service and sets currentlyRunningServiceType
-                    // to SHORT_BREAK or LONG_BREAK and updates number of completed WorkSessions.
-                    sessionComplete(this);
+                    startTimer(workDuration, this);
+                } else {
+                    // When "Cancel Pomodoro" is clicked, service is stopped and toggleButton
+                    // is reset to "Start Pomodoro".
+                    sessionCancel(this, preferences);
                 }
-                break;
+            } else if (currentlyRunningServiceType == SHORT_BREAK) {
+                if (timerButton.isChecked()) {
+                    startTimer(shortBreakDuration, this);
+                } else {
+                    // When "Skip Short Break" is clicked, service is stopped and toggleButton
+                    // is reset to "Start Pomodoro".
+                    sessionCancel(this, preferences);
+                }
+            } else if (currentlyRunningServiceType == LONG_BREAK) {
+                if (timerButton.isChecked()) {
+                    startTimer(longBreakDuration, this);
+                } else {
+                    // When "Skip Long Break" is clicked, service is stopped and toggleButton
+                    // is reset to "Start Pomodoro".
+                    sessionCancel(this, preferences);
+                }
+            }
+            preferences.edit().putString(TASK_MESSAGE, message.getText().toString()).apply(); //Stores the task message to shared prefs. This will be used to display in the notification.
+        } else if (id == R.id.finish_imageview_main) {
+            if (timerButton.isChecked()) {
+                // Finish (Complete Button) stops service and sets currentlyRunningServiceType
+                // to SHORT_BREAK or LONG_BREAK and updates number of completed WorkSessions.
+                sessionComplete(this);
+            }
         }
     }
 

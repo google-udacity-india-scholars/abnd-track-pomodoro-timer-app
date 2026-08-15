@@ -15,8 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import gis2018.udacity.tametu.databinding.ActivitySettingsBinding;
 
 import static gis2018.udacity.tametu.utils.Constants.RINGING_VOLUME_LEVEL_KEY;
 import static gis2018.udacity.tametu.utils.Constants.TICKING_VOLUME_LEVEL_KEY;
@@ -28,28 +27,29 @@ import static gis2018.udacity.tametu.utils.VolumeSeekBarUtils.maxVolume;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
 
-    @BindView(R.id.work_duration_spinner)
+    private ActivitySettingsBinding binding;
     Spinner workDurationSpinner;
-    @BindView(R.id.short_break_duration_spinner)
     Spinner shortBreakDurationSpinner;
-    @BindView(R.id.long_break_duration_spinner)
     Spinner longBreakDurationSpinner;
-    @BindView(R.id.start_long_break_after_spinner)
     Spinner startlongbreakafterSpinner;
-    @BindView(R.id.ticking_seek_bar)
     SeekBar tickingSeekBar;
-    @BindView(R.id.ringing_seek_bar)
     SeekBar ringingSeekBar;
-    @BindView(R.id.about_us_text)
     TextView aboutUsTextView;
     private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        binding = ActivitySettingsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        ButterKnife.bind(this);
+        workDurationSpinner = binding.workDurationSpinner;
+        shortBreakDurationSpinner = binding.shortBreakDurationSpinner;
+        longBreakDurationSpinner = binding.longBreakDurationSpinner;
+        startlongbreakafterSpinner = binding.startLongBreakAfterSpinner;
+        tickingSeekBar = binding.tickingSeekBar;
+        ringingSeekBar = binding.ringingSeekBar;
+        aboutUsTextView = binding.aboutUsText;
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -119,27 +119,21 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // initialize the editor
         SharedPreferences.Editor editor = preferences.edit();
-        // switch case to handle different spinners
-        switch (parent.getId()) {
-            // item selected in work duration spinner
-            case R.id.work_duration_spinner:
-                // save the corresponding item position
-                editor.putInt(getString(R.string.work_duration_key), position);
-                break;
-            // item selected in short break duration spinner
-            case R.id.short_break_duration_spinner:
-                // save the corresponding item position
-                editor.putInt(getString(R.string.short_break_duration_key), position);
-                break;
-            // item selected in long break duration spinner
-            case R.id.long_break_duration_spinner:
-                // save the corresponding item position
-                editor.putInt(getString(R.string.long_break_duration_key), position);
-                break;
-            case R.id.start_long_break_after_spinner:
-                // save the corresponding item position
-                editor.putInt(getString(R.string.start_long_break_after_key), position);
-
+        // chain of ifs to handle different spinners. (Can't be a switch: view IDs are no longer
+        // compile-time constants once android.nonFinalResIds defaults to true.)
+        int parentId = parent.getId();
+        if (parentId == R.id.work_duration_spinner) {
+            // item selected in work duration spinner: save the corresponding item position
+            editor.putInt(getString(R.string.work_duration_key), position);
+        } else if (parentId == R.id.short_break_duration_spinner) {
+            // item selected in short break duration spinner: save the corresponding item position
+            editor.putInt(getString(R.string.short_break_duration_key), position);
+        } else if (parentId == R.id.long_break_duration_spinner) {
+            // item selected in long break duration spinner: save the corresponding item position
+            editor.putInt(getString(R.string.long_break_duration_key), position);
+        } else if (parentId == R.id.start_long_break_after_spinner) {
+            // save the corresponding item position
+            editor.putInt(getString(R.string.start_long_break_after_key), position);
         }
         editor.apply();
     }
@@ -174,16 +168,14 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        switch (seekBar.getId()) {
-            case R.id.ticking_seek_bar:
-                preferences.edit().putInt(TICKING_VOLUME_LEVEL_KEY, progress).apply(); //Save volume level to SharedPreferences
-                floatTickingVolumeLevel = convertToFloat(preferences.getInt(TICKING_VOLUME_LEVEL_KEY, maxVolume), maxVolume);
-                break;
-            case R.id.ringing_seek_bar:
-                preferences.edit().putInt(RINGING_VOLUME_LEVEL_KEY, progress).apply(); //Save value to SharedPreferences
-                floatRingingVolumeLevel = convertToFloat(preferences.getInt(RINGING_VOLUME_LEVEL_KEY, maxVolume), maxVolume);
+        int id = seekBar.getId();
+        if (id == R.id.ticking_seek_bar) {
+            preferences.edit().putInt(TICKING_VOLUME_LEVEL_KEY, progress).apply(); //Save volume level to SharedPreferences
+            floatTickingVolumeLevel = convertToFloat(preferences.getInt(TICKING_VOLUME_LEVEL_KEY, maxVolume), maxVolume);
+        } else if (id == R.id.ringing_seek_bar) {
+            preferences.edit().putInt(RINGING_VOLUME_LEVEL_KEY, progress).apply(); //Save value to SharedPreferences
+            floatRingingVolumeLevel = convertToFloat(preferences.getInt(RINGING_VOLUME_LEVEL_KEY, maxVolume), maxVolume);
         }
-
     }
 
     @Override

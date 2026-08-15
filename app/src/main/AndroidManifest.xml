@@ -34,7 +34,6 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:exported="false">
 
         </activity>
@@ -42,7 +41,6 @@
             android:name=".SettingsActivity"
             android:label="Settings"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
             android:exported="false" />
         <!-- Broadcast receiver for notification action button -->
         <receiver android:name=".StopTimerActionReceiver" />
