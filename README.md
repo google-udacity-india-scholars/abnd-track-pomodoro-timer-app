@@ -1,5 +1,8 @@
 # Tamétû - A Productivity Timer App
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/android-productivity-timer-tametu-app/tametu) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) [![HitCount](https://hits.dwyl.com/google-udacity-india-scholars/abnd-track-pomodoro-timer-app.svg)](https://hits.dwyl.com/google-udacity-india-scholars/abnd-track-pomodoro-timer-app)
+
+[![Google Play](https://img.shields.io/badge/Get%20it%20on-Google%20Play?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=gis2018.udacity.tametu&hl=en_IN)
+
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/android-productivity-timer-tametu-app/tametu) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) [![HitCount](http://hits.dwyl.io/google-udacity-india-scholars//{project}.svg)](http://hits.dwyl.io/google-udacity-india-scholars//{project})
 ## Google India Scholar Collaborative Project- ABND Track Phase 2
 
 _The most important aspect of collaborative project is to get everyone involved, and this idea is simple enough for everyone to contribute to, tweak - and maybe even have some fun while doing it._
