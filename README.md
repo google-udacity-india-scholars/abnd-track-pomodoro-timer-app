@@ -1,4 +1,4 @@
-# Tamétû - A Productivity Timer App
+# Tametu - A Productivity Timer App
 
 [![Google Play](https://img.shields.io/badge/Get%20it%20on-Google%20Play?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=gis2018.udacity.tametu&hl=en_IN)
 
@@ -27,13 +27,13 @@ _The most important aspect of collaborative project is to get everyone involved,
 
 
 ## Project Title
-**Tamétû - get more done, faster.**
+**Tametu - get more done, faster.**
 
 ## Project Description
 - [Orginal post](https://discussions.udacity.com/t/my-collaborative-project-idea/618377)
 - [Current Slack thread](https://googleindiascholars.slack.com/archives/GD96L4VA4/p1539274648000100)
 
-This Tamétû timer is a simple idea of tricking oneself into working/studying for short intervals for a return of break cycles which consist of a few short breaks and one long break. This results in a focused work session and a lowered tendency of getting distracted.
+This Tametu timer is a simple idea of tricking oneself into working/studying for short intervals for a return of break cycles which consist of a few short breaks and one long break. This results in a focused work session and a lowered tendency of getting distracted.
 
 Central to this technique is a loudly ticking countdown timer and turns out that a physical timer isn't required if one has a smartphone. Tens of thousands (probably more) of people use such apps. Despite this, nothing beats a simple app.
 

@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/quicksand_medium"
         android:padding="5dp"
-        android:text="Tamétû"
+        android:text="Tametu"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent"
